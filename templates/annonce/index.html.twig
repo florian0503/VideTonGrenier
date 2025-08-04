@@ -47,7 +47,7 @@
                     <p class="text-muted mb-0">{{ annonces|length }} annonce{{ annonces|length > 1 ? 's' : '' }} trouvée{{ annonces|length > 1 ? 's' : '' }}</p>
                 </div>
                 {% if app.user %}
-                    <a href="{{ path('app_annonce_new') }}" class="btn btn-primary">
+                    <a href="{{ path('annonce_wizard_start') }}" class="btn btn-primary">
                         <i class="fas fa-plus"></i> Déposer une annonce
                     </a>
                 {% endif %}
@@ -67,7 +67,7 @@
                         {% endif %}
                     </p>
                     {% if app.user %}
-                        <a href="{{ path('app_annonce_new') }}" class="btn btn-primary">
+                        <a href="{{ path('annonce_wizard_start') }}" class="btn btn-primary">
                             Déposer la première annonce
                         </a>
                     {% endif %}

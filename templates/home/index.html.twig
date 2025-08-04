@@ -150,7 +150,7 @@
         <h2 class="mb-4">Prêt à vendre ?</h2>
         <p class="lead mb-4">Déposez votre annonce gratuitement et vendez rapidement</p>
         {% if app.user %}
-            <a href="{{ path('app_annonce_new') }}" class="btn btn-light btn-lg">Déposer une annonce</a>
+            <a href="{{ path('annonce_wizard_start') }}" class="btn btn-light btn-lg">Déposer une annonce</a>
         {% else %}
             <a href="{{ path('app_register') }}" class="btn btn-light btn-lg">Créer un compte</a>
         {% endif %}

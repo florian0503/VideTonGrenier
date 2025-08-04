@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes messages - VideTonGrenier{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>💬 Mes messages</h2>
+            </div>
+
+            {% if conversations is empty %}
+                <div class="text-center py-5">
+                    <i class="fas fa-envelope fa-3x text-muted mb-3"></i>
+                    <h4>Aucune conversation</h4>
+                    <p class="text-muted">Vos conversations avec les vendeurs et acheteurs apparaîtront ici.</p>
+                    <a href="{{ path('app_annonce_index') }}" class="btn btn-primary">
+                        <i class="fas fa-search"></i> Parcourir les annonces
+                    </a>
+                </div>
+            {% else %}
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body p-0">
+                                {% for conversation in conversations %}
+                                    <div class="d-flex align-items-center p-3 border-bottom conversation-item">
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-1">
+                                                <a href="{{ path('app_message_conversation', {id: conversation.id}) }}" class="text-decoration-none">
+                                                    {{ conversation.titre }}
+                                                </a>
+                                                {% if conversation.unreadCount > 0 %}
+                                                    <span class="badge bg-danger ms-2">{{ conversation.unreadCount }}</span>
+                                                {% endif %}
+                                            </h6>
+                                            <small class="text-muted">
+                                                Dernière activité : {{ conversation.lastMessageDate|date('d/m/Y à H:i') }}
+                                            </small>
+                                        </div>
+                                        <div>
+                                            <a href="{{ path('app_message_conversation', {id: conversation.id}) }}" class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-comments"></i> Voir
+                                            </a>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+.conversation-item:hover {
+    background-color: #f8f9fa;
+}
+</style>
+{% endblock %}

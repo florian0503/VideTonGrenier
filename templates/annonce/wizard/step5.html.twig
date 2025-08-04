@@ -1,0 +1,271 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Déposer une annonce - Étape 5/5{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <!-- Progress bar -->
+            <div class="mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="text-muted">Étape 5 sur 5</span>
+                    <span class="text-muted">100%</span>
+                </div>
+                <div class="progress" style="height: 6px;">
+                    <div class="progress-bar bg-success" role="progressbar" style="width: 100%"></div>
+                </div>
+            </div>
+
+            <div class="card shadow">
+                <div class="card-body p-4">
+                    <h2 class="h4 mb-4">
+                        <i class="fas fa-map-marker-alt text-primary me-2"></i>
+                        Localisation et validation finale
+                    </h2>
+
+                    <div class="row">
+                        <!-- Formulaire de localisation -->
+                        <div class="col-lg-5">
+                            <form method="post" id="final-form">
+                                <div class="mb-4">
+                                    <h5 class="mb-3">Où se trouve votre article ?</h5>
+
+                                    <div class="mb-3">
+                                        <label for="localisation" class="form-label fw-bold">
+                                            Adresse <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text"
+                                               class="form-control"
+                                               id="localisation"
+                                               name="localisation"
+                                               value="{{ data.localisation ?? '' }}"
+                                               placeholder="Ex: 123 rue de la République"
+                                               required>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="mb-3">
+                                                <label for="code_postal" class="form-label fw-bold">
+                                                    Code postal <span class="text-danger">*</span>
+                                                </label>
+                                                <input type="text"
+                                                       class="form-control"
+                                                       id="code_postal"
+                                                       name="code_postal"
+                                                       value="{{ data.code_postal ?? '' }}"
+                                                       placeholder="75001"
+                                                       pattern="[0-9]{5}"
+                                                       maxlength="5"
+                                                       required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="mb-3">
+                                                <label for="ville" class="form-label fw-bold">
+                                                    Ville <span class="text-danger">*</span>
+                                                </label>
+                                                <input type="text"
+                                                       class="form-control"
+                                                       id="ville"
+                                                       name="ville"
+                                                       value="{{ data.ville ?? '' }}"
+                                                       placeholder="Paris"
+                                                       required>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        <small>Votre adresse exacte ne sera pas visible publiquement. Seule la ville sera affichée.</small>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-between">
+                                    <a href="{{ path('annonce_wizard_step4') }}" class="btn btn-outline-secondary">
+                                        <i class="fas fa-arrow-left me-1"></i> Précédent
+                                    </a>
+                                    <button type="submit" class="btn btn-success btn-lg">
+                                        <i class="fas fa-check me-1"></i> Publier l'annonce
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Aperçu de l'annonce -->
+                        <div class="col-lg-7">
+                            <div class="sticky-top" style="top: 20px;">
+                                <h5 class="mb-3">
+                                    <i class="fas fa-eye text-success me-2"></i>
+                                    Aperçu de votre annonce
+                                </h5>
+
+                                <div class="card border-2 border-success">
+                                    <div class="card-body">
+                                        <!-- Photos -->
+                                        {% if step4.images is not empty %}
+                                        <div class="mb-3">
+                                            <div class="row g-2">
+                                                <div class="col-8">
+                                                    <img src="/uploads/annonces/{{ step4.images[0] }}"
+                                                         class="img-fluid rounded"
+                                                         style="height: 200px; width: 100%; object-fit: cover;"
+                                                         alt="Photo principale">
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="row g-1">
+                                                        {% for image in step4.images|slice(1, 3) %}
+                                                        <div class="col-12">
+                                                            <img src="/uploads/annonces/{{ image }}"
+                                                                 class="img-fluid rounded"
+                                                                 style="height: 63px; width: 100%; object-fit: cover;"
+                                                                 alt="Photo {{ loop.index + 1 }}">
+                                                        </div>
+                                                        {% endfor %}
+                                                        {% if step4.images|length > 4 %}
+                                                        <div class="col-12">
+                                                            <div class="bg-dark text-white rounded d-flex align-items-center justify-content-center"
+                                                                 style="height: 63px;">
+                                                                <small>+{{ step4.images|length - 4 }} photo(s)</small>
+                                                            </div>
+                                                        </div>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+
+                                        <!-- Titre et prix -->
+                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                            <h6 class="card-title mb-0">{{ step1.titre ?? 'Titre de l\'annonce' }}</h6>
+                                            {% if step3.prix %}
+                                            <span class="badge bg-primary fs-6">{{ step3.prix }}€</span>
+                                            {% endif %}
+                                        </div>
+
+                                        <!-- Type et catégorie -->
+                                        <div class="mb-3">
+                                            <span class="badge bg-secondary me-2">
+                                                {% if step1.type == 'vente' %}
+                                                    <i class="fas fa-tag me-1"></i>Vente
+                                                {% elseif step1.type == 'achat' %}
+                                                    <i class="fas fa-search me-1"></i>Recherche
+                                                {% else %}
+                                                    <i class="fas fa-handshake me-1"></i>Service
+                                                {% endif %}
+                                            </span>
+                                            {% if step3.is_urgent %}
+                                            <span class="badge bg-warning text-dark">
+                                                <i class="fas fa-exclamation-triangle me-1"></i>Urgent
+                                            </span>
+                                            {% endif %}
+                                        </div>
+
+                                        <!-- Description -->
+                                        <p class="card-text">
+                                            {{ (step3.description ?? 'Description de l\'annonce')|nl2br|slice(0, 200) }}
+                                            {% if step3.description and (step3.description|length > 200) %}...{% endif %}
+                                        </p>
+
+                                        <!-- Localisation -->
+                                        <div class="text-muted small">
+                                            <i class="fas fa-map-marker-alt me-1"></i>
+                                            <span id="preview-location">
+                                                {% if data and data.ville and data.code_postal %}
+                                                    {{ data.ville }} ({{ data.code_postal }})
+                                                {% else %}
+                                                    Ville à définir
+                                                {% endif %}
+                                            </span>
+                                        </div>
+
+                                        <!-- Infos supplémentaires -->
+                                        <hr>
+                                        <div class="row text-muted small">
+                                            <div class="col-6">
+                                                <i class="fas fa-calendar me-1"></i>
+                                                Aujourd'hui
+                                            </div>
+                                            <div class="col-6 text-end">
+                                                <i class="fas fa-eye me-1"></i>
+                                                0 vue
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Conditions -->
+                                <div class="mt-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="accept-conditions" required>
+                                        <label class="form-check-label small" for="accept-conditions">
+                                            J'accepte les <a href="#" target="_blank">conditions générales d'utilisation</a>
+                                            et certifie que cette annonce est conforme à nos
+                                            <a href="#" target="_blank">règles de publication</a>.
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const codePostalInput = document.getElementById('code_postal');
+    const villeInput = document.getElementById('ville');
+    const previewLocation = document.getElementById('preview-location');
+    const form = document.getElementById('final-form');
+    const acceptConditions = document.getElementById('accept-conditions');
+
+    // Mise à jour de l'aperçu en temps réel
+    function updatePreview() {
+        const ville = villeInput.value || 'Ville à définir';
+        const codePostal = codePostalInput.value;
+
+        if (ville !== 'Ville à définir' && codePostal) {
+            previewLocation.textContent = `${ville} (${codePostal})`;
+        } else {
+            previewLocation.textContent = ville;
+        }
+    }
+
+    villeInput.addEventListener('input', updatePreview);
+    codePostalInput.addEventListener('input', updatePreview);
+
+    // Validation du code postal
+    codePostalInput.addEventListener('input', function() {
+        this.value = this.value.replace(/[^0-9]/g, '').substring(0, 5);
+    });
+
+    // Auto-complétion ville basée sur le code postal (API optionnelle)
+    codePostalInput.addEventListener('blur', function() {
+        if (this.value.length === 5 && !villeInput.value) {
+            // Ici vous pourriez ajouter une API de géocodage
+            // pour auto-compléter la ville
+        }
+    });
+
+    // Validation avant soumission
+    form.addEventListener('submit', function(e) {
+        if (!acceptConditions.checked) {
+            e.preventDefault();
+            alert('Vous devez accepter les conditions générales pour publier votre annonce.');
+            return;
+        }
+
+        // Confirmation finale
+        if (!confirm('Êtes-vous sûr de vouloir publier cette annonce ?')) {
+            e.preventDefault();
+        }
+    });
+});
+</script>
+{% endblock %}

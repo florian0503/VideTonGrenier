@@ -1,0 +1,109 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Déposer une annonce - Étape 2/5{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Progress bar -->
+            <div class="mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="text-muted">Étape 2 sur 5</span>
+                    <span class="text-muted">40%</span>
+                </div>
+                <div class="progress" style="height: 6px;">
+                    <div class="progress-bar bg-primary" role="progressbar" style="width: 40%"></div>
+                </div>
+            </div>
+
+            <div class="card shadow">
+                <div class="card-body p-4">
+                    <h2 class="h4 mb-4">
+                        <i class="fas fa-tags text-primary me-2"></i>
+                        Dans quelle catégorie classer votre annonce ?
+                    </h2>
+
+                    <form method="post">
+                        <div class="row g-3">
+                            {% for categorie in categories %}
+                            <div class="col-md-6 col-lg-4">
+                                <div class="card border-2 h-100 category-card" data-category="{{ categorie.id }}">
+                                    <div class="card-body text-center p-3">
+                                        <i class="{{ categorie.icon ?? 'fas fa-folder' }} fa-2x text-primary mb-2"></i>
+                                        <h6 class="card-title">{{ categorie.nom }}</h6>
+                                        {% if categorie.description %}
+                                        <p class="card-text small text-muted">{{ categorie.description }}</p>
+                                        {% endif %}
+                                        <input type="radio" name="categorie_id" value="{{ categorie.id }}" class="d-none"
+                                               {{ (data.categorie_id ?? '') == categorie.id ? 'checked' : '' }}>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="{{ path('annonce_wizard_step1') }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-1"></i> Précédent
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                Continuer <i class="fas fa-arrow-right ms-1"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.category-card {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-color: #dee2e6 !important;
+}
+
+.category-card:hover {
+    border-color: #0d6efd !important;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    transform: translateY(-2px);
+}
+
+.category-card.selected {
+    border-color: #0d6efd !important;
+    background-color: rgba(13, 110, 253, 0.1);
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const categoryCards = document.querySelectorAll('.category-card');
+
+    // Marquer la carte sélectionnée au chargement
+    categoryCards.forEach(card => {
+        const radio = card.querySelector('input[type="radio"]');
+        if (radio.checked) {
+            card.classList.add('selected');
+        }
+    });
+
+    // Gérer la sélection
+    categoryCards.forEach(card => {
+        card.addEventListener('click', function() {
+            // Désélectionner toutes les cartes
+            categoryCards.forEach(c => c.classList.remove('selected'));
+
+            // Sélectionner cette carte
+            this.classList.add('selected');
+
+            // Cocher le radio bouton
+            const radio = this.querySelector('input[type="radio"]');
+            radio.checked = true;
+        });
+    });
+});
+</script>
+{% endblock %}

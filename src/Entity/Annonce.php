@@ -335,7 +335,7 @@ class Annonce
 
     public function getFirstImage(): ?string
     {
-        return !empty($this->images) ? $this->images[0] : null;
+        return !empty($this->images) ? '/uploads/annonces/' . $this->images[0] : null;
     }
 
     public function __toString(): string

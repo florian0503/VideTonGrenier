@@ -1,0 +1,149 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Conversation - {{ annonce.titre }} - VideTonGrenier{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-12">
+            <!-- En-tête de la conversation -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <div class="d-flex align-items-center">
+                        <a href="{{ path('app_message_index') }}" class="btn btn-sm btn-outline-secondary me-3">
+                            <i class="fas fa-arrow-left"></i> Retour
+                        </a>
+                        <div class="flex-grow-1">
+                            <h5 class="mb-0">{{ annonce.titre }}</h5>
+                            {% if receiver %}
+                                <small class="text-muted">Conversation avec {{ receiver.fullName }}</small>
+                            {% endif %}
+                        </div>
+                        <a href="{{ path('app_annonce_show', {id: annonce.id}) }}" class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-eye"></i> Voir l'annonce
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-8">
+                    <!-- Messages -->
+                    <div class="card mb-4" style="height: 500px;">
+                        <div class="card-header">
+                            <h6 class="mb-0">Messages</h6>
+                        </div>
+                        <div class="card-body overflow-auto" id="messagesContainer">
+                            {% if messages is empty %}
+                                <div class="text-center py-4">
+                                    <i class="fas fa-comments fa-2x text-muted mb-3"></i>
+                                    <p class="text-muted">Aucun message dans cette conversation.</p>
+                                </div>
+                            {% else %}
+                                {% for message in messages %}
+                                    <div class="message mb-3 {% if message.sender == app.user %}text-end{% endif %}">
+                                        <div class="d-inline-block max-w-75 {% if message.sender == app.user %}bg-primary text-white{% else %}bg-light{% endif %} p-3 rounded">
+                                            <div class="message-content">{{ message.contenu|nl2br }}</div>
+                                            <small class="d-block mt-2 {% if message.sender == app.user %}text-light{% else %}text-muted{% endif %}">
+                                                {{ message.sender.fullName }} - {{ message.createdAt|date('d/m/Y à H:i') }}
+                                                {% if message.sender == app.user and message.isRead %}
+                                                    <i class="fas fa-check-double ms-1" title="Lu"></i>
+                                                {% endif %}
+                                            </small>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Formulaire de nouveau message -->
+                    {% if receiver %}
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="mb-0">Nouveau message</h6>
+                            </div>
+                            <div class="card-body">
+                                {{ form_start(form) }}
+                                <div class="mb-3">
+                                    {{ form_widget(form.contenu) }}
+                                    {{ form_errors(form.contenu) }}
+                                </div>
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-paper-plane"></i> Envoyer
+                                    </button>
+                                </div>
+                                {{ form_end(form) }}
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            Impossible d'envoyer un message. Le destinataire n'est pas défini.
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="col-lg-4">
+                    <!-- Informations sur l'annonce -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h6 class="mb-0">À propos de cette annonce</h6>
+                        </div>
+                        <div class="card-body">
+                            {% if annonce.firstImage %}
+                                <img src="{{ annonce.firstImage }}" class="img-fluid rounded mb-3" alt="{{ annonce.titre }}">
+                            {% endif %}
+                            
+                            <h6>{{ annonce.titre }}</h6>
+                            {% if annonce.prix %}
+                                <p class="h5 text-primary">{{ annonce.prix }}€</p>
+                            {% else %}
+                                <p class="text-muted">Prix à négocier</p>
+                            {% endif %}
+                            
+                            <p class="small text-muted">{{ annonce.description|length > 100 ? annonce.description[:100] ~ '...' : annonce.description }}</p>
+                            
+                            <div class="d-grid">
+                                <a href="{{ path('app_annonce_show', {id: annonce.id}) }}" class="btn btn-outline-primary btn-sm">
+                                    <i class="fas fa-eye"></i> Voir l'annonce complète
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.max-w-75 {
+    max-width: 75%;
+}
+
+#messagesContainer {
+    max-height: 400px;
+}
+
+.message {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+</style>
+
+<script>
+// Auto-scroll vers le bas des messages
+document.addEventListener('DOMContentLoaded', function() {
+    const container = document.getElementById('messagesContainer');
+    if (container) {
+        container.scrollTop = container.scrollHeight;
+    }
+});
+</script>
+{% endblock %}

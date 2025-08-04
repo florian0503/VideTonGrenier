@@ -85,15 +85,18 @@
                     </div>
 
                     {% if annonce.images is not empty %}
-                        <div class="mb-4">
-                            <h6 class="fw-bold">📷 Images actuelles</h6>
-                            <div class="row">
+                    An exception has been thrown during the rendering of a template ("Unable to generate a URL for the named route "app_annonce_new" as such route does not exist.") in home/index.html.twig at line 153.                        <div class="row">
+                            <div class="col-12">
+                                <h6>Images actuelles :</h6>
                                 {% for image in annonce.images %}
-                                    <div class="col-md-3 mb-2">
-                                        <img src="{{ image }}" class="img-thumbnail" alt="Image {{ loop.index }}">
+                                    <div class="d-inline-block me-2 mb-2">
+                                        <img src="{{ '/uploads/annonces/' ~ image }}" class="img-thumbnail" alt="Image {{ loop.index }}">
                                     </div>
                                 {% endfor %}
                             </div>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
                             <small class="text-muted">La gestion des images sera bientôt disponible</small>
                         </div>
                     {% endif %}

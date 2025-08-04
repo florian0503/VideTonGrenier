@@ -4,10 +4,33 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="89cd9f66-c0c8-49a9-b7a1-0bbd445b1a46" name="Changes" comment="add legal pages: terms, privacy, mentions, about, and faq; update navigation links">
+    <list default="true" id="89cd9f66-c0c8-49a9-b7a1-0bbd445b1a46" name="Changes" comment="update dashboard navigation and improve category section layout">
+      <change afterPath="$PROJECT_DIR$/.idea/git_toolbox_prj.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controller/AnnonceWizardController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Form/Wizard/Step1TitleTypeForm.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Form/Wizard/Step2CategoryForm.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Form/Wizard/Step3DescriptionPriceForm.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Form/Wizard/Step4PhotosForm.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Form/Wizard/Step5LocationForm.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/annonce/wizard/step1.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/annonce/wizard/step2.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/annonce/wizard/step3.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/annonce/wizard/step4.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/annonce/wizard/step5.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/Admin/DashboardController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/Admin/DashboardController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/AnnonceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/AnnonceController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Annonce.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Annonce.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/AnnonceType.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Repository/MessageRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/MessageRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/annonce/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/annonce/edit.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/annonce/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/annonce/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/annonce/new.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/annonce/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/annonce/show.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/home/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/home/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/profile/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/profile/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/profile/mes-annonces.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/profile/mes-annonces.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,7 +95,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1754292981396</updated>
-      <workItem from="1754292983087" duration="5530000" />
+      <workItem from="1754292983087" duration="8263000" />
     </task>
     <task id="LOCAL-00001" summary="initialize project structure and add configuration files">
       <option name="closed" value="true" />
@@ -90,7 +113,15 @@
       <option name="project" value="LOCAL" />
       <updated>1754299380695</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="update dashboard navigation and improve category section layout">
+      <option name="closed" value="true" />
+      <created>1754299948139</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1754299948139</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -99,6 +130,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="initialize project structure and add configuration files" />
     <MESSAGE value="add legal pages: terms, privacy, mentions, about, and faq; update navigation links" />
-    <option name="LAST_COMMIT_MESSAGE" value="add legal pages: terms, privacy, mentions, about, and faq; update navigation links" />
+    <MESSAGE value="update dashboard navigation and improve category section layout" />
+    <option name="LAST_COMMIT_MESSAGE" value="update dashboard navigation and improve category section layout" />
   </component>
 </project>

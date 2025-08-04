@@ -1,0 +1,457 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Déposer une annonce - Étape 4/5{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Progress bar -->
+            <div class="mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="text-muted">Étape 4 sur 5</span>
+                    <span class="text-muted">80%</span>
+                </div>
+                <div class="progress" style="height: 6px;">
+                    <div class="progress-bar bg-primary" role="progressbar" style="width: 80%"></div>
+                </div>
+            </div>
+
+            <div class="card shadow">
+                <div class="card-body p-4">
+                    <h2 class="h4 mb-4">
+                        <i class="fas fa-camera text-primary me-2"></i>
+                        Ajoutez des photos à votre annonce
+                    </h2>
+
+                    <div class="alert alert-info mb-4">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Les annonces avec photos obtiennent <strong>7 fois plus de réponses</strong> !
+                        Vous pouvez ajouter jusqu'à <strong>8 photos</strong>.
+                    </div>
+
+                    <form method="post" id="photo-form">
+                        <!-- Zone de drop -->
+                        <div class="photo-upload-zone mb-4" id="upload-zone">
+                            <div class="upload-placeholder text-center p-5">
+                                <i class="fas fa-cloud-upload-alt fa-3x text-muted mb-3"></i>
+                                <h5>Glissez vos photos ici</h5>
+                                <p class="text-muted">ou cliquez pour sélectionner</p>
+                                <button type="button" class="btn btn-primary" id="select-files-btn">
+                                    <i class="fas fa-plus me-1"></i> Ajouter des photos
+                                </button>
+                                <input type="file" id="file-input" accept="image/*" multiple style="display: none;">
+                            </div>
+                        </div>
+
+                        <!-- Grille des photos -->
+                        <div id="photos-grid" class="photos-grid mb-4" style="display: none;">
+                            <div class="row g-3" id="photos-container">
+                                <!-- Les photos seront ajoutées ici dynamiquement -->
+                            </div>
+                            <div class="upload-more-btn" id="upload-more">
+                                <div class="photo-slot add-more" id="add-more-slot">
+                                    <i class="fas fa-plus fa-2x"></i>
+                                    <span>Ajouter</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Aperçu temps réel -->
+                        <div id="photos-preview" class="mb-4" style="display: none;">
+                            <h6 class="mb-3">
+                                <i class="fas fa-images text-primary me-2"></i>
+                                Vos photos (<span id="photo-count">0</span>/8)
+                            </h6>
+                            <div class="alert alert-success">
+                                <i class="fas fa-check-circle me-2"></i>
+                                <span id="preview-message">Photos ajoutées avec succès !</span>
+                                Vous pouvez les réorganiser en les glissant-déposant.
+                            </div>
+                        </div>
+
+                        <!-- Conseils photos -->
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <h6><i class="fas fa-lightbulb text-warning me-2"></i>Conseils pour de bonnes photos</h6>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <ul class="small mb-0">
+                                            <li>Prenez des photos nettes et bien éclairées</li>
+                                            <li>Montrez l'objet sous différents angles</li>
+                                            <li>Mettez la photo principale en premier</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <ul class="small mb-0">
+                                            <li>Évitez les photos floues ou sombres</li>
+                                            <li>Montrez les défauts s'il y en a</li>
+                                            <li>Formats acceptés : JPG, PNG, GIF, WebP (max 2MB)</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="{{ path('annonce_wizard_step3') }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-1"></i> Précédent
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                Continuer <i class="fas fa-arrow-right ms-1"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de loading -->
+<div class="modal fade" id="upload-modal" tabindex="-1">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center p-4">
+                <div class="spinner-border text-primary mb-3" role="status">
+                    <span class="visually-hidden">Chargement...</span>
+                </div>
+                <p class="mb-0">Téléchargement en cours...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.photo-upload-zone {
+    border: 2px dashed #dee2e6;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    background: #f8f9fa;
+}
+
+.photo-upload-zone.dragover {
+    border-color: #0d6efd;
+    background: rgba(13, 110, 253, 0.1);
+}
+
+.photos-grid {
+    min-height: 200px;
+}
+
+.photo-slot {
+    position: relative;
+    width: 100%;
+    height: 150px;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.photo-slot img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.photo-slot.add-more {
+    border: 2px dashed #dee2e6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+    color: #6c757d;
+    transition: all 0.3s ease;
+}
+
+.photo-slot.add-more:hover {
+    border-color: #0d6efd;
+    color: #0d6efd;
+    background: rgba(13, 110, 253, 0.1);
+}
+
+.photo-actions {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    display: flex;
+    gap: 5px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.photo-slot:hover .photo-actions {
+    opacity: 1;
+}
+
+.photo-actions button {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+}
+
+.main-photo-badge {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    background: rgba(13, 110, 253, 0.9);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.sortable-ghost {
+    opacity: 0.5;
+}
+
+.sortable-chosen {
+    transform: scale(0.95);
+}
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+<script>
+class PhotoUploader {
+    constructor() {
+        this.maxFiles = 8;
+        this.uploadedFiles = {{ images|json_encode|raw }};
+        this.init();
+        this.loadExistingPhotos();
+    }
+
+    init() {
+        this.setupEventListeners();
+        this.setupSortable();
+        this.updateUI();
+    }
+
+    setupEventListeners() {
+        const uploadZone = document.getElementById('upload-zone');
+        const fileInput = document.getElementById('file-input');
+        const selectBtn = document.getElementById('select-files-btn');
+        const addMoreSlot = document.getElementById('add-more-slot');
+
+        // Drag & Drop
+        uploadZone.addEventListener('dragover', this.handleDragOver.bind(this));
+        uploadZone.addEventListener('dragleave', this.handleDragLeave.bind(this));
+        uploadZone.addEventListener('drop', this.handleDrop.bind(this));
+
+        // File input
+        fileInput.addEventListener('change', this.handleFileSelect.bind(this));
+        selectBtn.addEventListener('click', () => fileInput.click());
+
+        // Add more button
+        if (addMoreSlot) {
+            addMoreSlot.addEventListener('click', () => fileInput.click());
+        }
+    }
+
+    setupSortable() {
+        const container = document.getElementById('photos-container');
+        new Sortable(container, {
+            animation: 150,
+            ghostClass: 'sortable-ghost',
+            chosenClass: 'sortable-chosen',
+            onEnd: this.handleSort.bind(this)
+        });
+    }
+
+    handleDragOver(e) {
+        e.preventDefault();
+        e.currentTarget.classList.add('dragover');
+    }
+
+    handleDragLeave(e) {
+        e.currentTarget.classList.remove('dragover');
+    }
+
+    handleDrop(e) {
+        e.preventDefault();
+        e.currentTarget.classList.remove('dragover');
+        const files = Array.from(e.dataTransfer.files);
+        this.processFiles(files);
+    }
+
+    handleFileSelect(e) {
+        const files = Array.from(e.target.files);
+        this.processFiles(files);
+        e.target.value = ''; // Reset input
+    }
+
+    processFiles(files) {
+        const remainingSlots = this.maxFiles - this.uploadedFiles.length;
+        const filesToProcess = files.slice(0, remainingSlots);
+
+        if (files.length > remainingSlots) {
+            alert(`Vous pouvez ajouter au maximum ${remainingSlots} photo(s) supplémentaire(s).`);
+        }
+
+        filesToProcess.forEach(file => this.uploadFile(file));
+    }
+
+    async uploadFile(file) {
+        // Vérifications
+        if (!file.type.startsWith('image/')) {
+            alert('Seules les images sont autorisées.');
+            return;
+        }
+
+        if (file.size > 2 * 1024 * 1024) {
+            alert('La taille du fichier ne peut pas dépasser 2MB.');
+            return;
+        }
+
+        const modal = new bootstrap.Modal(document.getElementById('upload-modal'));
+        modal.show();
+
+        try {
+            const formData = new FormData();
+            formData.append('image', file);
+
+            const response = await fetch('{{ path('annonce_wizard_upload_image') }}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                this.uploadedFiles.push(result.filename);
+                this.updateUI();
+            } else {
+                alert(result.error || 'Erreur lors du téléchargement');
+            }
+        } catch (error) {
+            alert('Erreur lors du téléchargement');
+            console.error(error);
+        } finally {
+            modal.hide();
+        }
+    }
+
+    async removeFile(filename) {
+        if (!confirm('Êtes-vous sûr de vouloir supprimer cette photo ?')) {
+            return;
+        }
+
+        try {
+            const formData = new FormData();
+            formData.append('filename', filename);
+
+            const response = await fetch('{{ path('annonce_wizard_remove_image') }}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                this.uploadedFiles = this.uploadedFiles.filter(f => f !== filename);
+                this.updateUI();
+            } else {
+                alert('Erreur lors de la suppression');
+            }
+        } catch (error) {
+            alert('Erreur lors de la suppression');
+            console.error(error);
+        }
+    }
+
+    setAsMain(filename) {
+        // Déplacer en première position
+        this.uploadedFiles = this.uploadedFiles.filter(f => f !== filename);
+        this.uploadedFiles.unshift(filename);
+        this.updateUI();
+    }
+
+    handleSort(evt) {
+        const oldIndex = evt.oldIndex;
+        const newIndex = evt.newIndex;
+
+        if (oldIndex !== newIndex) {
+            const item = this.uploadedFiles.splice(oldIndex, 1)[0];
+            this.uploadedFiles.splice(newIndex, 0, item);
+            this.updateUI();
+        }
+    }
+
+    loadExistingPhotos() {
+        if (this.uploadedFiles.length > 0) {
+            this.updateUI();
+        }
+    }
+
+    updateUI() {
+        const uploadZone = document.getElementById('upload-zone');
+        const photosGrid = document.getElementById('photos-grid');
+        const container = document.getElementById('photos-container');
+        const photoCount = document.getElementById('photo-count');
+        const previewMessage = document.getElementById('preview-message');
+        const photosPreview = document.getElementById('photos-preview');
+
+        if (this.uploadedFiles.length === 0) {
+            uploadZone.style.display = 'block';
+            photosGrid.style.display = 'none';
+            photosPreview.style.display = 'none';
+        } else {
+            uploadZone.style.display = 'none';
+            photosGrid.style.display = 'block';
+            this.renderPhotos();
+            photosPreview.style.display = 'block';
+            photoCount.textContent = this.uploadedFiles.length;
+            previewMessage.textContent = 'Photos ajoutées avec succès !';
+        }
+
+        // Afficher/masquer le bouton "Ajouter"
+        const addMoreSlot = document.getElementById('upload-more');
+        if (this.uploadedFiles.length >= this.maxFiles) {
+            addMoreSlot.style.display = 'none';
+        } else {
+            addMoreSlot.style.display = 'block';
+        }
+    }
+
+    renderPhotos() {
+        const container = document.getElementById('photos-container');
+
+        container.innerHTML = this.uploadedFiles.map((filename, index) => `
+            <div class="col-md-3 col-6">
+                <div class="photo-slot" data-filename="${filename}">
+                    <img src="/uploads/annonces/${filename}" alt="Photo ${index + 1}">
+                    ${index === 0 ? '<div class="main-photo-badge">Photo principale</div>' : ''}
+                    <div class="photo-actions">
+                        ${index !== 0 ? `<button type="button" class="btn btn-primary btn-sm" onclick="uploader.setAsMain('${filename}')" title="Définir comme photo principale">
+                            <i class="fas fa-star"></i>
+                        </button>` : ''}
+                        <button type="button" class="btn btn-danger btn-sm" onclick="uploader.removeFile('${filename}')" title="Supprimer">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+}
+
+// Initialiser l'uploader
+let uploader;
+document.addEventListener('DOMContentLoaded', function() {
+    uploader = new PhotoUploader();
+});
+</script>
+{% endblock %}

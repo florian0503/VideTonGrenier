@@ -1,0 +1,132 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Déposer une annonce - Étape 3/5{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Progress bar -->
+            <div class="mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="text-muted">Étape 3 sur 5</span>
+                    <span class="text-muted">60%</span>
+                </div>
+                <div class="progress" style="height: 6px;">
+                    <div class="progress-bar bg-primary" role="progressbar" style="width: 60%"></div>
+                </div>
+            </div>
+
+            <div class="card shadow">
+                <div class="card-body p-4">
+                    <h2 class="h4 mb-4">
+                        <i class="fas fa-file-alt text-primary me-2"></i>
+                        Décrivez votre annonce
+                    </h2>
+
+                    <form method="post">
+                        <div class="mb-4">
+                            <label for="description" class="form-label fw-bold">
+                                Description détaillée <span class="text-danger">*</span>
+                            </label>
+                            <textarea class="form-control"
+                                      id="description"
+                                      name="description"
+                                      rows="6"
+                                      placeholder="Décrivez votre article en détail : état, caractéristiques, raison de la vente..."
+                                      required>{{ data.description ?? '' }}</textarea>
+                            <div class="form-text">
+                                Plus votre description sera précise, plus vous aurez de chances d'attirer des acheteurs sérieux.
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <label for="prix" class="form-label fw-bold">
+                                        Prix (€)
+                                    </label>
+                                    <div class="input-group">
+                                        <input type="number"
+                                               class="form-control"
+                                               id="prix"
+                                               name="prix"
+                                               value="{{ data.prix ?? '' }}"
+                                               placeholder="0.00"
+                                               step="0.01"
+                                               min="0">
+                                        <span class="input-group-text">€</span>
+                                    </div>
+                                    <div class="form-text">
+                                        Laissez vide si le prix est à négocier ou pour un service.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <label class="form-label fw-bold">Options</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input"
+                                               type="checkbox"
+                                               id="is_urgent"
+                                               name="is_urgent"
+                                               value="1"
+                                               {{ (data.is_urgent ?? false) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="is_urgent">
+                                            <i class="fas fa-exclamation-triangle text-warning me-1"></i>
+                                            Annonce urgente
+                                        </label>
+                                        <div class="form-text">
+                                            Votre annonce sera mise en avant dans les résultats.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-info">
+                            <i class="fas fa-lightbulb me-2"></i>
+                            <strong>Conseils pour une bonne description :</strong>
+                            <ul class="mb-0 mt-2">
+                                <li>Mentionnez l'état général de l'objet</li>
+                                <li>Indiquez la marque, le modèle et l'année si applicable</li>
+                                <li>Précisez les défauts éventuels</li>
+                                <li>Expliquez pourquoi vous vendez</li>
+                            </ul>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ path('annonce_wizard_step2') }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-1"></i> Précédent
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                Continuer <i class="fas fa-arrow-right ms-1"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const description = document.getElementById('description');
+    const prix = document.getElementById('prix');
+
+    // Auto-resize textarea
+    description.addEventListener('input', function() {
+        this.style.height = 'auto';
+        this.style.height = this.scrollHeight + 'px';
+    });
+
+    // Format price input
+    prix.addEventListener('blur', function() {
+        if (this.value && !isNaN(this.value)) {
+            this.value = parseFloat(this.value).toFixed(2);
+        }
+    });
+});
+</script>
+{% endblock %}

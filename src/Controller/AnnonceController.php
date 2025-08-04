@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Annonce;
 use App\Entity\Categorie;
-use App\Form\AnnonceType;
 use App\Repository\AnnonceRepository;
 use App\Repository\CategorieRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -49,33 +48,6 @@ final class AnnonceController extends AbstractController
         ]);
     }
 
-    #[Route('/nouvelle', name: 'app_annonce_new', methods: ['GET', 'POST'])]
-    #[IsGranted('ROLE_USER')]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $annonce = new Annonce();
-        $annonce->setUser($this->getUser());
-        
-        $form = $this->createForm(AnnonceType::class, $annonce);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $annonce->setStatus(Annonce::STATUS_PENDING);
-            
-            $entityManager->persist($annonce);
-            $entityManager->flush();
-
-            $this->addFlash('success', 'Votre annonce a été soumise avec succès ! Elle sera visible après modération.');
-
-            return $this->redirectToRoute('app_home');
-        }
-
-        return $this->render('annonce/new.html.twig', [
-            'annonce' => $annonce,
-            'form' => $form,
-        ]);
-    }
-
     #[Route('/{id}', name: 'app_annonce_show', methods: ['GET'])]
     public function show(Annonce $annonce, EntityManagerInterface $entityManager): Response
     {
@@ -97,23 +69,12 @@ final class AnnonceController extends AbstractController
             throw $this->createAccessDeniedException('Vous ne pouvez modifier que vos propres annonces.');
         }
 
-        $form = $this->createForm(AnnonceType::class, $annonce);
-        $form->handleRequest($request);
+        // Rediriger vers le wizard pour l'édition
+        $this->addFlash('info', 'L\'édition via le wizard sera bientôt disponible. Utilisez le formulaire simple pour le moment.');
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $annonce->setUpdatedAt(new \DateTime());
-            $entityManager->flush();
-
-            $this->addFlash('success', 'Votre annonce a été mise à jour avec succès !');
-
-            return $this->redirectToRoute('app_annonce_show', ['id' => $annonce->getId()]);
-        }
-
-        return $this->render('annonce/edit.html.twig', [
-            'annonce' => $annonce,
-            'form' => $form,
-        ]);
+        return $this->redirectToRoute('app_annonce_show', ['id' => $annonce->getId()]);
     }
+
 
     #[Route('/{id}/supprimer', name: 'app_annonce_delete', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]

@@ -1,0 +1,179 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}FAQ - Questions fréquentes - VideTonGrenier{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h1 class="mb-4">Questions fréquentes (FAQ)</h1>
+            <p class="lead text-muted">Trouvez rapidement les réponses à vos questions</p>
+
+            <div class="accordion" id="faqAccordion">
+                <!-- Compte et inscription -->
+                <div class="card shadow-sm mb-3">
+                    <div class="card-header" id="headingAccount">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link btn-block text-left collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAccount">
+                                <strong>📝 Compte et inscription</strong>
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="collapseAccount" class="collapse" data-bs-parent="#faqAccordion">
+                        <div class="card-body">
+                            <h6 class="text-primary">Comment créer un compte ?</h6>
+                            <p>Cliquez sur "Rejoindre" en haut à droite, remplissez le formulaire avec vos informations (nom, prénom, email, mot de passe) et validez. Vous recevrez un email de confirmation.</p>
+
+                            <h6 class="text-primary mt-3">J'ai oublié mon mot de passe</h6>
+                            <p>Sur la page de connexion, cliquez sur "Mot de passe oublié" et saisissez votre email. Vous recevrez un lien pour réinitialiser votre mot de passe.</p>
+
+                            <h6 class="text-primary mt-3">Puis-je modifier mes informations personnelles ?</h6>
+                            <p>Oui, rendez-vous dans votre profil pour modifier vos informations personnelles à tout moment.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Annonces -->
+                <div class="card shadow-sm mb-3">
+                    <div class="card-header" id="headingAds">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link btn-block text-left collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAds">
+                                <strong>📋 Publication d'annonces</strong>
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="collapseAds" class="collapse" data-bs-parent="#faqAccordion">
+                        <div class="card-body">
+                            <h6 class="text-primary">Comment publier une annonce ?</h6>
+                            <p>Connectez-vous, cliquez sur "Déposer une annonce", remplissez le formulaire (titre, description, prix, catégorie) et ajoutez des photos. Votre annonce sera visible après validation.</p>
+
+                            <h6 class="text-primary mt-3">Combien d'annonces puis-je publier ?</h6>
+                            <p>Il n'y a pas de limite au nombre d'annonces que vous pouvez publier, tant qu'elles respectent nos conditions d'utilisation.</p>
+
+                            <h6 class="text-primary mt-3">Combien de photos puis-je ajouter ?</h6>
+                            <p>Vous pouvez ajouter jusqu'à 5 photos par annonce. Utilisez des images de bonne qualité qui montrent bien votre objet.</p>
+
+                            <h6 class="text-primary mt-3">Puis-je modifier mon annonce après publication ?</h6>
+                            <p>Oui, vous pouvez modifier vos annonces à tout moment depuis votre espace "Mes annonces".</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vente et achat -->
+                <div class="card shadow-sm mb-3">
+                    <div class="card-header" id="headingTrade">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link btn-block text-left collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTrade">
+                                <strong>💰 Vente et achat</strong>
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="collapseTrade" class="collapse" data-bs-parent="#faqAccordion">
+                        <div class="card-body">
+                            <h6 class="text-primary">Comment contacter un vendeur ?</h6>
+                            <p>Cliquez sur l'annonce qui vous intéresse, puis sur "Contacter le vendeur". Vous pourrez envoyer un message directement via la plateforme.</p>
+
+                            <h6 class="text-primary mt-3">VideTonGrenier prend-il une commission ?</h6>
+                            <p>Non, VideTonGrenier est entièrement gratuit. Nous ne prélevons aucune commission sur vos ventes.</p>
+
+                            <h6 class="text-primary mt-3">Comment se déroule le paiement ?</h6>
+                            <p>Les paiements se font directement entre acheteur et vendeur. Nous recommandons le paiement en espèces lors de la remise en main propre pour plus de sécurité.</p>
+
+                            <h6 class="text-primary mt-3">Que faire en cas de litige ?</h6>
+                            <p>Essayez d'abord de résoudre le problème à l'amiable avec l'autre partie. Si cela ne fonctionne pas, contactez notre support qui pourra vous conseiller.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sécurité -->
+                <div class="card shadow-sm mb-3">
+                    <div class="card-header" id="headingSecurity">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link btn-block text-left collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSecurity">
+                                <strong>🔒 Sécurité et confidentialité</strong>
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="collapseSecurity" class="collapse" data-bs-parent="#faqAccordion">
+                        <div class="card-body">
+                            <h6 class="text-primary">Mes données sont-elles protégées ?</h6>
+                            <p>Oui, nous respectons le RGPD et utilisons des mesures de sécurité appropriées pour protéger vos données personnelles. Consultez notre politique de confidentialité pour plus de détails.</p>
+
+                            <h6 class="text-primary mt-3">Comment signaler une annonce suspecte ?</h6>
+                            <p>Sur chaque annonce, vous trouverez un bouton "Signaler". Utilisez-le pour nous informer de tout contenu inapproprié ou suspect.</p>
+
+                            <h6 class="text-primary mt-3">Conseils pour une transaction sécurisée ?</h6>
+                            <p>Privilégiez la remise en main propre dans un lieu public, vérifiez l'objet avant paiement, payez en espèces, et faites confiance à votre instinct.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technique -->
+                <div class="card shadow-sm mb-3">
+                    <div class="card-header" id="headingTech">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link btn-block text-left collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTech">
+                                <strong>⚙️ Questions techniques</strong>
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="collapseTech" class="collapse" data-bs-parent="#faqAccordion">
+                        <div class="card-body">
+                            <h6 class="text-primary">Le site fonctionne-t-il sur mobile ?</h6>
+                            <p>Oui, VideTonGrenier est optimisé pour tous les appareils : smartphones, tablettes et ordinateurs.</p>
+
+                            <h6 class="text-primary mt-3">Pourquoi ma photo ne s'affiche pas ?</h6>
+                            <p>Vérifiez que votre image fait moins de 5 Mo et qu'elle est au format JPG, PNG ou WEBP. Si le problème persiste, contactez notre support.</p>
+
+                            <h6 class="text-primary mt-3">Je ne reçois pas les emails de notification</h6>
+                            <p>Vérifiez votre dossier spam/courrier indésirable. Ajoutez noreply@videtongrenier.fr à vos contacts pour éviter ce problème.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Autres questions -->
+                <div class="card shadow-sm mb-3">
+                    <div class="card-header" id="headingOther">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link btn-block text-left collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOther">
+                                <strong>❓ Autres questions</strong>
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="collapseOther" class="collapse" data-bs-parent="#faqAccordion">
+                        <div class="card-body">
+                            <h6 class="text-primary">Qu'est-ce qui est interdit sur VideTonGrenier ?</h6>
+                            <p>Les objets volés, contrefaits, dangereux, les armes, drogues, médicaments, et tout contenu illégal ou inapproprié. Consultez nos conditions d'utilisation pour la liste complète.</p>
+
+                            <h6 class="text-primary mt-3">Combien de temps mon annonce reste-t-elle en ligne ?</h6>
+                            <p>Les annonces restent actives pendant 60 jours. Vous pouvez les renouveler gratuitement ou les supprimer à tout moment.</p>
+
+                            <h6 class="text-primary mt-3">Comment supprimer mon compte ?</h6>
+                            <p>Contactez notre support à support@videtongrenier.fr en précisant votre demande de suppression de compte. Toutes vos données seront effacées sous 30 jours.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm mt-4">
+                <div class="card-body text-center">
+                    <h3 class="h5 text-primary">Vous ne trouvez pas votre réponse ?</h3>
+                    <p>Notre équipe support est là pour vous aider !</p>
+                    <div class="d-flex justify-content-center gap-3">
+                        <a href="mailto:support@videtongrenier.fr" class="btn btn-primary">
+                            📧 Contactez-nous
+                        </a>
+                        <a href="{{ path('app_legal_about') }}" class="btn btn-outline-primary">
+                            ℹ️ À propos
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <a href="{{ path('app_home') }}" class="btn btn-secondary">Retour à l'accueil</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

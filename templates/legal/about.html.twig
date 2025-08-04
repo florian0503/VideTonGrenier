@@ -1,0 +1,134 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}À propos - VideTonGrenier{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h1 class="mb-4">À propos de VideTonGrenier</h1>
+            <p class="lead text-muted">Découvrez notre histoire et notre mission</p>
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h2 class="h4 text-primary">Notre mission</h2>
+                    <p class="lead">Faciliter les échanges entre particuliers en offrant une plateforme simple, sécurisée et conviviale pour vendre et acheter des objets d'occasion.</p>
+
+                    <p>VideTonGrenier est né d'un constat simple : nous avons tous chez nous des objets qui ne nous servent plus mais qui pourraient faire le bonheur d'autres personnes. Notre plateforme permet de donner une seconde vie à ces objets tout en créant du lien social entre les utilisateurs.</p>
+                </div>
+            </div>
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h2 class="h4 text-primary">Notre histoire</h2>
+                    <p>Créée en 2025, VideTonGrenier s'inspire des traditionnels vide-greniers et brocantes qui rassemblent les communautés locales. Nous avons voulu transposer cette convivialité dans le monde numérique tout en conservant l'esprit d'origine : la découverte, l'échange et la bonne affaire.</p>
+
+                    <p>Notre équipe, passionnée par l'économie circulaire et les technologies web, travaille chaque jour pour améliorer votre expérience et faciliter vos transactions.</p>
+                </div>
+            </div>
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h2 class="h4 text-primary">Nos valeurs</h2>
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start">
+                                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                                    ♻️
+                                </div>
+                                <div>
+                                    <h5>Écologie</h5>
+                                    <p class="mb-0">Promouvoir la réutilisation et réduire les déchets en donnant une seconde vie aux objets.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start">
+                                <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                                    🤝
+                                </div>
+                                <div>
+                                    <h5>Confiance</h5>
+                                    <p class="mb-0">Créer un environnement sécurisé où les utilisateurs peuvent échanger en toute confiance.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start">
+                                <div class="bg-warning text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                                    💡
+                                </div>
+                                <div>
+                                    <h5>Simplicité</h5>
+                                    <p class="mb-0">Offrir une interface intuitive accessible à tous, quel que soit le niveau technique.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start">
+                                <div class="bg-info text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                                    🌍
+                                </div>
+                                <div>
+                                    <h5>Communauté</h5>
+                                    <p class="mb-0">Favoriser les échanges locaux et créer du lien social entre voisins.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h2 class="h4 text-primary">Pourquoi choisir VideTonGrenier ?</h2>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="text-center">
+                                <div class="bg-light rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 80px; height: 80px; font-size: 2rem;">
+                                    🆓
+                                </div>
+                                <h6>Gratuit</h6>
+                                <small class="text-muted">Inscription et publication d'annonces entièrement gratuites</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-center">
+                                <div class="bg-light rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 80px; height: 80px; font-size: 2rem;">
+                                    🔒
+                                </div>
+                                <h6>Sécurisé</h6>
+                                <small class="text-muted">Modération des annonces et protection de vos données</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-center">
+                                <div class="bg-light rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 80px; height: 80px; font-size: 2rem;">
+                                    📱
+                                </div>
+                                <h6>Moderne</h6>
+                                <small class="text-muted">Interface responsive adaptée à tous vos appareils</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    <h2 class="h4 text-primary">Une question ? Un problème ?</h2>
+                    <p>Notre équipe support est à votre disposition pour vous aider.</p>
+                    <div class="d-flex justify-content-center gap-3">
+                        <a href="{{ path('app_legal_faq') }}" class="btn btn-outline-primary">Consulter la FAQ</a>
+                        <a href="mailto:support@videtongrenier.fr" class="btn btn-primary">Nous contacter</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <a href="{{ path('app_home') }}" class="btn btn-secondary">Retour à l'accueil</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

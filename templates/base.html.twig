@@ -99,17 +99,17 @@
                     <div class="col-md-4">
                         <h6>Liens utiles</h6>
                         <ul class="list-unstyled">
-                            <li><a href="#" class="text-light">À propos</a></li>
-                            <li><a href="#" class="text-light">Contact</a></li>
-                            <li><a href="#" class="text-light">FAQ</a></li>
+                            <li><a href="{{ path('app_legal_about') }}" class="text-light">À propos</a></li>
+                            <li><a href="mailto:contact@videtongrenier.fr" class="text-light">Contact</a></li>
+                            <li><a href="{{ path('app_legal_faq') }}" class="text-light">FAQ</a></li>
                         </ul>
                     </div>
                     <div class="col-md-4">
                         <h6>Légal</h6>
                         <ul class="list-unstyled">
-                            <li><a href="#" class="text-light">Conditions d'utilisation</a></li>
-                            <li><a href="#" class="text-light">Politique de confidentialité</a></li>
-                            <li><a href="#" class="text-light">Mentions légales</a></li>
+                            <li><a href="{{ path('app_legal_terms') }}" class="text-light">Conditions d'utilisation</a></li>
+                            <li><a href="{{ path('app_legal_privacy') }}" class="text-light">Politique de confidentialité</a></li>
+                            <li><a href="{{ path('app_legal_mentions') }}" class="text-light">Mentions légales</a></li>
                         </ul>
                     </div>
                 </div>

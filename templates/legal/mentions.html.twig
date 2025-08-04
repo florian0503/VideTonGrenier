@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mentions légales - VideTonGrenier{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h1 class="mb-4">Mentions légales</h1>
+            <p class="lead text-muted">Informations légales obligatoires</p>
+
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="h4 text-primary">1. Éditeur du site</h2>
+                    <p><strong>VideTonGrenier</strong><br>
+                    Société par actions simplifiée (SAS)<br>
+                    Capital social : 10 000 €<br>
+                    RCS Paris : 123 456 789<br>
+                    SIRET : 123 456 789 00012<br>
+                    Code APE : 6312Z</p>
+
+                    <p><strong>Siège social :</strong><br>
+                    123 Avenue des Petites Annonces<br>
+                    75001 Paris, France</p>
+
+                    <p><strong>Directeur de la publication :</strong> Jean Dupont<br>
+                    <strong>Email :</strong> contact@videtongrenier.fr<br>
+                    <strong>Téléphone :</strong> 01 23 45 67 89</p>
+
+                    <h2 class="h4 text-primary mt-4">2. Hébergement</h2>
+                    <p><strong>Hébergeur :</strong> OVH SAS<br>
+                    2 rue Kellermann<br>
+                    59100 Roubaix, France<br>
+                    Téléphone : 1007</p>
+
+                    <h2 class="h4 text-primary mt-4">3. Propriété intellectuelle</h2>
+                    <p>L'ensemble de ce site relève de la législation française et internationale sur le droit d'auteur et la propriété intellectuelle. Tous les droits de reproduction sont réservés, y compris pour les documents téléchargeables et les représentations iconographiques et photographiques.</p>
+
+                    <h2 class="h4 text-primary mt-4">4. Données personnelles</h2>
+                    <p>Les données personnelles collectées sur ce site font l'objet d'un traitement informatique destiné à gérer les annonces et les comptes utilisateurs.</p>
+
+                    <p><strong>Responsable du traitement :</strong> VideTonGrenier SAS<br>
+                    <strong>Délégué à la protection des données :</strong> dpo@videtongrenier.fr</p>
+
+                    <p>Conformément à la loi "Informatique et Libertés" du 6 janvier 1978 modifiée et au Règlement Général sur la Protection des Données (RGPD), vous disposez d'un droit d'accès, de rectification, d'effacement et de portabilité de vos données personnelles.</p>
+
+                    <h2 class="h4 text-primary mt-4">5. Cookies</h2>
+                    <p>Ce site utilise des cookies pour améliorer votre expérience de navigation. En continuant à utiliser ce site, vous acceptez l'utilisation des cookies conformément à notre politique de confidentialité.</p>
+
+                    <h2 class="h4 text-primary mt-4">6. Responsabilité</h2>
+                    <p>VideTonGrenier ne peut être tenu responsable des dommages directs et indirects causés au matériel de l'utilisateur lors de l'accès au site, et résultant soit de l'utilisation d'un matériel ne répondant pas aux spécifications, soit de l'apparition d'un bug ou d'une incompatibilité.</p>
+
+                    <h2 class="h4 text-primary mt-4">7. Droit applicable</h2>
+                    <p>Tout litige en relation avec l'utilisation du site www.videtongrenier.fr est soumis au droit français. Il est fait attribution exclusive de juridiction aux tribunaux compétents de Paris.</p>
+
+                    <h2 class="h4 text-primary mt-4">8. Contact</h2>
+                    <p>Pour toute question concernant ces mentions légales, vous pouvez nous contacter :</p>
+                    <ul>
+                        <li>Par email : legal@videtongrenier.fr</li>
+                        <li>Par téléphone : 01 23 45 67 89</li>
+                        <li>Par courrier : VideTonGrenier, 123 Avenue des Petites Annonces, 75001 Paris</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <a href="{{ path('app_home') }}" class="btn btn-primary">Retour à l'accueil</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

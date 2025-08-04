@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Conditions d'utilisation - VideTonGrenier{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h1 class="mb-4">Conditions d'utilisation</h1>
+            <p class="lead text-muted">Dernière mise à jour : 4 août 2025</p>
+
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="h4 text-primary">1. Acceptation des conditions</h2>
+                    <p>En utilisant VideTonGrenier, vous acceptez d'être lié par ces conditions d'utilisation. Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser notre service.</p>
+
+                    <h2 class="h4 text-primary mt-4">2. Description du service</h2>
+                    <p>VideTonGrenier est une plateforme de petites annonces permettant aux utilisateurs de publier, consulter et répondre à des annonces de vente d'objets d'occasion. Nous facilitons les échanges entre particuliers mais ne sommes pas partie prenante des transactions.</p>
+
+                    <h2 class="h4 text-primary mt-4">3. Inscription et compte utilisateur</h2>
+                    <ul>
+                        <li>Vous devez être âgé d'au moins 16 ans pour utiliser nos services</li>
+                        <li>Les informations fournies lors de l'inscription doivent être exactes et complètes</li>
+                        <li>Vous êtes responsable de la confidentialité de votre mot de passe</li>
+                        <li>Un seul compte par utilisateur est autorisé</li>
+                    </ul>
+
+                    <h2 class="h4 text-primary mt-4">4. Publication d'annonces</h2>
+                    <ul>
+                        <li>Les annonces doivent concerner des objets légaux et licites</li>
+                        <li>Les photos doivent être authentiques et représenter fidèlement l'objet</li>
+                        <li>Les prix doivent être indiqués en euros</li>
+                        <li>Une annonce ne peut être publiée que dans une seule catégorie</li>
+                        <li>Nous nous réservons le droit de supprimer toute annonce non conforme</li>
+                    </ul>
+
+                    <h2 class="h4 text-primary mt-4">5. Contenu interdit</h2>
+                    <p>Il est strictement interdit de publier des annonces concernant :</p>
+                    <ul>
+                        <li>Des objets volés, contrefaits ou illégaux</li>
+                        <li>Des armes, drogues ou substances dangereuses</li>
+                        <li>Du contenu à caractère pornographique ou violent</li>
+                        <li>Des services à caractère sexuel</li>
+                        <li>Des médicaments ou produits de santé non autorisés</li>
+                    </ul>
+
+                    <h2 class="h4 text-primary mt-4">6. Responsabilités</h2>
+                    <p>VideTonGrenier est un intermédiaire technique. Nous ne sommes pas responsables :</p>
+                    <ul>
+                        <li>De la qualité, sécurité ou légalité des objets proposés</li>
+                        <li>De l'exactitude des annonces publiées</li>
+                        <li>Des transactions entre utilisateurs</li>
+                        <li>Des litiges pouvant survenir entre acheteurs et vendeurs</li>
+                    </ul>
+
+                    <h2 class="h4 text-primary mt-4">7. Propriété intellectuelle</h2>
+                    <p>Le contenu du site VideTonGrenier (textes, graphiques, logos) est protégé par le droit d'auteur. Toute reproduction sans autorisation est interdite.</p>
+
+                    <h2 class="h4 text-primary mt-4">8. Modification des conditions</h2>
+                    <p>Nous nous réservons le droit de modifier ces conditions à tout moment. Les utilisateurs seront informés des changements importants.</p>
+
+                    <h2 class="h4 text-primary mt-4">9. Résiliation</h2>
+                    <p>Nous pouvons suspendre ou supprimer votre compte en cas de violation de ces conditions d'utilisation.</p>
+
+                    <h2 class="h4 text-primary mt-4">10. Droit applicable</h2>
+                    <p>Ces conditions sont régies par le droit français. Tout litige relève de la compétence des tribunaux français.</p>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <a href="{{ path('app_home') }}" class="btn btn-primary">Retour à l'accueil</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

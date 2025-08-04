@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Politique de confidentialité - VideTonGrenier{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h1 class="mb-4">Politique de confidentialité</h1>
+            <p class="lead text-muted">Dernière mise à jour : 4 août 2025</p>
+
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="h4 text-primary">1. Collecte des données</h2>
+                    <p>Nous collectons les données suivantes :</p>
+                    <ul>
+                        <li><strong>Données d'inscription :</strong> nom, prénom, email, numéro de téléphone</li>
+                        <li><strong>Données d'annonces :</strong> titre, description, prix, photos, localisation</li>
+                        <li><strong>Données de navigation :</strong> adresse IP, cookies, pages visitées</li>
+                        <li><strong>Données de communication :</strong> messages échangés entre utilisateurs</li>
+                    </ul>
+
+                    <h2 class="h4 text-primary mt-4">2. Utilisation des données</h2>
+                    <p>Vos données sont utilisées pour :</p>
+                    <ul>
+                        <li>Gérer votre compte et vos annonces</li>
+                        <li>Faciliter les échanges entre utilisateurs</li>
+                        <li>Améliorer nos services</li>
+                        <li>Vous envoyer des notifications importantes</li>
+                        <li>Lutter contre la fraude et les abus</li>
+                    </ul>
+
+                    <h2 class="h4 text-primary mt-4">3. Partage des données</h2>
+                    <p>Nous ne vendons jamais vos données personnelles. Vos données peuvent être partagées :</p>
+                    <ul>
+                        <li>Avec d'autres utilisateurs (dans le cadre des annonces)</li>
+                        <li>Avec nos prestataires techniques (hébergement, maintenance)</li>
+                        <li>Avec les autorités si requis par la loi</li>
+                    </ul>
+
+                    <h2 class="h4 text-primary mt-4">4. Cookies</h2>
+                    <p>Nous utilisons des cookies pour :</p>
+                    <ul>
+                        <li>Maintenir votre session de connexion</li>
+                        <li>Mémoriser vos préférences</li>
+                        <li>Analyser l'utilisation du site</li>
+                        <li>Améliorer votre expérience utilisateur</li>
+                    </ul>
+                    <p>Vous pouvez désactiver les cookies dans votre navigateur, mais cela peut affecter le fonctionnement du site.</p>
+
+                    <h2 class="h4 text-primary mt-4">5. Sécurité des données</h2>
+                    <p>Nous mettons en œuvre des mesures de sécurité appropriées :</p>
+                    <ul>
+                        <li>Chiffrement des données sensibles</li>
+                        <li>Accès limité aux données personnelles</li>
+                        <li>Surveillance des accès non autorisés</li>
+                        <li>Sauvegardes régulières</li>
+                    </ul>
+
+                    <h2 class="h4 text-primary mt-4">6. Vos droits (RGPD)</h2>
+                    <p>Conformément au RGPD, vous disposez des droits suivants :</p>
+                    <ul>
+                        <li><strong>Droit d'accès :</strong> consulter vos données personnelles</li>
+                        <li><strong>Droit de rectification :</strong> corriger vos données</li>
+                        <li><strong>Droit d'effacement :</strong> supprimer vos données</li>
+                        <li><strong>Droit à la portabilité :</strong> récupérer vos données</li>
+                        <li><strong>Droit d'opposition :</strong> vous opposer au traitement</li>
+                    </ul>
+
+                    <h2 class="h4 text-primary mt-4">7. Conservation des données</h2>
+                    <ul>
+                        <li>Comptes actifs : tant que le compte existe</li>
+                        <li>Comptes supprimés : 30 jours après suppression</li>
+                        <li>Annonces : 1 an après expiration</li>
+                        <li>Messages : 2 ans après le dernier échange</li>
+                    </ul>
+
+                    <h2 class="h4 text-primary mt-4">8. Contact</h2>
+                    <p>Pour exercer vos droits ou pour toute question concernant vos données personnelles, contactez-nous à : <strong>privacy@videtongrenier.fr</strong></p>
+
+                    <h2 class="h4 text-primary mt-4">9. Modifications</h2>
+                    <p>Cette politique peut être modifiée. Nous vous informerons des changements importants par email ou notification sur le site.</p>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <a href="{{ path('app_home') }}" class="btn btn-primary">Retour à l'accueil</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

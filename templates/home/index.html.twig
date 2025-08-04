@@ -4,79 +4,202 @@
 
 {% block body %}
 <!-- Hero Section -->
-<section class="bg-primary text-white py-5">
+<section class="hero-section">
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-lg-6">
-                <h1 class="display-4 fw-bold mb-4">Videz votre grenier, trouvez des trésors</h1>
-                <p class="lead mb-4">
-                    Achetez et vendez facilement avec VideTonGrenier, votre plateforme de petites annonces de confiance.
-                </p>
-                <div class="d-flex gap-3">
-                    <a href="{{ path('app_annonce_index') }}" class="btn btn-light btn-lg">Parcourir les annonces</a>
+            <div class="col-lg-6 hero-content">
+                <h1 class="display-1 mb-4 fade-in">Vide Ton Grenier</h1>
+                <p class="lead mb-5 fade-in" style="animation-delay: 0.2s; color: rgba(255, 255, 255, 0.9);">La plateforme moderne pour acheter et vendre en toute simplicité. Trouvez des trésors cachés ou donnez une seconde vie à vos objets.</p>
+                <div class="fade-in" style="animation-delay: 0.4s;">
+                    <a href="{{ path('app_annonce_index') }}" class="btn btn-modern btn-lg me-3">
+                        <i class="fas fa-search me-2"></i>Parcourir les annonces
+                    </a>
                     {% if not app.user %}
-                        <a href="{{ path('app_register') }}" class="btn btn-outline-light btn-lg">Rejoindre</a>
+                        <a href="{{ path('app_register') }}" class="btn btn-outline-modern btn-lg">
+                            <i class="fas fa-user-plus me-2"></i>Rejoindre
+                        </a>
                     {% endif %}
                 </div>
             </div>
-            <div class="col-lg-6">
-                <img src="https://via.placeholder.com/500x400/007bff/ffffff?text=VideTonGrenier" 
-                     class="img-fluid rounded shadow" alt="VideTonGrenier">
+            <div class="col-lg-6 text-center">
+                <div class="floating-element">
+                    <div class="stats-card">
+                        <span class="stats-number">{{ totalAnnonces }}</span>
+                        <span class="stats-label">Annonces actives</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
+<style>
+.hero-section {
+    background: var(--primary-gradient);
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="a" cx="50%" cy="50%"><stop offset="0%" style="stop-color:rgba(255,255,255,0.1)"/><stop offset="100%" style="stop-color:rgba(255,255,255,0)"/></radialGradient></defs><circle cx="50%" cy="50%" r="50%" fill="url(%23a)"/></svg>') center/cover;
+    opacity: 0.1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.display-1 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 800;
+    background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.stats-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--border-radius-xl);
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.stats-card:hover {
+    transform: translateY(-5px);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
+}
+
+.stats-number {
+    font-family: 'Poppins', sans-serif;
+    font-size: 3rem;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.stats-label {
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.875rem;
+}
+
+.floating-element {
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(5deg); }
+}
+</style>
+
 <!-- Search Section -->
-<section class="py-4 bg-light">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
+<div class="container">
+    <div class="search-section fade-in">
+        <div class="row g-3 align-items-end">
+            <div class="col-md-4">
+                <label class="form-label fw-semibold">Que cherchez-vous ?</label>
                 <form action="{{ path('app_annonce_index') }}" method="get" class="d-flex gap-2">
-                    <input type="search" name="q" class="form-control form-control-lg" 
-                           placeholder="Que cherchez-vous ?">
-                    <select name="categorie" class="form-select form-select-lg" style="max-width: 200px;">
-                        <option value="">Toutes catégories</option>
-                        {% for category in categories %}
-                            <option value="{{ category[0].id }}">{{ category[0].nom }}</option>
-                        {% endfor %}
-                    </select>
-                    <button class="btn btn-primary btn-lg px-4" type="submit">
-                        Rechercher
-                    </button>
+                    <input type="search" name="q" class="form-control form-control-modern" placeholder="Rechercher un article...">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">Catégorie</label>
+                <select name="categorie" class="form-select form-control-modern">
+                    <option value="">Toutes les catégories</option>
+                    {% for category in categories %}
+                        <option value="{{ category[0].id }}">{{ category[0].nom }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">Localisation</label>
+                <input type="text" name="ville" class="form-control form-control-modern" placeholder="Ville, département...">
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-modern w-100" type="submit">
+                    <i class="fas fa-search me-1"></i>Rechercher
+                </button>
                 </form>
             </div>
         </div>
     </div>
-</section>
+</div>
+
+<style>
+.search-section {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: var(--border-radius-xl);
+    padding: 2rem;
+    box-shadow: var(--shadow-lg);
+    margin-top: -50px;
+    position: relative;
+    z-index: 10;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.form-control-modern {
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    padding: 0.75rem 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.form-control-modern:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    background: white;
+}
+</style>
 
 <!-- Categories Section -->
-<section class="py-5">
+<section class="py-5 mt-5">
     <div class="container">
-        <h2 class="text-center mb-5">Parcourir par catégorie</h2>
+        <h2 class="section-title gradient-text fade-in">Parcourir par catégorie</h2>
+        
         <div class="row g-4">
             {% set categoryIcons = {
-                'Électronique': '📱',
-                'Mobilier': '🪑', 
-                'Mode': '👕',
-                'Sports & Loisirs': '⚽',
-                'Maison & Jardin': '🏠',
-                'Véhicules': '🚗',
-                'Emploi & Services': '💼',
-                'Immobilier': '🏢'
+                'Électronique': 'fas fa-mobile-alt',
+                'Mobilier': 'fas fa-chair', 
+                'Mode': 'fas fa-tshirt',
+                'Sports & Loisirs': 'fas fa-futbol',
+                'Maison & Jardin': 'fas fa-home',
+                'Véhicules': 'fas fa-car',
+                'Emploi & Services': 'fas fa-briefcase',
+                'Immobilier': 'fas fa-building'
             } %}
-            {% set categoryColors = ['primary', 'success', 'warning', 'info', 'danger', 'secondary', 'dark', 'purple'] %}
             
             {% for category in categories %}
-                <div class="col-6 col-md-4 col-lg-3">
+                <div class="col-6 col-md-4 col-lg-3 fade-in" style="animation-delay: {{ loop.index * 0.1 }}s;">
                     <a href="{{ path('app_annonce_index', {categorie: category[0].id}) }}" class="text-decoration-none">
-                        <div class="text-center">
-                            <div class="bg-{{ categoryColors[loop.index0 % categoryColors|length] }} text-white rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" 
-                                 style="width: 80px; height: 80px; font-size: 2rem;">
-                                {{ categoryIcons[category[0].nom] ?? '📦' }}
+                        <div class="card-modern category-card h-100">
+                            <div class="card-body-modern text-center">
+                                <div class="feature-icon mx-auto">
+                                    <i class="{{ categoryIcons[category[0].nom] ?? 'fas fa-box' }}"></i>
+                                </div>
+                                <h6 class="fw-bold mb-2">{{ category[0].nom }}</h6>
+                                <small class="text-muted">{{ category.annonceCount }} annonce{{ category.annonceCount > 1 ? 's' : '' }}</small>
                             </div>
-                            <h6 class="text-dark">{{ category[0].nom }}</h6>
-                            <small class="text-muted">{{ category.annonceCount }} annonce{{ category.annonceCount > 1 ? 's' : '' }}</small>
                         </div>
                     </a>
                 </div>
@@ -85,42 +208,116 @@
     </div>
 </section>
 
+<style>
+.section-title {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 4px;
+    background: var(--primary-gradient);
+    border-radius: 2px;
+}
+
+.gradient-text {
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.category-card {
+    transition: all 0.3s ease;
+}
+
+.category-card:hover {
+    transform: translateY(-8px) scale(1.02);
+}
+
+.card-body-modern {
+    padding: 2rem;
+}
+
+.feature-icon {
+    width: 60px;
+    height: 60px;
+    background: var(--primary-gradient);
+    border-radius: var(--border-radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+.card-modern:hover .feature-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+</style>
+
 <!-- Recent Ads Section -->
 <section class="py-5 bg-light">
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-5">
-            <h2>Annonces récentes</h2>
-            <a href="{{ path('app_annonce_index') }}" class="btn btn-outline-primary">Voir toutes les annonces ({{ totalAnnonces }})</a>
+            <h2 class="section-title gradient-text fade-in">Annonces récentes</h2>
+            <a href="{{ path('app_annonce_index') }}" class="btn btn-outline-modern fade-in">
+                <i class="fas fa-plus me-2"></i>Voir toutes les annonces ({{ totalAnnonces }})
+            </a>
         </div>
         
         {% if recentAnnonces is not empty %}
             <div class="row g-4">
                 {% for annonce in recentAnnonces %}
-                <div class="col-md-6 col-lg-4">
-                    <div class="card h-100 shadow-sm">
-                        {% if annonce.firstImage %}
-                            <img src="{{ annonce.firstImage }}" class="card-img-top" alt="{{ annonce.titre }}" style="height: 200px; object-fit: cover;">
-                        {% else %}
-                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
-                                <i class="fas fa-image fa-3x text-muted"></i>
-                            </div>
-                        {% endif %}
-                        <div class="card-body">
-                            <h5 class="card-title">{{ annonce.titre|length > 50 ? annonce.titre[:50] ~ '...' : annonce.titre }}</h5>
-                            <p class="card-text text-muted">{{ annonce.description|length > 80 ? annonce.description[:80] ~ '...' : annonce.description }}</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                {% if annonce.prix %}
-                                    <span class="h5 text-primary mb-0">{{ annonce.prix }}€</span>
-                                {% else %}
-                                    <span class="text-muted">Prix à négocier</span>
-                                {% endif %}
-                                <small class="text-muted">📍 {{ annonce.ville ?: 'Non spécifiée' }}</small>
-                            </div>
+                <div class="col-md-6 col-lg-4 fade-in" style="animation-delay: {{ loop.index * 0.1 }}s;">
+                    <div class="annonce-card">
+                        <div class="annonce-image">
+                            {% if annonce.firstImage %}
+                                <img src="{{ annonce.firstImage }}" alt="{{ annonce.titre }}">
+                            {% else %}
+                                <div class="d-flex align-items-center justify-content-center h-100">
+                                    <i class="fas fa-image fa-3x text-muted"></i>
+                                </div>
+                            {% endif %}
+                            
+                            {% if annonce.prix %}
+                                <div class="price-badge">{{ annonce.prix }}€</div>
+                            {% endif %}
+                            
+                            <div class="category-badge">{{ annonce.categorie.nom }}</div>
                         </div>
-                        <div class="card-footer bg-transparent">
+                        
+                        <div class="card-body-modern">
+                            <h5 class="fw-bold mb-2">{{ annonce.titre|length > 50 ? annonce.titre[:50] ~ '...' : annonce.titre }}</h5>
+                            <p class="text-muted small mb-3">{{ annonce.description|length > 80 ? annonce.description[:80] ~ '...' : annonce.description }}</p>
+                            
                             <div class="d-flex justify-content-between align-items-center">
-                                <small class="text-muted">{{ annonce.publishedAt ? annonce.publishedAt|date('d/m/Y') : 'N/A' }}</small>
-                                <a href="{{ path('app_annonce_show', {id: annonce.id}) }}" class="btn btn-sm btn-outline-primary">Voir détails</a>
+                                <div>
+                                    <small class="text-muted">
+                                        <i class="fas fa-map-marker-alt me-1"></i>{{ annonce.ville ?: 'Non spécifiée' }}
+                                    </small>
+                                </div>
+                                <div>
+                                    <small class="text-muted">{{ annonce.publishedAt ? annonce.publishedAt|date('d/m/Y') : 'N/A' }}</small>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-3">
+                                <a href="{{ path('app_annonce_show', {id: annonce.id}) }}" class="btn btn-modern w-100">
+                                    <i class="fas fa-eye me-1"></i>Voir l'annonce
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -128,32 +325,114 @@
                 {% endfor %}
             </div>
         {% else %}
-            <div class="text-center py-5">
-                <div class="mb-4">
-                    <i class="fas fa-search fa-3x text-muted"></i>
+            <div class="text-center py-5 fade-in">
+                <div class="card-modern mx-auto" style="max-width: 500px;">
+                    <div class="card-body-modern py-5">
+                        <i class="fas fa-box-open fa-4x text-muted mb-3"></i>
+                        <h4>Aucune annonce disponible</h4>
+                        <p class="text-muted mb-4">Soyez le premier à déposer une annonce !</p>
+                        {% if app.user %}
+                            <a href="{{ path('annonce_wizard_start') }}" class="btn btn-modern">
+                                <i class="fas fa-plus me-2"></i>Déposer une annonce
+                            </a>
+                        {% else %}
+                            <a href="{{ path('app_register') }}" class="btn btn-modern">
+                                <i class="fas fa-user-plus me-2"></i>Créer un compte
+                            </a>
+                        {% endif %}
+                    </div>
                 </div>
-                <h4>Aucune annonce disponible</h4>
-                <p class="text-muted">Soyez le premier à déposer une annonce !</p>
-                {% if app.user %}
-                    <a href="{{ path('app_annonce_new') }}" class="btn btn-primary">Déposer une annonce</a>
-                {% else %}
-                    <a href="{{ path('app_register') }}" class="btn btn-primary">Créer un compte</a>
-                {% endif %}
             </div>
         {% endif %}
+        
+        <div class="text-center mt-5 fade-in">
+            <a href="{{ path('app_annonce_index') }}" class="btn btn-outline-modern btn-lg">
+                <i class="fas fa-search me-2"></i>Voir toutes les annonces
+            </a>
+        </div>
     </div>
 </section>
 
+<style>
+.annonce-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: var(--border-radius-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s ease;
+    border: 1px solid var(--border-color);
+    position: relative;
+}
+
+.annonce-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-xl);
+}
+
+.annonce-image {
+    height: 200px;
+    background: linear-gradient(135deg, #f0f2f5 0%, #e1e5e9 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.annonce-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.annonce-card:hover .annonce-image img {
+    transform: scale(1.05);
+}
+
+.price-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: var(--success-gradient);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius-lg);
+    font-weight: 600;
+    font-size: 1.1rem;
+    box-shadow: var(--shadow-md);
+}
+
+.category-badge {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--border-radius-sm);
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+</style>
+
 <!-- CTA Section -->
-<section class="py-5 bg-primary text-white">
+<section class="py-5" style="background: var(--primary-gradient);">
     <div class="container text-center">
-        <h2 class="mb-4">Prêt à vendre ?</h2>
-        <p class="lead mb-4">Déposez votre annonce gratuitement et vendez rapidement</p>
-        {% if app.user %}
-            <a href="{{ path('annonce_wizard_start') }}" class="btn btn-light btn-lg">Déposer une annonce</a>
-        {% else %}
-            <a href="{{ path('app_register') }}" class="btn btn-light btn-lg">Créer un compte</a>
-        {% endif %}
+        <div class="row justify-content-center">
+            <div class="col-lg-8 fade-in">
+                <h2 class="mb-4 text-white" style="font-family: 'Poppins', sans-serif; font-weight: 700;">Prêt à vendre ?</h2>
+                <p class="lead mb-5" style="color: rgba(255, 255, 255, 0.9);">Déposez votre annonce gratuitement et vendez rapidement sur notre plateforme moderne</p>
+                {% if app.user %}
+                    <a href="{{ path('annonce_wizard_start') }}" class="btn btn-light btn-lg px-5 py-3" style="border-radius: var(--border-radius-lg); font-weight: 600; box-shadow: var(--shadow-lg);">
+                        <i class="fas fa-plus me-2"></i>Déposer une annonce
+                    </a>
+                {% else %}
+                    <a href="{{ path('app_register') }}" class="btn btn-light btn-lg px-5 py-3" style="border-radius: var(--border-radius-lg); font-weight: 600; box-shadow: var(--shadow-lg);">
+                        <i class="fas fa-user-plus me-2"></i>Créer un compte
+                    </a>
+                {% endif %}
+            </div>
+        </div>
     </div>
 </section>
 {% endblock %}

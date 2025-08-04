@@ -4,26 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="89cd9f66-c0c8-49a9-b7a1-0bbd445b1a46" name="Changes" comment="update image paths and modify navigation links for annonce creation and messaging">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations/Version20250804125534.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations/Version20250804125926.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Entity/Report.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Form/ReportType.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Repository/ReportRepository.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/message/report.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/copilotDiffState.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+    <list default="true" id="89cd9f66-c0c8-49a9-b7a1-0bbd445b1a46" name="Changes" comment="add reporting functionality for conversations and annonces; create admin controllers and views for managing reports">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/Admin/DashboardController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/Admin/DashboardController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/AnnonceWizardController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/AnnonceWizardController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/MessageController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/MessageController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/Annonce.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Annonce.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Repository/MessageRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/MessageRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/annonce/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/annonce/show.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/annonce/wizard/step4.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/annonce/wizard/step4.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/message/conversation.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/message/conversation.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/home/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/home/index.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -228,7 +212,7 @@
       <option name="presentableId" value="Default" />
       <updated>1754292981396</updated>
       <workItem from="1754292983087" duration="8553000" />
-      <workItem from="1754311101990" duration="2466000" />
+      <workItem from="1754311101990" duration="3762000" />
     </task>
     <task id="LOCAL-00001" summary="initialize project structure and add configuration files">
       <option name="closed" value="true" />
@@ -262,7 +246,23 @@
       <option name="project" value="LOCAL" />
       <updated>1754309469014</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="add reporting functionality for conversations and annonces; update user model and create report entity">
+      <option name="closed" value="true" />
+      <created>1754313805290</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1754313805290</updated>
+    </task>
+    <task id="LOCAL-00006" summary="add reporting functionality for conversations and annonces; create admin controllers and views for managing reports">
+      <option name="closed" value="true" />
+      <created>1754313830417</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1754313830417</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -273,6 +273,8 @@
     <MESSAGE value="add legal pages: terms, privacy, mentions, about, and faq; update navigation links" />
     <MESSAGE value="update dashboard navigation and improve category section layout" />
     <MESSAGE value="update image paths and modify navigation links for annonce creation and messaging" />
-    <option name="LAST_COMMIT_MESSAGE" value="update image paths and modify navigation links for annonce creation and messaging" />
+    <MESSAGE value="add reporting functionality for conversations and annonces; update user model and create report entity" />
+    <MESSAGE value="add reporting functionality for conversations and annonces; create admin controllers and views for managing reports" />
+    <option name="LAST_COMMIT_MESSAGE" value="add reporting functionality for conversations and annonces; create admin controllers and views for managing reports" />
   </component>
 </project>

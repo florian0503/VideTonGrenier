@@ -442,6 +442,54 @@
                 padding: 0.5rem 1rem;
             }
         }
+
+        /* Search Bar */
+        .search-bar-fixed {
+            position: fixed;
+            top: 70px; /* Just below the navbar */
+            left: 0;
+            right: 0;
+            z-index: 1030;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0.5rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-bar-fixed .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .search-bar-fixed .form-control {
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            padding: 0.75rem 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .search-bar-fixed .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(105, 117, 221, 0.1);
+            background: white;
+        }
+
+        .search-bar-fixed .btn {
+            background: var(--primary-gradient);
+            border: none;
+            color: white;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius-lg);
+            transition: all 0.3s ease;
+        }
+
+        .search-bar-fixed .btn:hover {
+            background: var(--primary-color);
+        }
     </style>
     
     {% block stylesheets %}
@@ -518,6 +566,15 @@
             </div>
         </div>
     </nav>
+
+    <!-- Barre de recherche avancée (affichée sur toutes les pages sauf accueil) -->
+    {% if app.request.attributes.get('_route') != 'app_home' %}
+        <div class="search-bar-fixed">
+            <div class="container">
+                {% include 'components/search-bar.html.twig' %}
+            </div>
+        </div>
+    {% endif %}
 
     <main style="margin-top: 80px;">
         {% for message in app.flashes('success') %}

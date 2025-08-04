@@ -16,7 +16,7 @@
                     <form method="get" action="{{ path('app_annonce_index') }}" id="filter-form">
                         <div class="mb-3">
                             <label for="search" class="form-label">Recherche</label>
-                            <input type="text" class="form-control" id="search" name="q" value="{{ search ?? '' }}" placeholder="Mot-clé...">
+                            <input type="text" class="form-control" id="search" name="q" value="{{ filters.q ?? '' }}" placeholder="Mot-clé...">
                         </div>
                         
                         <div class="mb-3">
@@ -24,7 +24,7 @@
                             <select class="form-select" id="categorie" name="categorie">
                                 <option value="">Toutes les catégories</option>
                                 {% for categorie in categories %}
-                                    <option value="{{ categorie.id }}" {% if current_category == categorie.id %}selected{% endif %}>
+                                    <option value="{{ categorie.id }}" {% if filters.categorie == categorie.id ~ '' %}selected{% endif %}>
                                         {{ categorie.nom }}
                                     </option>
                                 {% endfor %}
@@ -32,7 +32,7 @@
                         </div>
                         
                         <button type="submit" class="btn btn-primary w-100">Filtrer</button>
-                        {% if search or current_category %}
+                        {% if filters.q or filters.categorie %}
                             <a href="{{ path('app_annonce_index') }}" class="btn btn-outline-secondary w-100 mt-2">Effacer les filtres</a>
                         {% endif %}
                     </form>
@@ -62,7 +62,7 @@
                     </div>
                     <h4>Aucune annonce trouvée</h4>
                     <p class="text-muted">
-                        {% if search or current_category %}
+                        {% if filters.q or filters.categorie %}
                             Essayez de modifier vos critères de recherche.
                         {% else %}
                             Il n'y a pas encore d'annonces publiées.

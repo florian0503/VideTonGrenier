@@ -23,22 +23,73 @@ final class AnnonceController extends AbstractController
     public function index(AnnonceRepository $annonceRepository, CategorieRepository $categorieRepository, Request $request): Response
     {
         $categories = $categorieRepository->findBy(['isActive' => true]);
-        $categoryFilter = $request->query->get('categorie');
-        $search = $request->query->get('q');
+
+        // Récupération de tous les paramètres de recherche
+        $filters = [
+            'q' => $request->query->get('q'),
+            'categorie' => $request->query->get('categorie'),
+            'prix_min' => $request->query->get('prix_min'),
+            'prix_max' => $request->query->get('prix_max'),
+            'localisation' => $request->query->get('localisation'),
+            'type' => $request->query->get('type'),
+            'sort' => $request->query->get('sort', 'date_desc')
+        ];
 
         $queryBuilder = $annonceRepository->createQueryBuilder('a')
             ->where('a.status = :status')
-            ->setParameter('status', Annonce::STATUS_PUBLISHED)
-            ->orderBy('a.publishedAt', 'DESC');
+            ->setParameter('status', Annonce::STATUS_PUBLISHED);
 
-        if ($categoryFilter) {
+        // Filtre par catégorie
+        if ($filters['categorie']) {
             $queryBuilder->andWhere('a.categorie = :categorie')
-                ->setParameter('categorie', $categoryFilter);
+                ->setParameter('categorie', $filters['categorie']);
         }
 
-        if ($search) {
+        // Filtre par mot-clé
+        if ($filters['q']) {
             $queryBuilder->andWhere('a.titre LIKE :search OR a.description LIKE :search')
-                ->setParameter('search', '%' . $search . '%');
+                ->setParameter('search', '%' . $filters['q'] . '%');
+        }
+
+        // Filtre par prix minimum
+        if ($filters['prix_min']) {
+            $queryBuilder->andWhere('a.prix >= :prixMin')
+                ->setParameter('prixMin', $filters['prix_min']);
+        }
+
+        // Filtre par prix maximum
+        if ($filters['prix_max']) {
+            $queryBuilder->andWhere('a.prix <= :prixMax')
+                ->setParameter('prixMax', $filters['prix_max']);
+        }
+
+        // Filtre par localisation
+        if ($filters['localisation']) {
+            $queryBuilder->andWhere('a.ville LIKE :localisation OR a.localisation LIKE :localisation OR a.codePostal LIKE :localisation')
+                ->setParameter('localisation', '%' . $filters['localisation'] . '%');
+        }
+
+        // Filtre par type
+        if ($filters['type']) {
+            $queryBuilder->andWhere('a.type = :type')
+                ->setParameter('type', $filters['type']);
+        }
+
+        // Tri
+        switch ($filters['sort']) {
+            case 'date_asc':
+                $queryBuilder->orderBy('a.publishedAt', 'ASC');
+                break;
+            case 'prix_asc':
+                $queryBuilder->orderBy('a.prix', 'ASC');
+                break;
+            case 'prix_desc':
+                $queryBuilder->orderBy('a.prix', 'DESC');
+                break;
+            case 'date_desc':
+            default:
+                $queryBuilder->orderBy('a.publishedAt', 'DESC');
+                break;
         }
 
         // Compter le total d'annonces
@@ -55,8 +106,7 @@ final class AnnonceController extends AbstractController
         return $this->render('annonce/index.html.twig', [
             'annonces' => $annonces,
             'categories' => $categories,
-            'current_category' => $categoryFilter,
-            'search' => $search,
+            'filters' => $filters,
             'has_more' => $hasMore,
             'total_annonces' => $totalAnnonces,
         ]);

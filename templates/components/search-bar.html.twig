@@ -1,0 +1,329 @@
+<!-- Barre de recherche avancée style Le Bon Coin -->
+<div class="search-bar-container">
+    <form action="{{ path('app_annonce_index') }}" method="GET" class="search-form">
+        <div class="search-wrapper">
+            <!-- Recherche par mot-clé -->
+            <div class="search-field search-keyword">
+                <i class="fas fa-search search-icon"></i>
+                <input
+                    type="text"
+                    name="q"
+                    class="form-control search-input"
+                    placeholder="Que recherchez-vous ?"
+                    value="{{ app.request.query.get('q') }}"
+                >
+            </div>
+
+            <!-- Séparateur -->
+            <div class="search-separator"></div>
+
+            <!-- Catégorie -->
+            <div class="search-field search-category">
+                <i class="fas fa-tag search-icon"></i>
+                <select name="categorie" class="form-select search-select">
+                    <option value="">Toutes catégories</option>
+                    {% for categorie in categories %}
+                        <option value="{{ categorie.id }}"
+                                {% if app.request.query.get('categorie') == categorie.id ~ '' %}selected{% endif %}>
+                            {{ categorie.nom }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Séparateur -->
+            <div class="search-separator"></div>
+
+            <!-- Prix -->
+            <div class="search-field search-price">
+                <i class="fas fa-euro-sign search-icon"></i>
+                <div class="price-inputs">
+                    <input
+                        type="number"
+                        name="prix_min"
+                        class="form-control price-input"
+                        placeholder="Prix min"
+                        value="{{ app.request.query.get('prix_min') }}"
+                        min="0"
+                    >
+                    <span class="price-separator">-</span>
+                    <input
+                        type="number"
+                        name="prix_max"
+                        class="form-control price-input"
+                        placeholder="Prix max"
+                        value="{{ app.request.query.get('prix_max') }}"
+                        min="0"
+                    >
+                </div>
+            </div>
+
+            <!-- Séparateur -->
+            <div class="search-separator"></div>
+
+            <!-- Localisation -->
+            <div class="search-field search-location">
+                <i class="fas fa-map-marker-alt search-icon"></i>
+                <input
+                    type="text"
+                    name="localisation"
+                    class="form-control search-input"
+                    placeholder="Où ?"
+                    value="{{ app.request.query.get('localisation') }}"
+                >
+            </div>
+
+            <!-- Bouton de recherche -->
+            <button type="submit" class="btn btn-search">
+                <i class="fas fa-search me-2"></i>
+                Rechercher
+            </button>
+
+            <!-- Bouton filtres avancés (mobile) -->
+            <button type="button" class="btn btn-filters d-lg-none" data-bs-toggle="collapse" data-bs-target="#advancedFilters">
+                <i class="fas fa-filter"></i>
+            </button>
+        </div>
+
+        <!-- Filtres avancés collapsibles (mobile) -->
+        <div class="collapse d-lg-none" id="advancedFilters">
+            <div class="advanced-filters">
+                <div class="row g-2">
+                    <div class="col-6">
+                        <select name="type" class="form-select">
+                            <option value="">Tous types</option>
+                            <option value="vente" {% if app.request.query.get('type') == 'vente' %}selected{% endif %}>Vente</option>
+                            <option value="achat" {% if app.request.query.get('type') == 'achat' %}selected{% endif %}>Recherche</option>
+                            <option value="service" {% if app.request.query.get('type') == 'service' %}selected{% endif %}>Service</option>
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <select name="sort" class="form-select">
+                            <option value="">Trier par</option>
+                            <option value="date_desc" {% if app.request.query.get('sort') == 'date_desc' %}selected{% endif %}>Plus récentes</option>
+                            <option value="date_asc" {% if app.request.query.get('sort') == 'date_asc' %}selected{% endif %}>Plus anciennes</option>
+                            <option value="prix_asc" {% if app.request.query.get('sort') == 'prix_asc' %}selected{% endif %}>Prix croissant</option>
+                            <option value="prix_desc" {% if app.request.query.get('sort') == 'prix_desc' %}selected{% endif %}>Prix décroissant</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<style>
+.search-bar-container {
+    background: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border-radius: var(--border-radius-xl);
+    margin: 1rem 0;
+    overflow: hidden;
+}
+
+.search-wrapper {
+    display: flex;
+    align-items: center;
+    min-height: 60px;
+    padding: 0.5rem;
+}
+
+.search-field {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex: 1;
+    min-height: 50px;
+    padding: 0 1rem;
+}
+
+.search-field:hover {
+    background: rgba(105, 117, 221, 0.05);
+}
+
+.search-icon {
+    color: var(--primary-color);
+    margin-right: 0.75rem;
+    font-size: 1rem;
+    width: 16px;
+    text-align: center;
+}
+
+.search-input, .search-select {
+    border: none;
+    background: transparent;
+    font-size: 0.95rem;
+    padding: 0;
+    box-shadow: none !important;
+    color: var(--text-primary);
+}
+
+.search-input:focus, .search-select:focus {
+    outline: none;
+    border: none;
+    box-shadow: none !important;
+}
+
+.search-input::placeholder {
+    color: #9ca3af;
+    font-weight: 500;
+}
+
+.search-separator {
+    width: 1px;
+    height: 30px;
+    background: #e5e7eb;
+    margin: 0 0.5rem;
+}
+
+.search-keyword {
+    flex: 2;
+    min-width: 200px;
+}
+
+.search-category, .search-location {
+    flex: 1.5;
+    min-width: 150px;
+}
+
+.search-price {
+    flex: 1.5;
+    min-width: 180px;
+}
+
+.price-inputs {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 0.5rem;
+}
+
+.price-input {
+    border: none;
+    background: transparent;
+    padding: 0;
+    text-align: center;
+    font-size: 0.9rem;
+    width: 70px;
+}
+
+.price-separator {
+    color: #9ca3af;
+    font-weight: 500;
+}
+
+.btn-search {
+    background: var(--primary-gradient);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--border-radius-lg);
+    font-weight: 600;
+    margin-left: 1rem;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.btn-search:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    color: white;
+}
+
+.btn-filters {
+    background: var(--bg-light);
+    border: 2px solid var(--border-color);
+    color: var(--primary-color);
+    padding: 0.75rem;
+    border-radius: var(--border-radius-lg);
+    margin-left: 0.5rem;
+}
+
+.advanced-filters {
+    padding: 1rem;
+    background: var(--bg-light);
+    border-top: 1px solid var(--border-color);
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .search-wrapper {
+        flex-wrap: wrap;
+        min-height: auto;
+    }
+
+    .search-field {
+        min-width: 100%;
+        margin-bottom: 0.5rem;
+        background: var(--bg-light);
+        border-radius: var(--border-radius-md);
+        border: 1px solid var(--border-color);
+    }
+
+    .search-separator {
+        display: none;
+    }
+
+    .btn-search {
+        width: 100%;
+        margin: 0;
+    }
+
+    .price-inputs {
+        justify-content: space-between;
+    }
+
+    .price-input {
+        width: 80px;
+    }
+}
+
+@media (max-width: 768px) {
+    .search-bar-container {
+        margin: 0.5rem 0;
+        border-radius: var(--border-radius-lg);
+    }
+
+    .search-wrapper {
+        padding: 0.25rem;
+    }
+
+    .search-field {
+        padding: 0.75rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .search-icon {
+        margin-right: 0.5rem;
+    }
+}
+
+/* Focus states */
+.search-field:focus-within {
+    background: rgba(105, 117, 221, 0.08);
+    border-radius: var(--border-radius-md);
+}
+
+.search-field:focus-within .search-icon {
+    color: var(--primary-color);
+}
+
+/* Select styling */
+.search-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
+}
+
+/* Animation pour la recherche */
+.search-form {
+    transition: all 0.3s ease;
+}
+
+.search-form:hover {
+    box-shadow: 0 4px 20px rgba(105, 117, 221, 0.15);
+}
+</style>

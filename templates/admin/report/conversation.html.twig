@@ -1,0 +1,209 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Conversation signalée - Administration{% endblock %}
+
+{% block body %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <!-- En-tête -->
+            <div class="card mb-4">
+                <div class="card-header bg-warning">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            Conversation Signalée
+                        </h4>
+                        <a href="/admin?crudAction=index&crudControllerFqcn=App%5CController%5CAdmin%5CConversationReportCrudController" 
+                           class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-1"></i> Retour aux signalements
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6><i class="fas fa-info-circle text-primary me-2"></i>Informations sur le signalement</h6>
+                            <table class="table table-sm">
+                                <tr>
+                                    <td><strong>ID :</strong></td>
+                                    <td>#{{ report.id }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Motif :</strong></td>
+                                    <td>
+                                        <span class="badge bg-warning">{{ report.reason }}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Signalé par :</strong></td>
+                                    <td>{{ report.reporter.fullName }} ({{ report.reporter.email }})</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Utilisateur signalé :</strong></td>
+                                    <td>
+                                        {{ report.reportedUser.fullName }} ({{ report.reportedUser.email }})
+                                        {% if report.reportedUser.isBanned %}
+                                            <span class="badge bg-danger ms-2">BANNI</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Date :</strong></td>
+                                    <td>{{ report.createdAt|date('d/m/Y H:i') }}</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <h6><i class="fas fa-clipboard-list text-info me-2"></i>Annonce concernée</h6>
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6 class="card-title">{{ annonce.titre }}</h6>
+                                    <p class="card-text small">{{ annonce.description|length > 100 ? annonce.description|slice(0, 100) ~ '...' : annonce.description }}</p>
+                                    <p class="card-text">
+                                        <small class="text-muted">
+                                            Par {{ annonce.user.fullName }} • {{ annonce.publishedAt|date('d/m/Y') }}
+                                        </small>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {% if report.description %}
+                        <div class="mt-3">
+                            <h6><i class="fas fa-comment text-secondary me-2"></i>Description du signalement</h6>
+                            <div class="alert alert-light">
+                                {{ report.description }}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Conversation -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-comments me-2"></i>
+                        Historique de la conversation ({{ messages|length }} messages)
+                    </h5>
+                </div>
+                <div class="card-body" style="max-height: 600px; overflow-y: auto;">
+                    {% if messages is empty %}
+                        <div class="text-center text-muted py-5">
+                            <i class="fas fa-comment-slash fa-3x mb-3"></i>
+                            <p>Aucun message dans cette conversation.</p>
+                        </div>
+                    {% else %}
+                        <div class="conversation-timeline">
+                            {% for message in messages %}
+                                <div class="message-item mb-3 {{ message.sender == report.reportedUser ? 'reported-user' : 'other-user' }}">
+                                    <div class="d-flex">
+                                        <div class="avatar me-3">
+                                            <div class="bg-{{ message.sender == report.reportedUser ? 'danger' : 'primary' }} text-white rounded-circle d-flex align-items-center justify-content-center" 
+                                                 style="width: 40px; height: 40px;">
+                                                {{ message.sender.firstName|first }}{{ message.sender.lastName|first }}
+                                            </div>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <div class="message-header d-flex justify-content-between align-items-start">
+                                                <div>
+                                                    <strong class="{{ message.sender == report.reportedUser ? 'text-danger' : 'text-primary' }}">
+                                                        {{ message.sender.fullName }}
+                                                        {% if message.sender == report.reportedUser %}
+                                                            <span class="badge bg-danger ms-1">SIGNALÉ</span>
+                                                        {% endif %}
+                                                        {% if message.sender.isBanned %}
+                                                            <span class="badge bg-dark ms-1">BANNI</span>
+                                                        {% endif %}
+                                                    </strong>
+                                                    <br>
+                                                    <small class="text-muted">{{ message.createdAt|date('d/m/Y H:i') }}</small>
+                                                </div>
+                                            </div>
+                                            <div class="message-content mt-2 p-3 rounded" 
+                                                 style="background-color: {{ message.sender == report.reportedUser ? '#ffe6e6' : '#e7f3ff' }};">
+                                                {{ message.contenu|nl2br }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Actions administrateur -->
+            <div class="card mt-4">
+                <div class="card-header bg-light">
+                    <h6 class="mb-0">
+                        <i class="fas fa-gavel me-2"></i>
+                        Actions administrateur
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <p class="text-muted mb-3">
+                                Après avoir examiné cette conversation, vous pouvez prendre une des actions suivantes :
+                            </p>
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <div class="btn-group" role="group">
+                                {% if report.isPending() and not report.reportedUser.isBanned %}
+                                    <a href="/admin?crudAction=banUser&crudControllerFqcn=App%5CController%5CAdmin%5CConversationReportCrudController&entityId={{ report.id }}" 
+                                       class="btn btn-danger"
+                                       onclick="return confirm('Êtes-vous sûr de vouloir bannir cet utilisateur ?')">
+                                        <i class="fas fa-ban me-1"></i> Bannir l'utilisateur
+                                    </a>
+                                {% endif %}
+                                
+                                {% if report.reportedUser.isBanned %}
+                                    <a href="/admin?crudAction=unbanUser&crudControllerFqcn=App%5CController%5CAdmin%5CConversationReportCrudController&entityId={{ report.id }}" 
+                                       class="btn btn-success">
+                                        <i class="fas fa-undo me-1"></i> Débannir
+                                    </a>
+                                {% endif %}
+                                
+                                {% if report.isPending() %}
+                                    <a href="/admin?crudAction=markReviewed&crudControllerFqcn=App%5CController%5CAdmin%5CConversationReportCrudController&entityId={{ report.id }}" 
+                                       class="btn btn-info">
+                                        <i class="fas fa-check me-1"></i> Marquer comme examiné
+                                    </a>
+                                    
+                                    <a href="/admin?crudAction=dismiss&crudControllerFqcn=App%5CController%5CAdmin%5CConversationReportCrudController&entityId={{ report.id }}" 
+                                       class="btn btn-secondary">
+                                        <i class="fas fa-times me-1"></i> Rejeter
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.conversation-timeline .message-item {
+    border-left: 3px solid #dee2e6;
+    padding-left: 1rem;
+}
+
+.conversation-timeline .message-item.reported-user {
+    border-left-color: #dc3545;
+}
+
+.conversation-timeline .message-item.other-user {
+    border-left-color: #0d6efd;
+}
+
+.message-content {
+    position: relative;
+    word-wrap: break-word;
+}
+</style>
+{% endblock %}

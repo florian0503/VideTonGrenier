@@ -24,7 +24,6 @@ final class MessageController extends AbstractController
     {
         $user = $this->getUser();
         
-        // Récupérer les conversations (groupées par annonce)
         $conversations = $messageRepository->findConversationsByUser($user);
         
         return $this->render('message/index.html.twig', [
@@ -37,10 +36,8 @@ final class MessageController extends AbstractController
     {
         $user = $this->getUser();
         
-        // Récupérer tous les messages pour cette annonce et cet utilisateur
         $messages = $messageRepository->findConversationMessages($annonce, $user);
         
-        // Marquer les messages reçus comme lus
         foreach ($messages as $message) {
             if ($message->getReceiver() === $user && !$message->isRead()) {
                 $message->setIsRead(true);
@@ -48,15 +45,12 @@ final class MessageController extends AbstractController
         }
         $entityManager->flush();
         
-        // Créer un nouveau message
         $newMessage = new Message();
         $newMessage->setSender($user);
         $newMessage->setAnnonce($annonce);
         
-        // Déterminer le destinataire
         $receiver = $annonce->getUser() !== $user ? $annonce->getUser() : null;
         if (!$receiver && !empty($messages)) {
-            // Si l'utilisateur est le propriétaire, trouver l'autre participant
             foreach ($messages as $msg) {
                 if ($msg->getSender() !== $user) {
                     $receiver = $msg->getSender();
@@ -97,13 +91,11 @@ final class MessageController extends AbstractController
     {
         $user = $this->getUser();
         
-        // Vérifier que l'utilisateur n'est pas le propriétaire de l'annonce
         if ($annonce->getUser() === $user) {
             $this->addFlash('error', 'Vous ne pouvez pas vous contacter vous-même !');
             return $this->redirectToRoute('app_annonce_show', ['id' => $annonce->getId()]);
         }
         
-        // Vérifier que l'annonce est publiée
         if (!$annonce->isPublished()) {
             $this->addFlash('error', 'Cette annonce n\'est pas disponible.');
             return $this->redirectToRoute('app_annonce_index');
@@ -146,14 +138,12 @@ final class MessageController extends AbstractController
     {
         $user = $this->getUser();
         
-        // Vérifier que l'utilisateur fait partie de la conversation
         $messages = $messageRepository->findConversationMessages($annonce, $user);
         if (empty($messages)) {
             $this->addFlash('error', 'Vous ne pouvez signaler que les conversations auxquelles vous participez.');
             return $this->redirectToRoute('app_message_index');
         }
         
-        // Déterminer l'utilisateur à signaler (l'autre participant de la conversation)
         $reportedUser = null;
         foreach ($messages as $message) {
             if ($message->getSender() !== $user) {
@@ -199,13 +189,11 @@ final class MessageController extends AbstractController
     {
         $user = $this->getUser();
         
-        // Vérifier que l'utilisateur ne signale pas sa propre annonce
         if ($annonce->getUser() === $user) {
             $this->addFlash('error', 'Vous ne pouvez pas signaler votre propre annonce.');
             return $this->redirectToRoute('app_annonce_show', ['id' => $annonce->getId()]);
         }
         
-        // Vérifier que l'annonce est publiée
         if (!$annonce->isPublished()) {
             $this->addFlash('error', 'Cette annonce n\'est pas disponible.');
             return $this->redirectToRoute('app_annonce_index');
@@ -234,3 +222,4 @@ final class MessageController extends AbstractController
         ]);
     }
 }
+

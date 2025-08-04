@@ -51,7 +51,6 @@ final class AnnonceController extends AbstractController
     #[Route('/{id}', name: 'app_annonce_show', methods: ['GET'])]
     public function show(Annonce $annonce, EntityManagerInterface $entityManager): Response
     {
-        // Incrémenter les vues
         $annonce->incrementVues();
         $entityManager->flush();
 
@@ -64,7 +63,6 @@ final class AnnonceController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function edit(Request $request, Annonce $annonce, EntityManagerInterface $entityManager, CategorieRepository $categorieRepository): Response
     {
-        // Vérifier que l'utilisateur est le propriétaire
         if ($annonce->getUser() !== $this->getUser()) {
             throw $this->createAccessDeniedException('Vous ne pouvez modifier que vos propres annonces.');
         }
@@ -80,7 +78,6 @@ final class AnnonceController extends AbstractController
             $ville = $request->request->get('ville');
             $isUrgent = (bool)$request->request->get('is_urgent', false);
 
-            // Validation
             if (!$titre || !$description || !$categorieId || !$type || !$localisation || !$codePostal || !$ville) {
                 $this->addFlash('error', 'Veuillez remplir tous les champs obligatoires.');
             } else {
@@ -88,7 +85,6 @@ final class AnnonceController extends AbstractController
                 if (!$categorie) {
                     $this->addFlash('error', 'Catégorie invalide.');
                 } else {
-                    // Mettre à jour l'annonce
                     $annonce->setTitre($titre);
                     $annonce->setDescription($description);
                     $annonce->setPrix($prix ? floatval($prix) : null);
@@ -115,12 +111,10 @@ final class AnnonceController extends AbstractController
         ]);
     }
 
-
     #[Route('/{id}/supprimer', name: 'app_annonce_delete', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
     public function delete(Request $request, Annonce $annonce, EntityManagerInterface $entityManager): Response
     {
-        // Vérifier que l'utilisateur est le propriétaire
         if ($annonce->getUser() !== $this->getUser()) {
             throw $this->createAccessDeniedException('Vous ne pouvez supprimer que vos propres annonces.');
         }
@@ -139,12 +133,10 @@ final class AnnonceController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function markSold(Annonce $annonce, EntityManagerInterface $entityManager): Response
     {
-        // Vérifier que l'utilisateur est le propriétaire
         if ($annonce->getUser() !== $this->getUser()) {
             throw $this->createAccessDeniedException('Vous ne pouvez marquer comme vendue que vos propres annonces.');
         }
 
-        // Marquer comme vendue seulement si elle est publiée
         if ($annonce->isPublished()) {
             $annonce->setStatus(Annonce::STATUS_SOLD);
             $entityManager->flush();

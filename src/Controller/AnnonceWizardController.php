@@ -14,7 +14,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
-use Psr\Log\LoggerInterface;
 
 #[Route('/annonce/deposer')]
 #[IsGranted('ROLE_USER')]
@@ -22,19 +21,16 @@ class AnnonceWizardController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
     private SluggerInterface $slugger;
-    private LoggerInterface $logger;
 
-    public function __construct(EntityManagerInterface $entityManager, SluggerInterface $slugger, LoggerInterface $logger)
+    public function __construct(EntityManagerInterface $entityManager, SluggerInterface $slugger)
     {
         $this->entityManager = $entityManager;
         $this->slugger = $slugger;
-        $this->logger = $logger;
     }
 
     #[Route('/', name: 'annonce_wizard_start', methods: ['GET'])]
     public function start(Request $request): Response
     {
-        // Réinitialiser la session du wizard
         $this->clearWizardSession($request);
 
         return $this->redirectToRoute('annonce_wizard_step1');
@@ -52,7 +48,6 @@ class AnnonceWizardController extends AbstractController
                 return $this->render('annonce/wizard/step1.html.twig');
             }
 
-            // Sauvegarder en session
             $request->getSession()->set('wizard_step1', [
                 'titre' => $titre,
                 'type' => $type
@@ -71,7 +66,6 @@ class AnnonceWizardController extends AbstractController
     #[Route('/etape-2', name: 'annonce_wizard_step2', methods: ['GET', 'POST'])]
     public function step2(Request $request, CategorieRepository $categorieRepository): Response
     {
-        // Vérifier que l'étape 1 est complète
         if (!$request->getSession()->has('wizard_step1')) {
             return $this->redirectToRoute('annonce_wizard_step1');
         }
@@ -101,7 +95,6 @@ class AnnonceWizardController extends AbstractController
     #[Route('/etape-3', name: 'annonce_wizard_step3', methods: ['GET', 'POST'])]
     public function step3(Request $request): Response
     {
-        // Vérifier que les étapes précédentes sont complètes
         if (!$request->getSession()->has('wizard_step1') || !$request->getSession()->has('wizard_step2')) {
             return $this->redirectToRoute('annonce_wizard_step1');
         }
@@ -133,7 +126,6 @@ class AnnonceWizardController extends AbstractController
     #[Route('/etape-4', name: 'annonce_wizard_step4', methods: ['GET', 'POST'])]
     public function step4(Request $request): Response
     {
-        // Vérifier que les étapes précédentes sont complètes
         if (!$request->getSession()->has('wizard_step1') ||
             !$request->getSession()->has('wizard_step2') ||
             !$request->getSession()->has('wizard_step3')) {
@@ -142,7 +134,6 @@ class AnnonceWizardController extends AbstractController
 
         if ($request->isMethod('POST')) {
             $images = $request->getSession()->get('wizard_step4_images', []);
-            $this->logger->info('Step4 POST - Images in session: ' . json_encode($images));
 
             $request->getSession()->set('wizard_step4', [
                 'images' => $images
@@ -152,7 +143,6 @@ class AnnonceWizardController extends AbstractController
         }
 
         $images = $request->getSession()->get('wizard_step4_images', []);
-        $this->logger->info('Step4 GET - Images in session: ' . json_encode($images));
 
         return $this->render('annonce/wizard/step4.html.twig', [
             'images' => $images
@@ -162,7 +152,6 @@ class AnnonceWizardController extends AbstractController
     #[Route('/etape-5', name: 'annonce_wizard_step5', methods: ['GET', 'POST'])]
     public function step5(Request $request): Response
     {
-        // Vérifier que toutes les étapes précédentes sont complètes
         if (!$request->getSession()->has('wizard_step1') ||
             !$request->getSession()->has('wizard_step2') ||
             !$request->getSession()->has('wizard_step3') ||
@@ -184,7 +173,6 @@ class AnnonceWizardController extends AbstractController
                     'ville' => $ville
                 ]);
 
-                // Créer l'annonce
                 $annonce = $this->createAnnonceFromSession($request);
 
                 if ($annonce) {
@@ -195,7 +183,6 @@ class AnnonceWizardController extends AbstractController
             }
         }
 
-        // Récupérer toutes les données pour l'aperçu
         $step1 = $request->getSession()->get('wizard_step1', []);
         $step2 = $request->getSession()->get('wizard_step2', []);
         $step3 = $request->getSession()->get('wizard_step3', []);
@@ -214,19 +201,14 @@ class AnnonceWizardController extends AbstractController
     #[Route('/upload-image', name: 'annonce_wizard_upload_image', methods: ['POST'])]
     public function uploadImage(Request $request): JsonResponse
     {
-        $this->logger->info('Upload image called');
         $uploadedFile = $request->files->get('image');
 
         if (!$uploadedFile) {
-            $this->logger->warning('No file uploaded');
             return new JsonResponse(['error' => 'Aucun fichier sélectionné'], 400);
         }
 
-        $this->logger->info('File uploaded: ' . $uploadedFile->getClientOriginalName());
-
-        // Vérifications
         $allowedMimes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-        $maxSize = 2 * 1024 * 1024; // 2MB
+        $maxSize = 2 * 1024 * 1024;
 
         if (!in_array($uploadedFile->getMimeType(), $allowedMimes)) {
             return new JsonResponse(['error' => 'Format de fichier non autorisé'], 400);
@@ -248,13 +230,9 @@ class AnnonceWizardController extends AbstractController
 
             $uploadedFile->move($uploadDirectory, $newFilename);
 
-            // Ajouter à la session
             $images = $request->getSession()->get('wizard_step4_images', []);
             $images[] = $newFilename;
             $request->getSession()->set('wizard_step4_images', $images);
-
-            $this->logger->info('Image uploaded successfully: ' . $newFilename);
-            $this->logger->info('Session images: ' . json_encode($images));
 
             return new JsonResponse([
                 'success' => true,
@@ -276,12 +254,10 @@ class AnnonceWizardController extends AbstractController
             return new JsonResponse(['error' => 'Nom de fichier manquant'], 400);
         }
 
-        // Supprimer de la session
         $images = $request->getSession()->get('wizard_step4_images', []);
         $images = array_filter($images, fn($img) => $img !== $filename);
         $request->getSession()->set('wizard_step4_images', array_values($images));
 
-        // Supprimer le fichier physique
         $filePath = $this->getParameter('kernel.project_dir').'/public/uploads/annonces/'.$filename;
         if (file_exists($filePath)) {
             unlink($filePath);
@@ -299,7 +275,6 @@ class AnnonceWizardController extends AbstractController
             $step4 = $request->getSession()->get('wizard_step4');
             $step5 = $request->getSession()->get('wizard_step5');
 
-            // Récupérer les images depuis la session
             $images = $request->getSession()->get('wizard_step4_images', []);
 
             $categorie = $this->entityManager->getRepository(Categorie::class)->find($step2['categorie_id']);
@@ -311,7 +286,7 @@ class AnnonceWizardController extends AbstractController
             $annonce->setDescription($step3['description']);
             $annonce->setPrix($step3['prix'] ?? null);
             $annonce->setIsUrgent($step3['is_urgent'] ?? false);
-            $annonce->setImages($images); // Utiliser les images récupérées de la session
+            $annonce->setImages($images);
             $annonce->setLocalisation($step5['localisation']);
             $annonce->setCodePostal($step5['code_postal']);
             $annonce->setVille($step5['ville']);

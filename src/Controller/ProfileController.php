@@ -20,7 +20,6 @@ final class ProfileController extends AbstractController
     {
         $user = $this->getUser();
         
-        // Statistiques utilisateur
         $userStats = [
             'totalAnnonces' => $user->getAnnonces()->count(),
             'annoncesPubliees' => $user->getAnnonces()->filter(fn($a) => $a->isPublished())->count(),
@@ -61,7 +60,6 @@ final class ProfileController extends AbstractController
         $user = $this->getUser();
         $annonces = $user->getAnnonces();
 
-        // Grouper par statut
         $annoncesByStatus = [
             'published' => $annonces->filter(fn($a) => $a->isPublished()),
             'pending' => $annonces->filter(fn($a) => $a->isPending()),

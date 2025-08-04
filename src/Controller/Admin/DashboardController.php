@@ -17,8 +17,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[AdminDashboard(routePath: '/admin', routeName: 'admin')]
+#[IsGranted('ROLE_ADMIN')]
 class DashboardController extends AbstractDashboardController
 {
     public function index(): Response
@@ -59,6 +61,7 @@ class DashboardController extends AbstractDashboardController
     }
 
     #[Route('/admin/signalements/conversations', name: 'admin_conversation_reports')]
+    #[IsGranted('ROLE_ADMIN')]
     public function conversationReports(): Response
     {
         $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
@@ -70,6 +73,7 @@ class DashboardController extends AbstractDashboardController
     }
 
     #[Route('/admin/signalements/annonces', name: 'admin_annonce_reports')]
+    #[IsGranted('ROLE_ADMIN')]
     public function annonceReports(): Response
     {
         $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);

@@ -1,0 +1,36 @@
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -#{$grid-gutter-width / 2};
+  margin-left: -#{$grid-gutter-width / 2};
+}
+
+[class*="col-"] {
+  position: relative;
+  width: 100%;
+  padding-right: #{$grid-gutter-width / 2};
+  padding-left: #{$grid-gutter-width / 2};
+}
+
+@each $breakpoint, $value in $breakpoints {
+  @include media-breakpoint-up($breakpoint) {
+    @for $i from 1 through $grid-columns {
+      .col-#{$breakpoint}-#{$i} {
+        flex: 0 0 percentage($i / $grid-columns);
+        max-width: percentage($i / $grid-columns);
+      }
+    }
+
+    .col-#{$breakpoint} {
+      flex-basis: 0;
+      flex-grow: 1;
+      max-width: 100%;
+    }
+
+    .col-#{$breakpoint}-auto {
+      flex: 0 0 auto;
+      width: auto;
+      max-width: 100%;
+    }
+  }
+}

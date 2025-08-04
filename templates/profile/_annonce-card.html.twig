@@ -1,0 +1,104 @@
+<div class="col-md-6 col-lg-4">
+    <div class="card h-100 shadow-sm">
+        {% if annonce.firstImage %}
+            <img src="{{ annonce.firstImage }}" class="card-img-top" alt="{{ annonce.titre }}" style="height: 200px; object-fit: cover;">
+        {% else %}
+            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                <i class="fas fa-image fa-3x text-muted"></i>
+            </div>
+        {% endif %}
+        
+        <!-- Badge de statut -->
+        <div class="position-absolute top-0 end-0 m-2">
+            {% if status == 'published' %}
+                <span class="badge bg-success">✅ Publiée</span>
+            {% elseif status == 'pending' %}
+                <span class="badge bg-warning">⏳ En attente</span>
+            {% elseif status == 'rejected' %}
+                <span class="badge bg-danger">❌ Refusée</span>
+            {% elseif status == 'sold' %}
+                <span class="badge bg-info">🤝 Vendue</span>
+            {% endif %}
+        </div>
+        
+        <div class="card-body d-flex flex-column">
+            <h5 class="card-title">{{ annonce.titre }}</h5>
+            <p class="card-text text-muted small flex-grow-1">
+                {{ annonce.description|length > 100 ? annonce.description[:100] ~ '...' : annonce.description }}
+            </p>
+            
+            <div class="mt-auto">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    {% if annonce.prix %}
+                        <span class="h6 text-primary mb-0">{{ annonce.prix }}€</span>
+                    {% else %}
+                        <span class="text-muted">Prix à négocier</span>
+                    {% endif %}
+                    <small class="text-muted">{{ annonce.type|title }}</small>
+                </div>
+                
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <small class="text-muted">
+                        <i class="fas fa-eye"></i> {{ annonce.vues }} vue{{ annonce.vues > 1 ? 's' : '' }}
+                    </small>
+                    <small class="text-muted">
+                        {{ annonce.createdAt|date('d/m/Y') }}
+                    </small>
+                </div>
+
+                <!-- Motif de refus si applicable -->
+                {% if status == 'rejected' and annonce.moderationComment %}
+                    <div class="alert alert-danger alert-sm mb-2">
+                        <small><strong>Motif :</strong> {{ annonce.moderationComment }}</small>
+                    </div>
+                {% endif %}
+                
+                <!-- Actions -->
+                <div class="btn-group w-100" role="group">
+                    {% if status == 'published' %}
+                        <a href="{{ path('app_annonce_show', {id: annonce.id}) }}" class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-eye"></i> Voir
+                        </a>
+                    {% endif %}
+                    
+                    {% if status in ['published', 'rejected'] %}
+                        <a href="{{ path('app_annonce_edit', {id: annonce.id}) }}" class="btn btn-sm btn-outline-warning">
+                            <i class="fas fa-edit"></i> Modifier
+                        </a>
+                    {% endif %}
+                    
+                    {% if status == 'published' %}
+                        <button class="btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#soldModal{{ annonce.id }}">
+                            <i class="fas fa-handshake"></i> Marquer vendue
+                        </button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal pour marquer comme vendue -->
+{% if status == 'published' %}
+<div class="modal fade" id="soldModal{{ annonce.id }}" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Marquer comme vendue</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Voulez-vous marquer l'annonce <strong>"{{ annonce.titre }}"</strong> comme vendue ?</p>
+                <p class="text-muted small">Cette action retirera l'annonce des résultats de recherche.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <form method="post" action="{{ path('app_annonce_mark_sold', {id: annonce.id}) }}" class="d-inline">
+                    <input type="hidden" name="_token" value="{{ csrf_token('mark_sold' ~ annonce.id) }}">
+                    <button type="submit" class="btn btn-success">Confirmer la vente</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}

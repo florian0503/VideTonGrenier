@@ -1,0 +1,125 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes annonces - VideTonGrenier{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>📋 Mes annonces</h2>
+                <a href="{{ path('app_annonce_new') }}" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Nouvelle annonce
+                </a>
+            </div>
+
+            <!-- Navigation par onglets -->
+            <ul class="nav nav-tabs mb-4" id="annoncesTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="published-tab" data-bs-toggle="tab" data-bs-target="#published" type="button">
+                        <span class="badge bg-success me-2">{{ annoncesByStatus.published.count }}</span>
+                        Publiées
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pending-tab" data-bs-toggle="tab" data-bs-target="#pending" type="button">
+                        <span class="badge bg-warning me-2">{{ annoncesByStatus.pending.count }}</span>
+                        En attente
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="rejected-tab" data-bs-toggle="tab" data-bs-target="#rejected" type="button">
+                        <span class="badge bg-danger me-2">{{ annoncesByStatus.rejected.count }}</span>
+                        Refusées
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="sold-tab" data-bs-toggle="tab" data-bs-target="#sold" type="button">
+                        <span class="badge bg-info me-2">{{ annoncesByStatus.sold.count }}</span>
+                        Vendues
+                    </button>
+                </li>
+            </ul>
+
+            <!-- Contenu des onglets -->
+            <div class="tab-content" id="annoncesTabsContent">
+                <!-- Annonces publiées -->
+                <div class="tab-pane fade show active" id="published" role="tabpanel">
+                    {% if annoncesByStatus.published is not empty %}
+                        <div class="row g-4">
+                            {% for annonce in annoncesByStatus.published %}
+                                {{ include('profile/_annonce-card.html.twig', {annonce: annonce, status: 'published'}) }}
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                            <h4>Aucune annonce publiée</h4>
+                            <p class="text-muted">Vos annonces apparaîtront ici une fois approuvées par les modérateurs.</p>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Annonces en attente -->
+                <div class="tab-pane fade" id="pending" role="tabpanel">
+                    {% if annoncesByStatus.pending is not empty %}
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i>
+                            <strong>Information :</strong> Ces annonces sont en cours de modération et seront publiées sous peu.
+                        </div>
+                        <div class="row g-4">
+                            {% for annonce in annoncesByStatus.pending %}
+                                {{ include('profile/_annonce-card.html.twig', {annonce: annonce, status: 'pending'}) }}
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-clock fa-3x text-muted mb-3"></i>
+                            <h4>Aucune annonce en attente</h4>
+                            <p class="text-muted">Vous n'avez pas d'annonces en cours de modération.</p>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Annonces refusées -->
+                <div class="tab-pane fade" id="rejected" role="tabpanel">
+                    {% if annoncesByStatus.rejected is not empty %}
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <strong>Attention :</strong> Ces annonces ont été refusées. Vous pouvez les modifier pour les resoumettre.
+                        </div>
+                        <div class="row g-4">
+                            {% for annonce in annoncesByStatus.rejected %}
+                                {{ include('profile/_annonce-card.html.twig', {annonce: annonce, status: 'rejected'}) }}
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-check-circle fa-3x text-success mb-3"></i>
+                            <h4>Aucune annonce refusée</h4>
+                            <p class="text-muted">Toutes vos annonces respectent nos conditions d'utilisation !</p>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Annonces vendues -->
+                <div class="tab-pane fade" id="sold" role="tabpanel">
+                    {% if annoncesByStatus.sold is not empty %}
+                        <div class="row g-4">
+                            {% for annonce in annoncesByStatus.sold %}
+                                {{ include('profile/_annonce-card.html.twig', {annonce: annonce, status: 'sold'}) }}
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-handshake fa-3x text-muted mb-3"></i>
+                            <h4>Aucune vente finalisée</h4>
+                            <p class="text-muted">Vos ventes réalisées apparaîtront ici.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

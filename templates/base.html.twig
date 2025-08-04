@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}VideTonGrenier - Plateforme de petites annonces{% endblock %}</title>
+        <meta name="description" content="{% block meta_description %}Achetez et vendez facilement avec VideTonGrenier, votre plateforme de petites annonces de confiance.{% endblock %}">
+        
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>🏠</text></svg>">
+        
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+            {% block importmap %}{{ importmap('app') }}{% endblock %}
+        {% endblock %}
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+            <div class="container">
+                <a class="navbar-brand fw-bold text-primary" href="{{ path('app_home') }}">
+                    🏠 VideTonGrenier
+                </a>
+                
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_home') }}">Accueil</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_annonce_index') }}">Annonces</a>
+                        </li>
+                    </ul>
+                    
+                    <ul class="navbar-nav">
+                        {% if app.user %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                    {{ app.user.fullName }}
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="{{ path('app_profile') }}">👤 Mon profil</a></li>
+                                    <li><a class="dropdown-item" href="{{ path('app_user_annonces') }}">📋 Mes annonces</a></li>
+                                    <li><a class="dropdown-item" href="#">💬 Messages</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                        <li><a class="dropdown-item" href="/admin">⚙️ Administration</a></li>
+                                    {% endif %}
+                                    <li><a class="dropdown-item" href="{{ path('app_logout') }}">🚪 Déconnexion</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-primary ms-2" href="{{ path('app_annonce_new') }}">Déposer une annonce</a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('app_login') }}">Connexion</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-primary ms-2" href="{{ path('app_register') }}">Inscription</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <main>
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+
+            {% for message in app.flashes('error') %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+
+            {% block body %}{% endblock %}
+        </main>
+
+        <footer class="bg-dark text-light py-4 mt-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h5>VideTonGrenier</h5>
+                        <p>Votre plateforme de petites annonces de confiance.</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h6>Liens utiles</h6>
+                        <ul class="list-unstyled">
+                            <li><a href="#" class="text-light">À propos</a></li>
+                            <li><a href="#" class="text-light">Contact</a></li>
+                            <li><a href="#" class="text-light">FAQ</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <h6>Légal</h6>
+                        <ul class="list-unstyled">
+                            <li><a href="#" class="text-light">Conditions d'utilisation</a></li>
+                            <li><a href="#" class="text-light">Politique de confidentialité</a></li>
+                            <li><a href="#" class="text-light">Mentions légales</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <hr class="my-4">
+                <div class="text-center">
+                    <p>&copy; {{ 'now'|date('Y') }} VideTonGrenier. Tous droits réservés.</p>
+                </div>
+            </div>
+        </footer>
+    </body>
+</html>

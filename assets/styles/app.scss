@@ -1,0 +1,14 @@
+// Import Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+// Import abstracts
+@import 'abstracts/variables';
+@import 'abstracts/mixins';
+
+// Import base styles
+@import 'base/reset';
+@import 'base/typography';
+
+// Import layout styles
+@import 'layouts/container';
+@import 'layouts/grid';

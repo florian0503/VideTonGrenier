@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  database:
+    image: mysql:8.0
+    container_name: videtongrenier_db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: videtongrenier
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: symfony
+      MYSQL_PASSWORD: symfony
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - videtongrenier
+
+  redis:
+    image: redis:alpine
+    container_name: videtongrenier_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    networks:
+      - videtongrenier
+
+  mailer:
+    image: axllent/mailpit
+    networks:
+      - videtongrenier
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    environment:
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+
+volumes:
+  db_data:
+
+networks:
+  videtongrenier:
+    driver: bridge

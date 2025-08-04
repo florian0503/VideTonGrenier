@@ -1,0 +1,159 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil - VideTonGrenier{% endblock %}
+
+{% block body %}
+<!-- Hero Section -->
+<section class="bg-primary text-white py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">Videz votre grenier, trouvez des trésors</h1>
+                <p class="lead mb-4">
+                    Achetez et vendez facilement avec VideTonGrenier, votre plateforme de petites annonces de confiance.
+                </p>
+                <div class="d-flex gap-3">
+                    <a href="{{ path('app_annonce_index') }}" class="btn btn-light btn-lg">Parcourir les annonces</a>
+                    {% if not app.user %}
+                        <a href="{{ path('app_register') }}" class="btn btn-outline-light btn-lg">Rejoindre</a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <img src="https://via.placeholder.com/500x400/007bff/ffffff?text=VideTonGrenier" 
+                     class="img-fluid rounded shadow" alt="VideTonGrenier">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Search Section -->
+<section class="py-4 bg-light">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <form action="{{ path('app_annonce_index') }}" method="get" class="d-flex gap-2">
+                    <input type="search" name="q" class="form-control form-control-lg" 
+                           placeholder="Que cherchez-vous ?">
+                    <select name="categorie" class="form-select form-select-lg" style="max-width: 200px;">
+                        <option value="">Toutes catégories</option>
+                        {% for category in categories %}
+                            <option value="{{ category[0].id }}">{{ category[0].nom }}</option>
+                        {% endfor %}
+                    </select>
+                    <button class="btn btn-primary btn-lg px-4" type="submit">
+                        Rechercher
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Categories Section -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Parcourir par catégorie</h2>
+        <div class="row g-4">
+            {% set categoryIcons = {
+                'Électronique': '📱',
+                'Mobilier': '🪑', 
+                'Mode': '👕',
+                'Sports & Loisirs': '⚽',
+                'Maison & Jardin': '🏠',
+                'Véhicules': '🚗',
+                'Emploi & Services': '💼',
+                'Immobilier': '🏢'
+            } %}
+            {% set categoryColors = ['primary', 'success', 'warning', 'info', 'danger', 'secondary', 'dark', 'purple'] %}
+            
+            {% for category in categories %}
+                <div class="col-6 col-md-4 col-lg-3">
+                    <a href="{{ path('app_annonce_index', {categorie: category[0].id}) }}" class="text-decoration-none">
+                        <div class="text-center">
+                            <div class="bg-{{ categoryColors[loop.index0 % categoryColors|length] }} text-white rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" 
+                                 style="width: 80px; height: 80px; font-size: 2rem;">
+                                {{ categoryIcons[category[0].nom] ?? '📦' }}
+                            </div>
+                            <h6 class="text-dark">{{ category[0].nom }}</h6>
+                            <small class="text-muted">{{ category.annonceCount }} annonce{{ category.annonceCount > 1 ? 's' : '' }}</small>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Recent Ads Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+            <h2>Annonces récentes</h2>
+            <a href="{{ path('app_annonce_index') }}" class="btn btn-outline-primary">Voir toutes les annonces ({{ totalAnnonces }})</a>
+        </div>
+        
+        {% if recentAnnonces is not empty %}
+            <div class="row g-4">
+                {% for annonce in recentAnnonces %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 shadow-sm">
+                        {% if annonce.firstImage %}
+                            <img src="{{ annonce.firstImage }}" class="card-img-top" alt="{{ annonce.titre }}" style="height: 200px; object-fit: cover;">
+                        {% else %}
+                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                                <i class="fas fa-image fa-3x text-muted"></i>
+                            </div>
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ annonce.titre|length > 50 ? annonce.titre[:50] ~ '...' : annonce.titre }}</h5>
+                            <p class="card-text text-muted">{{ annonce.description|length > 80 ? annonce.description[:80] ~ '...' : annonce.description }}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                {% if annonce.prix %}
+                                    <span class="h5 text-primary mb-0">{{ annonce.prix }}€</span>
+                                {% else %}
+                                    <span class="text-muted">Prix à négocier</span>
+                                {% endif %}
+                                <small class="text-muted">📍 {{ annonce.ville ?: 'Non spécifiée' }}</small>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">{{ annonce.publishedAt ? annonce.publishedAt|date('d/m/Y') : 'N/A' }}</small>
+                                <a href="{{ path('app_annonce_show', {id: annonce.id}) }}" class="btn btn-sm btn-outline-primary">Voir détails</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center py-5">
+                <div class="mb-4">
+                    <i class="fas fa-search fa-3x text-muted"></i>
+                </div>
+                <h4>Aucune annonce disponible</h4>
+                <p class="text-muted">Soyez le premier à déposer une annonce !</p>
+                {% if app.user %}
+                    <a href="{{ path('app_annonce_new') }}" class="btn btn-primary">Déposer une annonce</a>
+                {% else %}
+                    <a href="{{ path('app_register') }}" class="btn btn-primary">Créer un compte</a>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5 bg-primary text-white">
+    <div class="container text-center">
+        <h2 class="mb-4">Prêt à vendre ?</h2>
+        <p class="lead mb-4">Déposez votre annonce gratuitement et vendez rapidement</p>
+        {% if app.user %}
+            <a href="{{ path('app_annonce_new') }}" class="btn btn-light btn-lg">Déposer une annonce</a>
+        {% else %}
+            <a href="{{ path('app_register') }}" class="btn btn-light btn-lg">Créer un compte</a>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

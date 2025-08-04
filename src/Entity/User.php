@@ -61,6 +61,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?bool $isVerified = false;
 
+    #[ORM\Column]
+    private ?bool $isBanned = false;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $bannedAt = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $banReason = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?User $bannedBy = null;
+
     /**
      * @var Collection<int, Annonce>
      */
@@ -79,12 +92,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Message::class, mappedBy: 'receiver', orphanRemoval: true)]
     private Collection $receivedMessages;
 
+    /**
+     * @var Collection<int, Report>
+     */
+    #[ORM\OneToMany(targetEntity: Report::class, mappedBy: 'reporter', orphanRemoval: true)]
+    private Collection $reportsMade;
+
+    /**
+     * @var Collection<int, Report>
+     */
+    #[ORM\OneToMany(targetEntity: Report::class, mappedBy: 'reportedUser', orphanRemoval: true)]
+    private Collection $reportsReceived;
+
     public function __construct()
     {
         $this->annonces = new ArrayCollection();
         $this->sentMessages = new ArrayCollection();
         $this->receivedMessages = new ArrayCollection();
+        $this->reportsMade = new ArrayCollection();
+        $this->reportsReceived = new ArrayCollection();
         $this->createdAt = new \DateTime();
+        $this->isBanned = false;
     }
 
     public function getId(): ?int
@@ -350,6 +378,122 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $receivedMessage->setReceiver(null);
             }
         }
+        return $this;
+    }
+
+    public function isBanned(): ?bool
+    {
+        return $this->isBanned;
+    }
+
+    public function setIsBanned(bool $isBanned): static
+    {
+        $this->isBanned = $isBanned;
+        return $this;
+    }
+
+    public function getBannedAt(): ?\DateTimeInterface
+    {
+        return $this->bannedAt;
+    }
+
+    public function setBannedAt(?\DateTimeInterface $bannedAt): static
+    {
+        $this->bannedAt = $bannedAt;
+        return $this;
+    }
+
+    public function getBanReason(): ?string
+    {
+        return $this->banReason;
+    }
+
+    public function setBanReason(?string $banReason): static
+    {
+        $this->banReason = $banReason;
+        return $this;
+    }
+
+    public function getBannedBy(): ?User
+    {
+        return $this->bannedBy;
+    }
+
+    public function setBannedBy(?User $bannedBy): static
+    {
+        $this->bannedBy = $bannedBy;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Report>
+     */
+    public function getReportsMade(): Collection
+    {
+        return $this->reportsMade;
+    }
+
+    public function addReportsMade(Report $reportsMade): static
+    {
+        if (!$this->reportsMade->contains($reportsMade)) {
+            $this->reportsMade->add($reportsMade);
+            $reportsMade->setReporter($this);
+        }
+        return $this;
+    }
+
+    public function removeReportsMade(Report $reportsMade): static
+    {
+        if ($this->reportsMade->removeElement($reportsMade)) {
+            if ($reportsMade->getReporter() === $this) {
+                $reportsMade->setReporter(null);
+            }
+        }
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Report>
+     */
+    public function getReportsReceived(): Collection
+    {
+        return $this->reportsReceived;
+    }
+
+    public function addReportsReceived(Report $reportsReceived): static
+    {
+        if (!$this->reportsReceived->contains($reportsReceived)) {
+            $this->reportsReceived->add($reportsReceived);
+            $reportsReceived->setReportedUser($this);
+        }
+        return $this;
+    }
+
+    public function removeReportsReceived(Report $reportsReceived): static
+    {
+        if ($this->reportsReceived->removeElement($reportsReceived)) {
+            if ($reportsReceived->getReportedUser() === $this) {
+                $reportsReceived->setReportedUser(null);
+            }
+        }
+        return $this;
+    }
+
+    public function ban(User $admin, string $reason): static
+    {
+        $this->isBanned = true;
+        $this->bannedAt = new \DateTime();
+        $this->banReason = $reason;
+        $this->bannedBy = $admin;
+        return $this;
+    }
+
+    public function unban(): static
+    {
+        $this->isBanned = false;
+        $this->bannedAt = null;
+        $this->banReason = null;
+        $this->bannedBy = null;
         return $this;
     }
 }

@@ -42,7 +42,7 @@ class Annonce
     #[ORM\Column(length: 50)]
     private ?string $status = self::STATUS_DRAFT;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $localisation = null;
 
     #[ORM\Column(length: 10, nullable: true)]

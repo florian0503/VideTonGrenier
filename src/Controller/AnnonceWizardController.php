@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Psr\Log\LoggerInterface;
 
 #[Route('/annonce/deposer')]
 #[IsGranted('ROLE_USER')]
@@ -21,11 +22,13 @@ class AnnonceWizardController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
     private SluggerInterface $slugger;
+    private LoggerInterface $logger;
 
-    public function __construct(EntityManagerInterface $entityManager, SluggerInterface $slugger)
+    public function __construct(EntityManagerInterface $entityManager, SluggerInterface $slugger, LoggerInterface $logger)
     {
         $this->entityManager = $entityManager;
         $this->slugger = $slugger;
+        $this->logger = $logger;
     }
 
     #[Route('/', name: 'annonce_wizard_start', methods: ['GET'])]
@@ -139,6 +142,7 @@ class AnnonceWizardController extends AbstractController
 
         if ($request->isMethod('POST')) {
             $images = $request->getSession()->get('wizard_step4_images', []);
+            $this->logger->info('Step4 POST - Images in session: ' . json_encode($images));
 
             $request->getSession()->set('wizard_step4', [
                 'images' => $images
@@ -148,6 +152,7 @@ class AnnonceWizardController extends AbstractController
         }
 
         $images = $request->getSession()->get('wizard_step4_images', []);
+        $this->logger->info('Step4 GET - Images in session: ' . json_encode($images));
 
         return $this->render('annonce/wizard/step4.html.twig', [
             'images' => $images
@@ -209,11 +214,15 @@ class AnnonceWizardController extends AbstractController
     #[Route('/upload-image', name: 'annonce_wizard_upload_image', methods: ['POST'])]
     public function uploadImage(Request $request): JsonResponse
     {
+        $this->logger->info('Upload image called');
         $uploadedFile = $request->files->get('image');
 
         if (!$uploadedFile) {
+            $this->logger->warning('No file uploaded');
             return new JsonResponse(['error' => 'Aucun fichier sélectionné'], 400);
         }
+
+        $this->logger->info('File uploaded: ' . $uploadedFile->getClientOriginalName());
 
         // Vérifications
         $allowedMimes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
@@ -243,6 +252,9 @@ class AnnonceWizardController extends AbstractController
             $images = $request->getSession()->get('wizard_step4_images', []);
             $images[] = $newFilename;
             $request->getSession()->set('wizard_step4_images', $images);
+
+            $this->logger->info('Image uploaded successfully: ' . $newFilename);
+            $this->logger->info('Session images: ' . json_encode($images));
 
             return new JsonResponse([
                 'success' => true,

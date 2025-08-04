@@ -77,4 +77,17 @@ class MessageRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+
+    /**
+     * Trouve tous les messages d'une conversation pour l'admin (sans restriction d'utilisateur)
+     */
+    public function findAllConversationMessages($annonce): array
+    {
+        return $this->createQueryBuilder('m')
+            ->where('m.annonce = :annonce')
+            ->setParameter('annonce', $annonce)
+            ->orderBy('m.createdAt', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }

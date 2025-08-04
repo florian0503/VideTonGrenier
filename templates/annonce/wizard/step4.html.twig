@@ -108,19 +108,6 @@
     </div>
 </div>
 
-<!-- Modal de loading -->
-<div class="modal fade" id="upload-modal" tabindex="-1">
-    <div class="modal-dialog modal-sm modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-body text-center p-4">
-                <div class="spinner-border text-primary mb-3" role="status">
-                    <span class="visually-hidden">Chargement...</span>
-                </div>
-                <p class="mb-0">Téléchargement en cours...</p>
-            </div>
-        </div>
-    </div>
-</div>
 
 <style>
 .photo-upload-zone {
@@ -223,7 +210,8 @@
 class PhotoUploader {
     constructor() {
         this.maxFiles = 8;
-        this.uploadedFiles = {{ images|json_encode|raw }};
+        this.uploadedFiles = {{ images|default([])|json_encode|raw }};
+        console.log('PhotoUploader initialized with files:', this.uploadedFiles);
         this.init();
         this.loadExistingPhotos();
     }
@@ -299,6 +287,7 @@ class PhotoUploader {
     }
 
     async uploadFile(file) {
+        console.log('uploadFile called with:', file.name);
         // Vérifications
         if (!file.type.startsWith('image/')) {
             alert('Seules les images sont autorisées.');
@@ -310,8 +299,20 @@ class PhotoUploader {
             return;
         }
 
-        const modal = new bootstrap.Modal(document.getElementById('upload-modal'));
-        modal.show();
+        // Afficher un indicateur de chargement simple
+        const loadingIndicator = document.createElement('div');
+        loadingIndicator.id = 'loading-indicator';
+        loadingIndicator.innerHTML = `
+            <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; display: flex; justify-content: center; align-items: center;">
+                <div style="background: white; padding: 20px; border-radius: 8px; text-align: center;">
+                    <div class="spinner-border text-primary mb-3" role="status">
+                        <span class="visually-hidden">Chargement...</span>
+                    </div>
+                    <p class="mb-0">Téléchargement en cours...</p>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(loadingIndicator);
 
         try {
             const formData = new FormData();
@@ -326,18 +327,25 @@ class PhotoUploader {
             });
 
             const result = await response.json();
+            console.log('Upload response:', result);
 
             if (result.success) {
+                console.log('Adding image to uploadedFiles:', result.filename);
                 this.uploadedFiles.push(result.filename);
                 this.updateUI();
             } else {
+                console.error('Upload failed:', result.error);
                 alert(result.error || 'Erreur lors du téléchargement');
             }
         } catch (error) {
             alert('Erreur lors du téléchargement');
             console.error(error);
         } finally {
-            modal.hide();
+            // Supprimer l'indicateur de chargement
+            const indicator = document.getElementById('loading-indicator');
+            if (indicator) {
+                indicator.remove();
+            }
         }
     }
 
@@ -397,6 +405,7 @@ class PhotoUploader {
     }
 
     updateUI() {
+        console.log('updateUI called with', this.uploadedFiles.length, 'files');
         const uploadZone = document.getElementById('upload-zone');
         const photosGrid = document.getElementById('photos-grid');
         const container = document.getElementById('photos-container');

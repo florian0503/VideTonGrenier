@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Annonce;
 use App\Entity\Message;
+use App\Entity\Report;
 use App\Form\MessageType;
+use App\Form\ReportType;
 use App\Repository\MessageRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -137,5 +139,98 @@ final class MessageController extends AbstractController
         $count = $messageRepository->countUnreadMessages($user);
         
         return $this->json(['count' => $count]);
+    }
+
+    #[Route('/signaler/{id}', name: 'app_message_report', methods: ['GET', 'POST'])]
+    public function reportConversation(Annonce $annonce, Request $request, EntityManagerInterface $entityManager, MessageRepository $messageRepository): Response
+    {
+        $user = $this->getUser();
+        
+        // Vérifier que l'utilisateur fait partie de la conversation
+        $messages = $messageRepository->findConversationMessages($annonce, $user);
+        if (empty($messages)) {
+            $this->addFlash('error', 'Vous ne pouvez signaler que les conversations auxquelles vous participez.');
+            return $this->redirectToRoute('app_message_index');
+        }
+        
+        // Déterminer l'utilisateur à signaler (l'autre participant de la conversation)
+        $reportedUser = null;
+        foreach ($messages as $message) {
+            if ($message->getSender() !== $user) {
+                $reportedUser = $message->getSender();
+                break;
+            } elseif ($message->getReceiver() !== $user) {
+                $reportedUser = $message->getReceiver();
+                break;
+            }
+        }
+        
+        if (!$reportedUser) {
+            $this->addFlash('error', 'Impossible de déterminer l\'utilisateur à signaler.');
+            return $this->redirectToRoute('app_message_conversation', ['id' => $annonce->getId()]);
+        }
+        
+        $report = new Report();
+        $report->setType(Report::TYPE_CONVERSATION);
+        $report->setReporter($user);
+        $report->setReportedUser($reportedUser);
+        $report->setAnnonce($annonce);
+        
+        $form = $this->createForm(ReportType::class, $report);
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($report);
+            $entityManager->flush();
+            
+            $this->addFlash('success', 'Votre signalement a été envoyé. Notre équipe va l\'examiner rapidement.');
+            return $this->redirectToRoute('app_message_conversation', ['id' => $annonce->getId()]);
+        }
+        
+        return $this->render('message/report.html.twig', [
+            'form' => $form,
+            'annonce' => $annonce,
+            'reportedUser' => $reportedUser,
+        ]);
+    }
+
+    #[Route('/signaler-annonce/{id}', name: 'app_annonce_report', methods: ['GET', 'POST'])]
+    public function reportAnnonce(Annonce $annonce, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+        
+        // Vérifier que l'utilisateur ne signale pas sa propre annonce
+        if ($annonce->getUser() === $user) {
+            $this->addFlash('error', 'Vous ne pouvez pas signaler votre propre annonce.');
+            return $this->redirectToRoute('app_annonce_show', ['id' => $annonce->getId()]);
+        }
+        
+        // Vérifier que l'annonce est publiée
+        if (!$annonce->isPublished()) {
+            $this->addFlash('error', 'Cette annonce n\'est pas disponible.');
+            return $this->redirectToRoute('app_annonce_index');
+        }
+        
+        $report = new Report();
+        $report->setType(Report::TYPE_ANNONCE);
+        $report->setReporter($user);
+        $report->setReportedUser($annonce->getUser());
+        $report->setAnnonce($annonce);
+        
+        $form = $this->createForm(ReportType::class, $report);
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($report);
+            $entityManager->flush();
+            
+            $this->addFlash('success', 'Votre signalement a été envoyé. Notre équipe va l\'examiner rapidement.');
+            return $this->redirectToRoute('app_annonce_show', ['id' => $annonce->getId()]);
+        }
+        
+        return $this->render('annonce/report.html.twig', [
+            'form' => $form,
+            'annonce' => $annonce,
+        ]);
     }
 }

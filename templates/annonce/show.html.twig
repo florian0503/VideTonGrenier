@@ -158,7 +158,13 @@
                     <ul class="list-unstyled small mb-0">
                         <li><i class="fas fa-check text-success"></i> Annonce modérée</li>
                         <li><i class="fas fa-check text-success"></i> Vendeur vérifié</li>
-                        <li><i class="fas fa-exclamation-triangle text-warning"></i> <a href="#" class="text-decoration-none">Signaler cette annonce</a></li>
+                        <li><i class="fas fa-exclamation-triangle text-warning"></i> 
+                            {% if app.user and app.user != annonce.user %}
+                                <a href="{{ path('app_annonce_report', {id: annonce.id}) }}" class="text-decoration-none">Signaler cette annonce</a>
+                            {% else %}
+                                <span class="text-muted">Signaler cette annonce</span>
+                            {% endif %}
+                        </li>
                     </ul>
                 </div>
             </div>

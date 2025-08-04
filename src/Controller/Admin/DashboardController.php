@@ -23,7 +23,7 @@ class DashboardController extends AbstractDashboardController
         $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
         
         return $this->redirect($adminUrlGenerator
-            ->setController(PendingAnnonceCrudController::class)
+            ->setController(AnnonceCrudController::class)
             ->generateUrl());
     }
 
@@ -43,7 +43,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('⏳ Annonces en attente', 'fas fa-clock', Annonce::class, null, PendingAnnonceCrudController::class);
         
         yield MenuItem::section('Gestion du contenu');
-        yield MenuItem::linkToCrud('📋 Toutes les annonces', 'fas fa-list', Annonce::class);
+        yield MenuItem::linkToUrl('📋 Toutes les annonces', 'fas fa-list', '/admin/annonce');
         yield MenuItem::linkToCrud('🏷️ Catégories', 'fas fa-tags', Categorie::class);
         
         yield MenuItem::section('Utilisateurs');

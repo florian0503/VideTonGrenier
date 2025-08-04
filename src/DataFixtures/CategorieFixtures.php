@@ -24,7 +24,6 @@ class CategorieFixtures extends Fixture
         ];
 
         foreach ($categories as $nom => $description) {
-            // Vérifier si la catégorie existe déjà
             $existingCategorie = $manager->getRepository(Categorie::class)->findOneBy(['nom' => $nom]);
             
             if (!$existingCategorie) {

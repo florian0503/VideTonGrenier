@@ -1,183 +1,123 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modifier l'annonce : {{ annonce.titre }} - VideTonGrenier{% endblock %}
-
-{% block meta_description %}Modifiez votre annonce sur VideTonGrenier{% endblock %}
+{% block title %}Modifier l'annonce - {{ annonce.titre }}{% endblock %}
 
 {% block body %}
-<div class="container py-4">
+<div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-8">
-            <div class="card shadow">
-                <div class="card-header bg-warning text-dark">
-                    <h3 class="mb-0">✏️ Modifier l'annonce</h3>
+            <div class="card fade-in">
+                <div class="card-header">
+                    <h2 class="h4 mb-0">
+                        <i class="fas fa-edit me-2"></i>Modifier l'annonce
+                    </h2>
                 </div>
                 <div class="card-body">
-                    <div class="alert alert-info">
-                        <i class="fas fa-info-circle"></i>
-                        <strong>Information :</strong> Les modifications apportées à votre annonce peuvent nécessiter une nouvelle modération.
-                    </div>
-
-                    {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': true}}) }}
-                    
-                    <div class="row">
-                        <div class="col-md-12 mb-3">
-                            {{ form_label(form.titre, null, {'label_attr': {'class': 'form-label fw-bold'}}) }}
-                            {{ form_widget(form.titre) }}
-                            {{ form_errors(form.titre) }}
-                            <div class="form-text">Choisissez un titre accrocheur pour votre annonce (5-255 caractères)</div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            {{ form_label(form.type, null, {'label_attr': {'class': 'form-label fw-bold'}}) }}
-                            {{ form_widget(form.type) }}
-                            {{ form_errors(form.type) }}
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            {{ form_label(form.categorie, null, {'label_attr': {'class': 'form-label fw-bold'}}) }}
-                            {{ form_widget(form.categorie) }}
-                            {{ form_errors(form.categorie) }}
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        {{ form_label(form.description, null, {'label_attr': {'class': 'form-label fw-bold'}}) }}
-                        {{ form_widget(form.description) }}
-                        {{ form_errors(form.description) }}
-                        <div class="form-text">Décrivez votre objet ou service en détail (minimum 20 caractères)</div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-4 mb-3">
-                            {{ form_label(form.prix, null, {'label_attr': {'class': 'form-label fw-bold'}}) }}
-                            {{ form_widget(form.prix) }}
-                            {{ form_errors(form.prix) }}
-                            <div class="form-text">Laissez vide pour "Prix à négocier"</div>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            {{ form_label(form.codePostal, null, {'label_attr': {'class': 'form-label fw-bold'}}) }}
-                            {{ form_widget(form.codePostal) }}
-                            {{ form_errors(form.codePostal) }}
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            {{ form_label(form.ville, null, {'label_attr': {'class': 'form-label fw-bold'}}) }}
-                            {{ form_widget(form.ville) }}
-                            {{ form_errors(form.ville) }}
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        {{ form_label(form.localisation, null, {'label_attr': {'class': 'form-label fw-bold'}}) }}
-                        {{ form_widget(form.localisation) }}
-                        {{ form_errors(form.localisation) }}
-                        <div class="form-text">Adresse complète ou point de repère</div>
-                    </div>
-
-                    <div class="mb-4">
-                        <div class="form-check">
-                            {{ form_widget(form.isUrgent) }}
-                            {{ form_label(form.isUrgent, null, {'label_attr': {'class': 'form-check-label'}}) }}
-                        </div>
-                        {{ form_errors(form.isUrgent) }}
-                        <div class="form-text">Les annonces urgentes sont mises en avant</div>
-                    </div>
-
-                    {% if annonce.images is not empty %}
-                    An exception has been thrown during the rendering of a template ("Unable to generate a URL for the named route "app_annonce_new" as such route does not exist.") in home/index.html.twig at line 153.                        <div class="row">
-                            <div class="col-12">
-                                <h6>Images actuelles :</h6>
-                                {% for image in annonce.images %}
-                                    <div class="d-inline-block me-2 mb-2">
-                                        <img src="{{ '/uploads/annonces/' ~ image }}" class="img-thumbnail" alt="Image {{ loop.index }}">
-                                    </div>
-                                {% endfor %}
+                    <form method="post">
+                        <div class="row">
+                            <div class="col-md-8 mb-3">
+                                <label for="titre" class="form-label">Titre de l'annonce *</label>
+                                <input type="text" class="form-control" id="titre" name="titre" 
+                                       value="{{ annonce.titre }}" required maxlength="100">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="type" class="form-label">Type *</label>
+                                <select class="form-select" id="type" name="type" required>
+                                    <option value="vente" {{ annonce.type == 'vente' ? 'selected' : '' }}>Vente</option>
+                                    <option value="achat" {{ annonce.type == 'achat' ? 'selected' : '' }}>Recherche</option>
+                                    <option value="don" {{ annonce.type == 'don' ? 'selected' : '' }}>Don</option>
+                                    <option value="echange" {{ annonce.type == 'echange' ? 'selected' : '' }}>Échange</option>
+                                </select>
                             </div>
                         </div>
-                    {% else %}
-                        <div class="alert alert-info">
-                            <small class="text-muted">La gestion des images sera bientôt disponible</small>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="categorie_id" class="form-label">Catégorie *</label>
+                                <select class="form-select" id="categorie_id" name="categorie_id" required>
+                                    <option value="">Sélectionner une catégorie</option>
+                                    {% for categorie in categories %}
+                                        <option value="{{ categorie.id }}" 
+                                                {{ annonce.categorie.id == categorie.id ? 'selected' : '' }}>
+                                            {{ categorie.nom }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="prix" class="form-label">Prix (€)</label>
+                                <input type="number" class="form-control" id="prix" name="prix" 
+                                       value="{{ annonce.prix }}" min="0" step="0.01">
+                                <div class="form-text">Laisser vide si non applicable</div>
+                            </div>
                         </div>
-                    {% endif %}
 
-                    {% if annonce.status == constant('App\\Entity\\Annonce::STATUS_REJECTED') and annonce.moderationComment %}
-                        <div class="alert alert-danger">
-                            <i class="fas fa-exclamation-triangle"></i>
-                            <strong>Motif du refus :</strong> {{ annonce.moderationComment }}
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description *</label>
+                            <textarea class="form-control" id="description" name="description" 
+                                      rows="6" required maxlength="2000">{{ annonce.description }}</textarea>
+                            <div class="form-text">Maximum 2000 caractères</div>
                         </div>
-                    {% endif %}
 
-                    <div class="alert alert-warning">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <strong>À savoir :</strong> 
-                        <ul class="mb-0 mt-2">
-                            <li>Les modifications importantes peuvent nécessiter une nouvelle validation</li>
-                            <li>Votre annonce peut être temporairement masquée pendant la révision</li>
-                            <li>Respectez nos conditions d'utilisation</li>
-                        </ul>
-                    </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="localisation" class="form-label">Localisation *</label>
+                                <input type="text" class="form-control" id="localisation" name="localisation" 
+                                       value="{{ annonce.localisation }}" required maxlength="100">
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="code_postal" class="form-label">Code postal *</label>
+                                <input type="text" class="form-control" id="code_postal" name="code_postal" 
+                                       value="{{ annonce.codePostal }}" required pattern="[0-9]{5}" maxlength="5">
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="ville" class="form-label">Ville *</label>
+                                <input type="text" class="form-control" id="ville" name="ville" 
+                                       value="{{ annonce.ville }}" required maxlength="50">
+                            </div>
+                        </div>
 
-                    <div class="d-flex justify-content-between">
-                        <a href="{{ path('app_annonce_show', {id: annonce.id}) }}" class="btn btn-secondary">
-                            <i class="fas fa-arrow-left"></i> Retour à l'annonce
-                        </a>
-                        <div>
-                            <button type="button" class="btn btn-outline-danger me-2" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                                <i class="fas fa-trash"></i> Supprimer
+                        <div class="mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="is_urgent" name="is_urgent" 
+                                       {{ annonce.isUrgent ? 'checked' : '' }}>
+                                <label class="form-check-label" for="is_urgent">
+                                    <i class="fas fa-exclamation-triangle text-warning me-1"></i>
+                                    Annonce urgente
+                                </label>
+                            </div>
+                        </div>
+
+                        {% if annonce.images is not empty %}
+                            <div class="mb-4">
+                                <h6>Images actuelles :</h6>
+                                <div class="row">
+                                    {% for image in annonce.images %}
+                                        <div class="col-md-3 mb-2">
+                                            <img src="{{ asset('uploads/annonces/' ~ image) }}" 
+                                                 class="img-fluid rounded" alt="Image de l'annonce">
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <small class="text-muted">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Pour modifier les images, vous devrez recréer l'annonce via le formulaire de création.
+                                </small>
+                            </div>
+                        {% endif %}
+
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ path('app_annonce_show', {id: annonce.id}) }}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-1"></i>Annuler
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-1"></i>Sauvegarder les modifications
                             </button>
-                            <button type="submit" class="btn btn-primary btn-lg">
-                                <i class="fas fa-save"></i> Enregistrer les modifications
-                            </button>
                         </div>
-                    </div>
-
-                    {{ form_end(form) }}
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<!-- Modal de suppression -->
-<div class="modal fade" id="deleteModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Supprimer l'annonce</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <p>Êtes-vous sûr de vouloir supprimer cette annonce ?</p>
-                <p class="text-muted small">Cette action est irréversible.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                <form method="post" action="{{ path('app_annonce_delete', {id: annonce.id}) }}" class="d-inline">
-                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ annonce.id) }}">
-                    <button type="submit" class="btn btn-danger">Confirmer la suppression</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-// Validation côté client
-(function() {
-    'use strict';
-    window.addEventListener('load', function() {
-        var forms = document.getElementsByClassName('needs-validation');
-        var validation = Array.prototype.filter.call(forms, function(form) {
-            form.addEventListener('submit', function(event) {
-                if (form.checkValidity() === false) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                }
-                form.classList.add('was-validated');
-            }, false);
-        });
-    }, false);
-})();
-</script>
 {% endblock %}

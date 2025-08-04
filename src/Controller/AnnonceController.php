@@ -62,17 +62,57 @@ final class AnnonceController extends AbstractController
 
     #[Route('/{id}/modifier', name: 'app_annonce_edit', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_USER')]
-    public function edit(Request $request, Annonce $annonce, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Annonce $annonce, EntityManagerInterface $entityManager, CategorieRepository $categorieRepository): Response
     {
         // Vérifier que l'utilisateur est le propriétaire
         if ($annonce->getUser() !== $this->getUser()) {
             throw $this->createAccessDeniedException('Vous ne pouvez modifier que vos propres annonces.');
         }
 
-        // Rediriger vers le wizard pour l'édition
-        $this->addFlash('info', 'L\'édition via le wizard sera bientôt disponible. Utilisez le formulaire simple pour le moment.');
+        if ($request->isMethod('POST')) {
+            $titre = $request->request->get('titre');
+            $description = $request->request->get('description');
+            $prix = $request->request->get('prix');
+            $categorieId = $request->request->get('categorie_id');
+            $type = $request->request->get('type');
+            $localisation = $request->request->get('localisation');
+            $codePostal = $request->request->get('code_postal');
+            $ville = $request->request->get('ville');
+            $isUrgent = (bool)$request->request->get('is_urgent', false);
 
-        return $this->redirectToRoute('app_annonce_show', ['id' => $annonce->getId()]);
+            // Validation
+            if (!$titre || !$description || !$categorieId || !$type || !$localisation || !$codePostal || !$ville) {
+                $this->addFlash('error', 'Veuillez remplir tous les champs obligatoires.');
+            } else {
+                $categorie = $categorieRepository->find($categorieId);
+                if (!$categorie) {
+                    $this->addFlash('error', 'Catégorie invalide.');
+                } else {
+                    // Mettre à jour l'annonce
+                    $annonce->setTitre($titre);
+                    $annonce->setDescription($description);
+                    $annonce->setPrix($prix ? floatval($prix) : null);
+                    $annonce->setCategorie($categorie);
+                    $annonce->setType($type);
+                    $annonce->setLocalisation($localisation);
+                    $annonce->setCodePostal($codePostal);
+                    $annonce->setVille($ville);
+                    $annonce->setIsUrgent($isUrgent);
+
+                    $entityManager->flush();
+
+                    $this->addFlash('success', 'Votre annonce a été modifiée avec succès !');
+                    return $this->redirectToRoute('app_annonce_show', ['id' => $annonce->getId()]);
+                }
+            }
+        }
+
+        $categories = $categorieRepository->findBy(['isActive' => true], ['nom' => 'ASC']);
+
+        return $this->render('annonce/edit.html.twig', [
+            'annonce' => $annonce,
+            'categories' => $categories,
+        ]);
     }
 
 

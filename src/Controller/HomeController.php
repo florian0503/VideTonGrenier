@@ -29,7 +29,8 @@ final class HomeController extends AbstractController
             ->where('c.isActive = true')
             ->setParameter('status', Annonce::STATUS_PUBLISHED)
             ->groupBy('c.id')
-            ->orderBy('c.nom', 'ASC')
+            ->orderBy('annonceCount', 'DESC')
+            ->addOrderBy('c.nom', 'ASC')
             ->setMaxResults(8)
             ->getQuery()
             ->getResult();

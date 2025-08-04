@@ -13,7 +13,7 @@
                     <h5 class="mb-0">🔍 Filtres</h5>
                 </div>
                 <div class="card-body">
-                    <form method="get" action="{{ path('app_annonce_index') }}">
+                    <form method="get" action="{{ path('app_annonce_index') }}" id="filter-form">
                         <div class="mb-3">
                             <label for="search" class="form-label">Recherche</label>
                             <input type="text" class="form-control" id="search" name="q" value="{{ search ?? '' }}" placeholder="Mot-clé...">
@@ -44,7 +44,9 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
                     <h1 class="h3 mb-0">Toutes les annonces</h1>
-                    <p class="text-muted mb-0">{{ annonces|length }} annonce{{ annonces|length > 1 ? 's' : '' }} trouvée{{ annonces|length > 1 ? 's' : '' }}</p>
+                    <p class="text-muted mb-0" id="annonce-count">
+                        {{ annonces|length }} sur {{ total_annonces }} annonce{{ total_annonces > 1 ? 's' : '' }} affichée{{ annonces|length > 1 ? 's' : '' }}
+                    </p>
                 </div>
                 {% if app.user %}
                     <a href="{{ path('annonce_wizard_start') }}" class="btn btn-primary">
@@ -73,64 +75,90 @@
                     {% endif %}
                 </div>
             {% else %}
-                <div class="row">
-                    {% for annonce in annonces %}
-                        <div class="col-md-6 col-xl-4 mb-4">
-                            <div class="card h-100 shadow-sm">
-                                {% if annonce.firstImage %}
-                                    <img src="{{ annonce.firstImage }}" class="card-img-top" alt="{{ annonce.titre }}" style="height: 200px; object-fit: cover;">
-                                {% else %}
-                                    <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
-                                        <i class="fas fa-image fa-3x text-muted"></i>
-                                    </div>
-                                {% endif %}
-                                
-                                <div class="card-body d-flex flex-column">
-                                    <div class="d-flex justify-content-between align-items-start mb-2">
-                                        <h5 class="card-title mb-0">{{ annonce.titre|length > 50 ? annonce.titre[:50] ~ '...' : annonce.titre }}</h5>
-                                        {% if annonce.isUrgent %}
-                                            <span class="badge bg-danger">Urgent</span>
-                                        {% endif %}
-                                    </div>
-                                    
-                                    <p class="card-text text-muted small flex-grow-1">
-                                        {{ annonce.description|length > 100 ? annonce.description[:100] ~ '...' : annonce.description }}
-                                    </p>
-                                    
-                                    <div class="mt-auto">
-                                        <div class="d-flex justify-content-between align-items-center mb-2">
-                                            {% if annonce.prix %}
-                                                <span class="h5 text-primary mb-0">{{ annonce.prix }} €</span>
-                                            {% else %}
-                                                <span class="text-muted">Prix à négocier</span>
-                                            {% endif %}
-                                            <small class="text-muted">{{ annonce.type|title }}</small>
-                                        </div>
-                                        
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <small class="text-muted">
-                                                <i class="fas fa-map-marker-alt"></i>
-                                                {{ annonce.ville ?: 'Non spécifiée' }}
-                                            </small>
-                                            <small class="text-muted">
-                                                <i class="fas fa-eye"></i> {{ annonce.vues }} vue{{ annonce.vues > 1 ? 's' : '' }}
-                                            </small>
-                                        </div>
-                                        
-                                        <div class="d-flex justify-content-between align-items-center mt-2">
-                                            <small class="text-muted">
-                                                {{ annonce.publishedAt ? annonce.publishedAt|date('d/m/Y') : 'En attente' }}
-                                            </small>
-                                            <a href="{{ path('app_annonce_show', {id: annonce.id}) }}" class="btn btn-sm btn-outline-primary">Voir détails</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
+                <div class="row" id="annonces-container">
+                    {% include 'annonce/_annonce_cards.html.twig' with {'annonces': annonces} %}
                 </div>
+
+                {% if has_more %}
+                    <div class="text-center mt-4">
+                        <button type="button" class="btn btn-outline-primary btn-lg" id="load-more-btn" data-page="2">
+                            <span class="btn-text">Voir plus d'annonces</span>
+                            <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                {% endif %}
             {% endif %}
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const loadMoreBtn = document.getElementById('load-more-btn');
+    const annoncesContainer = document.getElementById('annonces-container');
+    const annonceCount = document.getElementById('annonce-count');
+
+    if (loadMoreBtn) {
+        loadMoreBtn.addEventListener('click', function() {
+            const page = parseInt(this.dataset.page);
+            const btnText = this.querySelector('.btn-text');
+            const spinner = this.querySelector('.spinner-border');
+
+            // Afficher le spinner et désactiver le bouton
+            btnText.textContent = 'Chargement...';
+            spinner.classList.remove('d-none');
+            this.disabled = true;
+
+            // Récupérer les paramètres de filtrage actuels
+            const urlParams = new URLSearchParams(window.location.search);
+            const loadMoreUrl = new URL('{{ path('app_annonce_load_more') }}', window.location.origin);
+
+            // Ajouter les paramètres existants
+            loadMoreUrl.searchParams.set('page', page);
+            if (urlParams.get('q')) {
+                loadMoreUrl.searchParams.set('q', urlParams.get('q'));
+            }
+            if (urlParams.get('categorie')) {
+                loadMoreUrl.searchParams.set('categorie', urlParams.get('categorie'));
+            }
+
+            fetch(loadMoreUrl)
+                .then(response => response.json())
+                .then(data => {
+                    // Ajouter les nouvelles annonces
+                    annoncesContainer.insertAdjacentHTML('beforeend', data.html);
+
+                    // Mettre à jour le compteur
+                    const currentCount = annoncesContainer.children.length;
+                    annonceCount.textContent = `${currentCount} sur ${data.totalAnnonces} annonce${data.totalAnnonces > 1 ? 's' : ''} affichée${currentCount > 1 ? 's' : ''}`;
+
+                    if (data.hasMore) {
+                        // Il y a encore des annonces à charger
+                        this.dataset.page = page + 1;
+                        btnText.textContent = 'Voir plus d\'annonces';
+                        spinner.classList.add('d-none');
+                        this.disabled = false;
+                    } else {
+                        // Plus d'annonces à charger
+                        this.style.display = 'none';
+                    }
+                })
+                .catch(error => {
+                    console.error('Erreur lors du chargement:', error);
+                    btnText.textContent = 'Erreur - Réessayer';
+                    spinner.classList.add('d-none');
+                    this.disabled = false;
+                });
+        });
+    }
+
+    // Réinitialiser la pagination lors de la soumission du formulaire de filtrage
+    const filterForm = document.getElementById('filter-form');
+    if (filterForm) {
+        filterForm.addEventListener('submit', function() {
+            // Le formulaire va recharger la page, donc pas besoin de logique AJAX ici
+        });
+    }
+});
+</script>
 {% endblock %}

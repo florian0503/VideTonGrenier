@@ -4,15 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="89cd9f66-c0c8-49a9-b7a1-0bbd445b1a46" name="Changes" comment="refactor base and index templates; enhance layout, styles, and navigation for improved user experience">
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+    <list default="true" id="89cd9f66-c0c8-49a9-b7a1-0bbd445b1a46" name="Changes" comment="refactor annonce editing process; enhance form validation and improve user feedback">
+      <change afterPath="$PROJECT_DIR$/src/Controller/CookieController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/DataFixtures/AnnonceFixtures.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Service/CookieConsentService.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/annonce/_annonce_cards.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/cookies/banner.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/cookies/policy.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/cookies/preferences.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/bundles.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/bundles.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/AnnonceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/AnnonceController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/symfony.lock" beforeDir="false" afterPath="$PROJECT_DIR$/symfony.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/annonce/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/annonce/edit.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/HomeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/HomeController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DataFixtures/CategorieFixtures.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataFixtures/CategorieFixtures.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/annonce/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/annonce/index.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -220,7 +224,7 @@
       <option name="presentableId" value="Default" />
       <updated>1754292981396</updated>
       <workItem from="1754292983087" duration="8553000" />
-      <workItem from="1754311101990" duration="4724000" />
+      <workItem from="1754311101990" duration="10478000" />
     </task>
     <task id="LOCAL-00001" summary="initialize project structure and add configuration files">
       <option name="closed" value="true" />
@@ -286,7 +290,23 @@
       <option name="project" value="LOCAL" />
       <updated>1754315825980</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="refactor annonce editing process; enhance form validation and improve user feedback">
+      <option name="closed" value="true" />
+      <created>1754316040306</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1754316040306</updated>
+    </task>
+    <task id="LOCAL-00010" summary="refactor annonce editing process; enhance form validation and improve user feedback">
+      <option name="closed" value="true" />
+      <created>1754319212587</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1754319212587</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -300,6 +320,7 @@
     <MESSAGE value="add reporting functionality for conversations and annonces; update user model and create report entity" />
     <MESSAGE value="add reporting functionality for conversations and annonces; create admin controllers and views for managing reports" />
     <MESSAGE value="refactor base and index templates; enhance layout, styles, and navigation for improved user experience" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor base and index templates; enhance layout, styles, and navigation for improved user experience" />
+    <MESSAGE value="refactor annonce editing process; enhance form validation and improve user feedback" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor annonce editing process; enhance form validation and improve user feedback" />
   </component>
 </project>

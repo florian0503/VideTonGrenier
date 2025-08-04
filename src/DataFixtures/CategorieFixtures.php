@@ -25,14 +25,14 @@ class CategorieFixtures extends Fixture
 
         foreach ($categories as $nom => $description) {
             $existingCategorie = $manager->getRepository(Categorie::class)->findOneBy(['nom' => $nom]);
-            
+
             if (!$existingCategorie) {
                 $categorie = new Categorie();
                 $categorie->setNom($nom);
                 $categorie->setDescription($description);
                 $categorie->setSlug(strtolower(str_replace([' ', '&'], ['-', '-'], $nom)));
                 $categorie->setIsActive(true);
-                
+
                 $manager->persist($categorie);
             }
         }

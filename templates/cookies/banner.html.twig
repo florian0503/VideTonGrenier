@@ -1,0 +1,179 @@
+{% set hasConsent = app.request.cookies.has('cookie_consent') %}
+
+<!-- Bannière de consentement des cookies -->
+{% if not hasConsent %}
+<div id="cookie-banner" class="cookie-banner">
+    <div class="cookie-banner-content">
+        <div class="cookie-banner-text">
+            <h5><i class="fas fa-cookie-bite me-2"></i>Nous utilisons des cookies</h5>
+            <p class="mb-3">
+                Nous utilisons des cookies pour améliorer votre expérience de navigation,
+                analyser le trafic du site et personnaliser le contenu.
+                <a href="{{ path('cookie_policy') }}" class="text-decoration-underline">En savoir plus</a>
+            </p>
+        </div>
+        <div class="cookie-banner-actions">
+            <button type="button" class="btn btn-outline-light btn-sm me-2" id="cookie-settings-btn">
+                <i class="fas fa-cog me-1"></i>Paramètres
+            </button>
+            <button type="button" class="btn btn-secondary btn-sm me-2" id="cookie-reject-btn">
+                <i class="fas fa-times me-1"></i>Refuser
+            </button>
+            <button type="button" class="btn btn-primary btn-sm" id="cookie-accept-btn">
+                <i class="fas fa-check me-1"></i>Accepter tout
+            </button>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<style>
+.cookie-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-hover) 100%);
+    color: white;
+    z-index: 9999;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+    animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.cookie-banner-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.cookie-banner-text h5 {
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.cookie-banner-text p {
+    margin-bottom: 0;
+    opacity: 0.9;
+    font-size: 0.9rem;
+}
+
+.cookie-banner-actions {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+    .cookie-banner-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+
+    .cookie-banner-actions {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .cookie-banner-actions .btn {
+        flex: 1;
+        min-width: 120px;
+    }
+}
+</style>
+
+{% if not hasConsent %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const banner = document.getElementById('cookie-banner');
+    const acceptBtn = document.getElementById('cookie-accept-btn');
+    const rejectBtn = document.getElementById('cookie-reject-btn');
+    const settingsBtn = document.getElementById('cookie-settings-btn');
+
+    // Masquer la bannière
+    function hideBanner() {
+        banner.style.animation = 'slideDown 0.5s ease-out';
+        setTimeout(() => {
+            banner.style.display = 'none';
+        }, 500);
+    }
+
+    // Accepter tous les cookies
+    acceptBtn.addEventListener('click', function() {
+        fetch('{{ path('cookie_accept_all') }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        }).then(() => {
+            hideBanner();
+            // Recharger les scripts analytiques/marketing si nécessaire
+            loadOptionalScripts();
+        });
+    });
+
+    // Refuser les cookies optionnels
+    rejectBtn.addEventListener('click', function() {
+        fetch('{{ path('cookie_reject_all') }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        }).then(() => {
+            hideBanner();
+        });
+    });
+
+    // Ouvrir les paramètres
+    settingsBtn.addEventListener('click', function() {
+        window.location.href = '{{ path('cookie_preferences') }}';
+    });
+
+    // Fonction pour charger les scripts optionnels
+    function loadOptionalScripts() {
+        // Ici vous pouvez ajouter le chargement conditionnel de Google Analytics, etc.
+        if (window.gtag) {
+            gtag('consent', 'update', {
+                'analytics_storage': 'granted',
+                'ad_storage': 'granted'
+            });
+        }
+    }
+});
+
+// Animation de fermeture
+const style = document.createElement('style');
+style.textContent = `
+@keyframes slideDown {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+}
+`;
+document.head.appendChild(style);
+</script>
+{% endif %}

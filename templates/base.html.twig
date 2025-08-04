@@ -593,6 +593,8 @@
                         <li class="mb-2"><a href="{{ path('app_legal_terms') }}">CGU</a></li>
                         <li class="mb-2"><a href="{{ path('app_legal_privacy') }}">Confidentialité</a></li>
                         <li class="mb-2"><a href="{{ path('app_legal_mentions') }}">Mentions légales</a></li>
+                        <li class="mb-2"><a href="{{ path('cookie_policy') }}">Politique cookies</a></li>
+                        <li class="mb-2"><a href="{{ path('cookie_preferences') }}">Préférences cookies</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-2 col-md-6">
@@ -822,5 +824,9 @@
             font-size: 1.2rem;
         }
     </style>
+
+    <!-- Bannière de consentement des cookies -->
+    {% include 'cookies/banner.html.twig' %}
 </body>
 </html>
+

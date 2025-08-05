@@ -15,7 +15,7 @@
                         <i class="fas fa-search me-2"></i>Parcourir les annonces
                     </a>
                     {% if not app.user %}
-                        <a href="{{ path('app_register') }}" class="btn btn-outline-modern btn-lg">
+                        <a href="{{ path('app_register') }}" class="btn btn-outline-modern btn-lg d-none d-md-inline-block">
                             <i class="fas fa-user-plus me-2"></i>Rejoindre
                         </a>
                     {% endif %}
@@ -177,7 +177,7 @@
     <div class="container">
         <h2 class="section-title gradient-text fade-in">Parcourir par catégorie</h2>
         
-        <div class="row g-4">
+        <div class="row g-4 categories-row">
             {% set categoryIcons = {
                 'Électronique': 'fas fa-mobile-alt',
                 'Mobilier': 'fas fa-chair', 
@@ -190,7 +190,7 @@
             } %}
             
             {% for category in categories %}
-                <div class="col-6 col-md-4 col-lg-3 fade-in" style="animation-delay: {{ loop.index * 0.1 }}s;">
+                <div class="col-6 col-lg-3 fade-in" style="animation-delay: {{ loop.index * 0.1 }}s;">
                     <a href="{{ path('app_annonce_index', {categorie: category[0].id}) }}" class="text-decoration-none">
                         <div class="card-modern category-card h-100">
                             <div class="card-body-modern text-center">
@@ -281,7 +281,7 @@
         {% if recentAnnonces is not empty %}
             <div class="row g-4">
                 {% for annonce in recentAnnonces %}
-                <div class="col-md-6 col-lg-4 fade-in" style="animation-delay: {{ loop.index * 0.1 }}s;">
+                <div class="col-12 col-lg-4 mobile-limit-{{ loop.index }} fade-in" style="animation-delay: {{ loop.index * 0.1 }}s;">
                     <div class="annonce-card">
                         <div class="annonce-image">
                             {% if annonce.firstImage %}
@@ -412,6 +412,205 @@
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+    /* Hero Section Mobile */
+    .hero-section {
+        min-height: 50vh;
+        padding: 2rem 0;
+    }
+    
+    .display-1 {
+        font-size: 2.5rem;
+        line-height: 1.2;
+        margin-bottom: 1.5rem !important;
+    }
+    
+    .lead {
+        font-size: 1rem;
+        margin-bottom: 2rem !important;
+    }
+    
+    .btn-lg {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+    }
+    
+    /* Search section mobile */
+    .search-section {
+        margin-top: -30px;
+        padding: 1.5rem;
+        border-radius: 1rem;
+    }
+    
+    .search-section .row {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .search-section .col-md-4,
+    .search-section .col-md-3,
+    .search-section .col-md-2 {
+        width: 100%;
+    }
+    
+    /* Categories mobile - FORCER 2 par ligne */
+    .categories-row > [class*="col-"] {
+        flex: 0 0 50% !important;
+        max-width: 50% !important;
+        padding: 0 0.5rem;
+    }
+    
+    .category-card {
+        min-height: 140px;
+    }
+    
+    .card-body-modern {
+        padding: 1.5rem 1rem;
+    }
+    
+    .feature-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.25rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .category-card h6 {
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .category-card small {
+        font-size: 0.75rem;
+    }
+    
+    /* Annonces mobile - limiter à 3 */
+    .mobile-limit-4,
+    .mobile-limit-5,
+    .mobile-limit-6 {
+        display: none;
+    }
+    
+    /* Annonce cards mobile */
+    .annonce-card {
+        margin-bottom: 1.5rem;
+    }
+    
+    .annonce-image {
+        height: 180px;
+    }
+    
+    .annonce-card .card-body-modern {
+        padding: 1.5rem;
+    }
+    
+    .annonce-card h5 {
+        font-size: 1.1rem;
+        line-height: 1.3;
+    }
+    
+    .annonce-card p {
+        font-size: 0.875rem;
+        line-height: 1.4;
+    }
+    
+    /* Section titles mobile */
+    .section-title {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+    }
+    
+    /* Stats card mobile */
+    .stats-card {
+        padding: 1.5rem;
+        margin-top: 2rem;
+    }
+    
+    .stats-number {
+        font-size: 2.5rem;
+    }
+    
+    .stats-label {
+        font-size: 0.8rem;
+    }
+    
+    /* Buttons mobile */
+    .btn-modern,
+    .btn-outline-modern {
+        border-radius: 0.75rem;
+        font-weight: 600;
+    }
+    
+    /* CTA Section mobile */
+    .py-5 {
+        padding: 3rem 0 !important;
+    }
+    
+    /* Floating animation reduced on mobile */
+    .floating-element {
+        animation: floatMobile 4s ease-in-out infinite;
+    }
+    
+    @keyframes floatMobile {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+    }
+    
+    /* Text adjustments */
+    .text-center h2 {
+        font-size: 1.75rem;
+    }
+    
+    .lead {
+        font-size: 1rem;
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 576px) {
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    .hero-section {
+        min-height: 45vh;
+    }
+    
+    .display-1 {
+        font-size: 2rem;
+    }
+    
+    .search-section {
+        padding: 1rem;
+        margin-top: -20px;
+    }
+    
+    .section-title {
+        font-size: 1.75rem;
+    }
+    
+    .btn-lg {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.95rem;
+    }
+    
+    .stats-number {
+        font-size: 2rem;
+    }
+    
+    .feature-icon {
+        width: 45px;
+        height: 45px;
+        font-size: 1.1rem;
+    }
+    
+    .category-card h6 {
+        font-size: 0.85rem;
+    }
 }
 </style>
 

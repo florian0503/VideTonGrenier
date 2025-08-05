@@ -4,18 +4,11 @@
 
 {% block meta_description %}Découvrez toutes les annonces disponibles sur VideTonGrenier. Trouvez ce que vous cherchez ou vendez vos objets facilement.{% endblock %}
 
+
 {% block body %}
 <div class="container py-4">
     <div class="row">
-        <div class="col-lg-3 mb-4">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0">🔍 Filtres</h5>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-lg-9">
+        <div class="col-lg-9 mx-auto">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
                     <h1 class="h3 mb-0">Toutes les annonces</h1>
@@ -50,7 +43,7 @@
                     {% endif %}
                 </div>
             {% else %}
-                <div class="row" id="annonces-container">
+                <div class="row justify-content-center" id="annonces-container">
                     {% include 'annonce/_annonce_cards.html.twig' with {'annonces': annonces} %}
                 </div>
 

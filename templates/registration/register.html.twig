@@ -2,96 +2,388 @@
 
 {% block title %}Inscription - VideTonGrenier{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .register-container {
+            min-height: 100vh;
+            background-color: #f8f9fa;
+            padding: 2rem 0;
+        }
+        
+        .register-card {
+            background: white;
+            border-radius: 15px;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .register-form .form-control {
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+            padding: 12px 45px 12px 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .register-form .form-control:focus {
+            border-color: #6f42c1;
+            box-shadow: 0 0 0 0.2rem rgba(111, 66, 193, 0.25);
+        }
+        
+        .btn-register {
+            background-color: #6f42c1;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 32px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-register:hover {
+            background-color: #5a2d91;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(111, 66, 193, 0.3);
+        }
+        
+        .register-header {
+            color: #2d3436;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+        
+        .login-link {
+            color: #6f42c1;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+        
+        .login-link:hover {
+            color: #5a2d91;
+        }
+        
+        .password-input-wrapper {
+            position: relative;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #6c757d;
+            cursor: pointer;
+            z-index: 10;
+        }
+        
+        .password-toggle:hover {
+            color: #6f42c1;
+        }
+        
+        .password-strength {
+            margin-top: 10px;
+        }
+        
+        .password-requirements {
+            font-size: 0.875rem;
+            margin-top: 8px;
+        }
+        
+        .requirement {
+            display: flex;
+            align-items: center;
+            margin-bottom: 4px;
+            color: #dc3545;
+            transition: color 0.3s ease;
+        }
+        
+        .requirement.valid {
+            color: #28a745;
+        }
+        
+        .requirement i {
+            width: 16px;
+            margin-right: 8px;
+        }
+        
+        .strength-bar {
+            height: 4px;
+            background-color: #e9ecef;
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+        
+        .strength-fill {
+            height: 100%;
+            width: 0%;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+        
+        .strength-weak { background-color: #dc3545; }
+        .strength-medium { background-color: #ffc107; }
+        .strength-strong { background-color: #28a745; }
+        
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 8px;
+        }
+        
+        .form-errors {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 4px;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h1 class="h3 mb-0">Créer un compte</h1>
-                </div>
-                <div class="card-body">
-                    {{ form_start(registrationForm) }}
-                        <div class="form-group mb-3">
-                            {{ form_label(registrationForm.email) }}
-                            {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control'}}) }}
-                            {{ form_errors(registrationForm.email) }}
+<div class="register-container">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="register-card p-4 p-md-5">
+                    <div class="text-center mb-4">
+                        <h1 class="register-header">
+                            <i class="fas fa-user-plus me-2"></i>
+                            Créer un compte
+                        </h1>
+                        <p class="text-muted">Rejoignez la communauté VideTonGrenier</p>
+                    </div>
+
+                    {{ form_start(registrationForm, {'attr': {'class': 'register-form'}}) }}
+                        <div class="mb-3">
+                            {{ form_label(registrationForm.email, 'Adresse email', {'attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control', 'placeholder': 'votre@email.com'}}) }}
+                            {% if form_errors(registrationForm.email) %}
+                                <div class="form-errors">{{ form_errors(registrationForm.email) }}</div>
+                            {% endif %}
                         </div>
 
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                    {{ form_label(registrationForm.firstName) }}
-                                    {{ form_widget(registrationForm.firstName, {'attr': {'class': 'form-control'}}) }}
-                                    {{ form_errors(registrationForm.firstName) }}
+                                <div class="mb-3">
+                                    {{ form_label(registrationForm.firstName, 'Prénom', {'attr': {'class': 'form-label'}}) }}
+                                    {{ form_widget(registrationForm.firstName, {'attr': {'class': 'form-control', 'placeholder': 'Votre prénom'}}) }}
+                                    {% if form_errors(registrationForm.firstName) %}
+                                        <div class="form-errors">{{ form_errors(registrationForm.firstName) }}</div>
+                                    {% endif %}
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                    {{ form_label(registrationForm.lastName) }}
-                                    {{ form_widget(registrationForm.lastName, {'attr': {'class': 'form-control'}}) }}
-                                    {{ form_errors(registrationForm.lastName) }}
+                                <div class="mb-3">
+                                    {{ form_label(registrationForm.lastName, 'Nom', {'attr': {'class': 'form-label'}}) }}
+                                    {{ form_widget(registrationForm.lastName, {'attr': {'class': 'form-control', 'placeholder': 'Votre nom'}}) }}
+                                    {% if form_errors(registrationForm.lastName) %}
+                                        <div class="form-errors">{{ form_errors(registrationForm.lastName) }}</div>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
 
-                        <div class="form-group mb-3">
-                            {{ form_label(registrationForm.phone) }}
-                            {{ form_widget(registrationForm.phone, {'attr': {'class': 'form-control'}}) }}
-                            {{ form_errors(registrationForm.phone) }}
+                        <div class="mb-3">
+                            {{ form_label(registrationForm.phone, 'Téléphone', {'attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(registrationForm.phone, {'attr': {'class': 'form-control', 'placeholder': '06 12 34 56 78'}}) }}
+                            {% if form_errors(registrationForm.phone) %}
+                                <div class="form-errors">{{ form_errors(registrationForm.phone) }}</div>
+                            {% endif %}
                         </div>
 
-                        <div class="form-group mb-3">
-                            {{ form_label(registrationForm.address) }}
-                            {{ form_widget(registrationForm.address, {'attr': {'class': 'form-control'}}) }}
-                            {{ form_errors(registrationForm.address) }}
+                        <div class="mb-3">
+                            {{ form_label(registrationForm.address, 'Adresse', {'attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(registrationForm.address, {'attr': {'class': 'form-control', 'placeholder': '123 rue de la République'}}) }}
+                            {% if form_errors(registrationForm.address) %}
+                                <div class="form-errors">{{ form_errors(registrationForm.address) }}</div>
+                            {% endif %}
                         </div>
 
                         <div class="row">
                             <div class="col-md-4">
-                                <div class="form-group mb-3">
-                                    {{ form_label(registrationForm.postalCode) }}
-                                    {{ form_widget(registrationForm.postalCode, {'attr': {'class': 'form-control'}}) }}
-                                    {{ form_errors(registrationForm.postalCode) }}
+                                <div class="mb-3">
+                                    {{ form_label(registrationForm.postalCode, 'Code postal', {'attr': {'class': 'form-label'}}) }}
+                                    {{ form_widget(registrationForm.postalCode, {'attr': {'class': 'form-control', 'placeholder': '75000'}}) }}
+                                    {% if form_errors(registrationForm.postalCode) %}
+                                        <div class="form-errors">{{ form_errors(registrationForm.postalCode) }}</div>
+                                    {% endif %}
                                 </div>
                             </div>
                             <div class="col-md-8">
-                                <div class="form-group mb-3">
-                                    {{ form_label(registrationForm.city) }}
-                                    {{ form_widget(registrationForm.city, {'attr': {'class': 'form-control'}}) }}
-                                    {{ form_errors(registrationForm.city) }}
+                                <div class="mb-3">
+                                    {{ form_label(registrationForm.city, 'Ville', {'attr': {'class': 'form-label'}}) }}
+                                    {{ form_widget(registrationForm.city, {'attr': {'class': 'form-control', 'placeholder': 'Paris'}}) }}
+                                    {% if form_errors(registrationForm.city) %}
+                                        <div class="form-errors">{{ form_errors(registrationForm.city) }}</div>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
 
-                        <div class="form-group mb-3">
-                            {{ form_label(registrationForm.plainPassword.first) }}
-                            {{ form_widget(registrationForm.plainPassword.first, {'attr': {'class': 'form-control'}}) }}
-                            {{ form_errors(registrationForm.plainPassword.first) }}
+                        <div class="mb-3">
+                            {{ form_label(registrationForm.plainPassword.first, 'Mot de passe', {'attr': {'class': 'form-label'}}) }}
+                            <div class="password-input-wrapper">
+                                {{ form_widget(registrationForm.plainPassword.first, {'attr': {'class': 'form-control', 'placeholder': 'Choisissez un mot de passe sécurisé', 'oninput': 'checkPasswordStrength(this.value)'}}) }}
+                                <button type="button" class="password-toggle" onclick="togglePasswordRegister('registration_form_plainPassword_first')">
+                                    <i class="fas fa-eye" id="registration_form_plainPassword_first-eye"></i>
+                                </button>
+                            </div>
+                            {% if form_errors(registrationForm.plainPassword.first) %}
+                                <div class="form-errors">{{ form_errors(registrationForm.plainPassword.first) }}</div>
+                            {% endif %}
+                            
+                            <div class="password-strength">
+                                <div class="strength-bar">
+                                    <div class="strength-fill" id="strength-fill"></div>
+                                </div>
+                                <div class="password-requirements" id="password-requirements">
+                                    <div class="requirement" id="req-length">
+                                        <i class="fas fa-times"></i>
+                                        <span>Au moins 8 caractères</span>
+                                    </div>
+                                    <div class="requirement" id="req-uppercase">
+                                        <i class="fas fa-times"></i>
+                                        <span>Une majuscule</span>
+                                    </div>
+                                    <div class="requirement" id="req-lowercase">
+                                        <i class="fas fa-times"></i>
+                                        <span>Une minuscule</span>
+                                    </div>
+                                    <div class="requirement" id="req-number">
+                                        <i class="fas fa-times"></i>
+                                        <span>Un chiffre</span>
+                                    </div>
+                                    <div class="requirement" id="req-special">
+                                        <i class="fas fa-times"></i>
+                                        <span>Un caractère spécial</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="form-group mb-3">
-                            {{ form_label(registrationForm.plainPassword.second) }}
-                            {{ form_widget(registrationForm.plainPassword.second, {'attr': {'class': 'form-control'}}) }}
-                            {{ form_errors(registrationForm.plainPassword.second) }}
+                        <div class="mb-3">
+                            {{ form_label(registrationForm.plainPassword.second, 'Confirmer le mot de passe', {'attr': {'class': 'form-label'}}) }}
+                            <div class="password-input-wrapper">
+                                {{ form_widget(registrationForm.plainPassword.second, {'attr': {'class': 'form-control', 'placeholder': 'Confirmez votre mot de passe'}}) }}
+                                <button type="button" class="password-toggle" onclick="togglePasswordRegister('registration_form_plainPassword_second')">
+                                    <i class="fas fa-eye" id="registration_form_plainPassword_second-eye"></i>
+                                </button>
+                            </div>
+                            {% if form_errors(registrationForm.plainPassword.second) %}
+                                <div class="form-errors">{{ form_errors(registrationForm.plainPassword.second) }}</div>
+                            {% endif %}
                         </div>
 
-                        <div class="form-check mb-3">
+                        <div class="form-check mb-4">
                             {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'form-check-input'}}) }}
                             {{ form_label(registrationForm.agreeTerms, null, {'label_attr': {'class': 'form-check-label'}}) }}
-                            {{ form_errors(registrationForm.agreeTerms) }}
+                            {% if form_errors(registrationForm.agreeTerms) %}
+                                <div class="form-errors">{{ form_errors(registrationForm.agreeTerms) }}</div>
+                            {% endif %}
                         </div>
 
-                        <button type="submit" class="btn btn-primary w-100">S'inscrire</button>
+                        <div class="d-grid mb-4">
+                            <button type="submit" class="btn btn-primary btn-register">
+                                <i class="fas fa-user-plus me-2"></i>
+                                Créer mon compte
+                            </button>
+                        </div>
                     {{ form_end(registrationForm) }}
 
                     <hr>
-                    <p class="text-center">
-                        Déjà un compte ? <a href="{{ path('app_login') }}">Se connecter</a>
-                    </p>
+                    <div class="text-center">
+                        <p class="mb-0">
+                            Déjà un compte ? 
+                            <a href="{{ path('app_login') }}" class="login-link">
+                                <i class="fas fa-sign-in-alt me-1"></i>Se connecter
+                            </a>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+function togglePasswordRegister(inputId) {
+    const passwordInput = document.getElementById(inputId);
+    const eyeIcon = document.getElementById(inputId + '-eye');
+    
+    if (passwordInput && eyeIcon) {
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            eyeIcon.classList.remove('fa-eye');
+            eyeIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            eyeIcon.classList.remove('fa-eye-slash');
+            eyeIcon.classList.add('fa-eye');
+        }
+    }
+}
+
+function checkPasswordStrength(password) {
+    const requirements = {
+        length: password.length >= 8,
+        uppercase: /[A-Z]/.test(password),
+        lowercase: /[a-z]/.test(password),
+        number: /\d/.test(password),
+        special: /[!@#$%^&*(),.?":{}|<>]/.test(password)
+    };
+    
+    // Mettre à jour les exigences visuellement
+    Object.keys(requirements).forEach(req => {
+        const element = document.getElementById(`req-${req}`);
+        if (element) {
+            const icon = element.querySelector('i');
+            
+            if (requirements[req]) {
+                element.classList.add('valid');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-check');
+            } else {
+                element.classList.remove('valid');
+                icon.classList.remove('fa-check');
+                icon.classList.add('fa-times');
+            }
+        }
+    });
+    
+    // Calculer la force du mot de passe
+    const validRequirements = Object.values(requirements).filter(Boolean).length;
+    const strengthFill = document.getElementById('strength-fill');
+    
+    if (strengthFill) {
+        let strength = 0;
+        let strengthClass = '';
+        
+        if (validRequirements >= 5) {
+            strength = 100;
+            strengthClass = 'strength-strong';
+        } else if (validRequirements >= 3) {
+            strength = 60;
+            strengthClass = 'strength-medium';
+        } else if (validRequirements >= 1) {
+            strength = 30;
+            strengthClass = 'strength-weak';
+        }
+        
+        strengthFill.style.width = strength + '%';
+        strengthFill.className = 'strength-fill ' + strengthClass;
+    }
+}
+
+// Initialiser l'écouteur d'événement pour le champ mot de passe
+document.addEventListener('DOMContentLoaded', function() {
+    const passwordField = document.getElementById('registration_form_plainPassword_first');
+    if (passwordField) {
+        passwordField.addEventListener('input', function() {
+            checkPasswordStrength(this.value);
+        });
+    }
+});
+</script>
 {% endblock %}

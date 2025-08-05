@@ -442,6 +442,19 @@
                 padding: 0.5rem 1rem;
             }
         }
+        
+        /* Fix pour le menu mobile */
+        .navbar-toggler:focus {
+            text-decoration: none;
+            outline: 0;
+            box-shadow: 0 0 0 0.25rem;
+        }
+        
+        .navbar-collapse {
+            flex-basis: 100%;
+            flex-grow: 1;
+            align-items: center;
+        }
 
         /* Search Bar */
         .search-bar-fixed {
@@ -455,6 +468,12 @@
             border-bottom: 1px solid var(--border-color);
             padding: 0.5rem 0;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .search-bar-fixed.hidden {
+            transform: translateY(-100%);
         }
 
         .search-bar-fixed .container {
@@ -516,7 +535,7 @@
                 <i class="fas fa-store me-2"></i>VideTonGrenier
             </a>
             
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             
@@ -577,7 +596,7 @@
         </div>
     {% endif %}
 
-    <main style="margin-top: {% if app.request.attributes.get('_route') == 'app_annonce_index' %}200px{% else %}80px{% endif %};">
+    <main class="main-content" style="margin-top: {% if app.request.attributes.get('_route') == 'app_annonce_index' %}200px{% else %}80px{% endif %};">
         {% for message in app.flashes('success') %}
             <div class="container mt-3">
                 <div class="alert alert-success alert-dismissible fade show fade-in" role="alert">
@@ -621,13 +640,13 @@
     <footer class="footer-modern mt-auto">
         <div class="container">
             <div class="row g-4">
-                <div class="col-lg-4">
+                <div class="col-lg-4 footer-brand">
                     <h5 class="fw-bold mb-3" style="background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
                         <i class="fas fa-store me-2"></i>VideTonGrenier
                     </h5>
-                    <p class="text-muted">La plateforme moderne pour vendre et acheter en toute simplicité. Rejoignez notre communauté de passionnés.</p>
+                    <p class="text-muted footer-description">La plateforme moderne pour vendre et acheter en toute simplicité. Rejoignez notre communauté de passionnés.</p>
                 </div>
-                <div class="col-lg-2 col-md-6">
+                <div class="col-lg-2 col-md-6 col-6 footer-nav">
                     <h6 class="fw-semibold mb-3" style="color: var(--text-primary);">Navigation</h6>
                     <ul class="list-unstyled">
                         <li class="mb-2"><a href="{{ path('app_home') }}">Accueil</a></li>
@@ -637,7 +656,7 @@
                         {% endif %}
                     </ul>
                 </div>
-                <div class="col-lg-2 col-md-6">
+                <div class="col-lg-2 col-md-6 col-6 footer-support">
                     <h6 class="fw-semibold mb-3" style="color: var(--text-primary);">Support</h6>
                     <ul class="list-unstyled">
                         <li class="mb-2"><a href="{{ path('app_legal_about') }}">À propos</a></li>
@@ -645,17 +664,16 @@
                         <li class="mb-2"><a href="{{ path('app_legal_faq') }}">FAQ</a></li>
                     </ul>
                 </div>
-                <div class="col-lg-2 col-md-6">
+                <div class="col-lg-2 col-md-6 col-6 footer-legal">
                     <h6 class="fw-semibold mb-3" style="color: var(--text-primary);">Légal</h6>
                     <ul class="list-unstyled">
                         <li class="mb-2"><a href="{{ path('app_legal_terms') }}">CGU</a></li>
                         <li class="mb-2"><a href="{{ path('app_legal_privacy') }}">Confidentialité</a></li>
-                        <li class="mb-2"><a href="{{ path('app_legal_mentions') }}">Mentions légales</a></li>
-                        <li class="mb-2"><a href="{{ path('cookie_policy') }}">Politique cookies</a></li>
-                        <li class="mb-2"><a href="{{ path('cookie_preferences') }}">Préférences cookies</a></li>
+                        <li class="mb-2"><a href="{{ path('app_legal_mentions') }}">Mentions</a></li>
+                        <li class="mb-2"><a href="{{ path('cookie_policy') }}">Cookies</a></li>
                     </ul>
                 </div>
-                <div class="col-lg-2 col-md-6">
+                <div class="col-lg-2 col-md-6 col-6 footer-social">
                     <h6 class="fw-semibold mb-3" style="color: var(--text-primary);">Suivez-nous</h6>
                     <div class="d-flex gap-2">
                         <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
@@ -680,82 +698,53 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Wait for DOM to be fully loaded
+        // Menu mobile fix manuel
         document.addEventListener('DOMContentLoaded', function() {
-            // Force initialize Bootstrap dropdowns with better error handling
-            const dropdownElements = document.querySelectorAll('[data-bs-toggle="dropdown"]');
-            dropdownElements.forEach(function(element) {
-                try {
-                    // Remove existing instance if any
-                    const existingInstance = bootstrap.Dropdown.getInstance(element);
-                    if (existingInstance) {
-                        existingInstance.dispose();
-                    }
-                    // Create new instance
-                    new bootstrap.Dropdown(element, {
-                        autoClose: true,
-                        boundary: 'viewport'
-                    });
-                } catch (error) {
-                    console.error('Erreur lors de l\'initialisation du dropdown:', error);
-                }
-            });
+            const toggler = document.querySelector('.navbar-toggler');
+            const collapse = document.querySelector('.navbar-collapse');
             
-            // Also ensure all dropdown-toggle elements are properly initialized
-            setTimeout(function() {
-                const allDropdowns = document.querySelectorAll('.dropdown-toggle');
-                allDropdowns.forEach(function(dropdown) {
-                    try {
-                        if (!bootstrap.Dropdown.getInstance(dropdown)) {
-                            new bootstrap.Dropdown(dropdown, {
-                                autoClose: true,
-                                boundary: 'viewport'
-                            });
-                        }
-                    } catch (error) {
-                        console.error('Erreur lors de l\'initialisation du dropdown (seconde tentative):', error);
+            if (toggler && collapse) {
+                // Gérer manuellement le toggle
+                toggler.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const isExpanded = toggler.getAttribute('aria-expanded') === 'true';
+                    
+                    if (isExpanded) {
+                        // Fermer
+                        collapse.classList.remove('show');
+                        toggler.setAttribute('aria-expanded', 'false');
+                        toggler.classList.add('collapsed');
+                    } else {
+                        // Ouvrir
+                        collapse.classList.add('show');
+                        toggler.setAttribute('aria-expanded', 'true');
+                        toggler.classList.remove('collapsed');
                     }
                 });
-            }, 200);
-
-            // Add fallback click handler for dropdown
-            document.addEventListener('click', function(e) {
-                const dropdownToggle = e.target.closest('.dropdown-toggle');
-                if (dropdownToggle) {
-                    e.preventDefault();
-                    const dropdownMenu = dropdownToggle.nextElementSibling;
-                    if (dropdownMenu && dropdownMenu.classList.contains('dropdown-menu')) {
-                        // Toggle the dropdown manually if Bootstrap isn't working
-                        const isOpen = dropdownMenu.classList.contains('show');
-                        
-                        // Close all other dropdowns first
-                        document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
-                            menu.classList.remove('show');
-                            menu.parentElement.classList.remove('show');
-                        });
-                        
-                        if (!isOpen) {
-                            dropdownMenu.classList.add('show');
-                            dropdownToggle.parentElement.classList.add('show');
-                        }
-                    }
-                }
                 
-                // Close dropdown when clicking outside
-                if (!e.target.closest('.dropdown')) {
-                    document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
-                        menu.classList.remove('show');
-                        menu.parentElement.classList.remove('show');
-                    });
-                }
-            });
-
-            // Auto dismiss alerts after 5 seconds
+                // Fermer quand on clique sur un lien
+                collapse.addEventListener('click', function(e) {
+                    if (e.target.classList.contains('nav-link') && !e.target.classList.contains('dropdown-toggle')) {
+                        collapse.classList.remove('show');
+                        toggler.setAttribute('aria-expanded', 'false');
+                        toggler.classList.add('collapsed');
+                    }
+                });
+            }
+            
+            // Auto dismiss alerts
             setTimeout(function() {
                 const alerts = document.querySelectorAll('.alert:not(.alert-permanent)');
                 alerts.forEach(alert => {
-                    const bsAlert = new bootstrap.Alert(alert);
-                    bsAlert.close();
+                    try {
+                        if (typeof bootstrap !== 'undefined') {
+                            const bsAlert = new bootstrap.Alert(alert);
+                            bsAlert.close();
+                        }
+                    } catch (e) {
+                        // Ignorer
+                    }
                 });
             }, 5000);
         });
@@ -787,10 +776,13 @@
             observer.observe(el);
         });
 
-        // Navbar background on scroll and scroll to top button
+        // Navbar background on scroll, search bar hide/show, and scroll to top button
+        let lastScrollTop = 0;
         window.addEventListener('scroll', () => {
             const navbar = document.querySelector('.navbar');
             const scrollToTop = document.getElementById('scrollToTop');
+            const searchBar = document.querySelector('.search-bar-fixed');
+            const currentScroll = window.scrollY;
             
             if (navbar) {
                 if (window.scrollY > 50) {
@@ -800,6 +792,18 @@
                     navbar.style.background = 'rgba(255, 255, 255, 0.95)';
                     navbar.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.1)';
                 }
+            }
+            
+            // Hide/show search bar based on scroll direction
+            if (searchBar) {
+                if (currentScroll > lastScrollTop && currentScroll > 150) {
+                    // Scrolling down - hide search bar
+                    searchBar.classList.add('hidden');
+                } else {
+                    // Scrolling up - show search bar
+                    searchBar.classList.remove('hidden');
+                }
+                lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
             }
             
             // Show/hide scroll to top button
@@ -880,6 +884,90 @@
 
         .scroll-to-top i {
             font-size: 1.2rem;
+        }
+        
+        /* Footer Mobile Optimizations */
+        @media (max-width: 768px) {
+            .footer-modern {
+                padding: 2rem 0 1rem;
+            }
+            
+            .footer-description {
+                display: none;
+            }
+            
+            .footer-brand {
+                display: none;
+            }
+            
+            /* FORCER 2 colonnes côte à côte */
+            .footer-nav,
+            .footer-support,
+            .footer-legal,
+            .footer-social {
+                flex: 0 0 50% !important;
+                max-width: 50% !important;
+                margin-bottom: 1rem;
+                padding: 0 0.5rem;
+            }
+            
+            .footer-nav h6,
+            .footer-support h6,
+            .footer-legal h6,
+            .footer-social h6 {
+                font-size: 0.9rem;
+                margin-bottom: 0.75rem;
+            }
+            
+            .footer-nav ul li,
+            .footer-support ul li,
+            .footer-legal ul li {
+                margin-bottom: 0.5rem;
+            }
+            
+            .footer-nav a,
+            .footer-support a,
+            .footer-legal a {
+                font-size: 0.85rem;
+                padding: 0.25rem 0.5rem;
+            }
+            
+            .social-icon {
+                width: 32px;
+                height: 32px;
+                font-size: 0.9rem;
+            }
+            
+            .row.align-items-center .col-md-6 p {
+                font-size: 0.8rem;
+                margin-bottom: 0.5rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .footer-modern {
+                padding: 1.5rem 0 1rem;
+            }
+            
+            /* Garder les colonnes 2x2, pas centrer */
+            .footer-nav,
+            .footer-support {
+                text-align: left;
+            }
+            
+            .footer-legal,
+            .footer-social {
+                text-align: left;
+            }
+            
+            /* Centrer seulement le copyright */
+            .row.align-items-center {
+                text-align: center;
+            }
+            
+            .row.align-items-center .col-md-6 {
+                text-align: center !important;
+            }
         }
     </style>
 

@@ -567,8 +567,8 @@
         </div>
     </nav>
 
-    <!-- Barre de recherche avancée (affichée uniquement sur les pages d'annonces) -->
-    {% set annonceRoutes = ['app_annonce_index', 'app_annonce_show'] %}
+    <!-- Barre de recherche avancée (affichée uniquement sur la page d'index des annonces) -->
+    {% set annonceRoutes = ['app_annonce_index'] %}
     {% if app.request.attributes.get('_route') in annonceRoutes %}
         <div class="search-bar-fixed">
             <div class="container">
@@ -577,7 +577,7 @@
         </div>
     {% endif %}
 
-    <main style="margin-top: 80px;">
+    <main style="margin-top: {% if app.request.attributes.get('_route') == 'app_annonce_index' %}200px{% else %}80px{% endif %};">
         {% for message in app.flashes('success') %}
             <div class="container mt-3">
                 <div class="alert alert-success alert-dismissible fade show fade-in" role="alert">

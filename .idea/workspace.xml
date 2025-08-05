@@ -4,13 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="89cd9f66-c0c8-49a9-b7a1-0bbd445b1a46" name="Changes" comment="add cookie consent management; implement cookie preferences, policy, and consent banner">
+    <list default="true" id="89cd9f66-c0c8-49a9-b7a1-0bbd445b1a46" name="Changes" comment="refactor fixtures and templates; enhance admin creation logic, improve category announcements, and update placeholder images">
+      <change afterPath="$PROJECT_DIR$/public/uploads/annonces/macbook-air-m2-1.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataFixtures/AdminFixtures.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataFixtures/AdminFixtures.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DataFixtures/AnnonceFixtures.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataFixtures/AnnonceFixtures.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataFixtures/CategorieFixtures.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataFixtures/CategorieFixtures.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/annonce/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/annonce/index.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -37,6 +34,10 @@
     &quot;accountId&quot;: &quot;fb661540-fa29-4fb0-8883-45a740dbc841&quot;
   }
 }</component>
+  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
+  <component name="KubernetesApiProvider"><![CDATA[{
+  "isMigrated": true
+}]]></component>
   <component name="PhpWorkspaceProjectConfiguration">
     <include_path>
       <path value="$PROJECT_DIR$/vendor/symfony/dom-crawler" />
@@ -202,6 +203,11 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="\\wsl.localhost\Ubuntu-22.04\home\diagram\dev\symfony\VideTonGrenier\public\uploads\annonces" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -219,7 +225,7 @@
       <updated>1754292981396</updated>
       <workItem from="1754292983087" duration="8553000" />
       <workItem from="1754311101990" duration="10768000" />
-      <workItem from="1754377207339" duration="1196000" />
+      <workItem from="1754377207339" duration="14503000" />
     </task>
     <task id="LOCAL-00001" summary="initialize project structure and add configuration files">
       <option name="closed" value="true" />
@@ -309,7 +315,15 @@
       <option name="project" value="LOCAL" />
       <updated>1754323046956</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="refactor fixtures and templates; enhance admin creation logic, improve category announcements, and update placeholder images">
+      <option name="closed" value="true" />
+      <created>1754378508732</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1754378508732</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -325,6 +339,7 @@
     <MESSAGE value="refactor base and index templates; enhance layout, styles, and navigation for improved user experience" />
     <MESSAGE value="refactor annonce editing process; enhance form validation and improve user feedback" />
     <MESSAGE value="add cookie consent management; implement cookie preferences, policy, and consent banner" />
-    <option name="LAST_COMMIT_MESSAGE" value="add cookie consent management; implement cookie preferences, policy, and consent banner" />
+    <MESSAGE value="refactor fixtures and templates; enhance admin creation logic, improve category announcements, and update placeholder images" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor fixtures and templates; enhance admin creation logic, improve category announcements, and update placeholder images" />
   </component>
 </project>

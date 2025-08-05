@@ -91,16 +91,16 @@ class AnnonceFixtures extends Fixture implements DependentFixtureInterface
                 ['Encyclopédie Larousse', 'Encyclopédie Larousse 20 volumes, édition 2015. Parfait état, très peu consultée. Idéale pour études ou culture générale. Vendue cause déménagement.', 120, ['larousse-1.jpg', 'larousse-2.jpg']]
             ],
             'Emploi' => [
-                ['Développeur Web Junior', 'Startup recherche développeur web junior React/Node.js. Formation assurée, équipe jeune et dynamique. Télétravail possible 2j/semaine. Salaire 32-38K selon profil.', 35000, []],
-                ['Professeur mathématiques', 'Collège privé recherche professeur de mathématiques pour classes de 4ème/3ème. Temps plein, CDI. Expérience souhaitée mais débutant accepté. Poste à pourvoir rapidement.', 2200, []],
-                ['Commercial terrain H/F', 'Entreprise de matériel électrique recrute commercial(e) pour secteur Lyon/Rhône. Expérience vente BtoB exigée. Voiture de fonction, variable attractif.', 42000, []],
-                ['Aide soignante nuit', 'EHPAD recherche aide-soignante pour équipe de nuit. Diplôme exigé, expérience gériatrie appréciée. Planning aménageable, équipe bienveillante.', 1800, []]
+                ['Développeur Web Junior', 'Startup recherche développeur web junior React/Node.js. Formation assurée, équipe jeune et dynamique. Télétravail possible 2j/semaine. Salaire 32-38K selon profil.', 35000, ['dev-web-1.jpg', 'dev-web-2.jpg']],
+                ['Professeur mathématiques', 'Collège privé recherche professeur de mathématiques pour classes de 4ème/3ème. Temps plein, CDI. Expérience souhaitée mais débutant accepté. Poste à pourvoir rapidement.', 2200, ['prof-maths-1.jpg', 'prof-maths-2.jpg']],
+                ['Commercial terrain H/F', 'Entreprise de matériel électrique recrute commercial(e) pour secteur Lyon/Rhône. Expérience vente BtoB exigée. Voiture de fonction, variable attractif.', 42000, ['commercial-1.jpg', 'commercial-2.jpg']],
+                ['Aide soignante nuit', 'EHPAD recherche aide-soignante pour équipe de nuit. Diplôme exigé, expérience gériatrie appréciée. Planning aménageable, équipe bienveillante.', 1800, ['aide-soignante-1.jpg', 'aide-soignante-2.jpg']]
             ],
             'Services' => [
-                ['Cours particuliers maths', 'Professeur agrégé propose cours particuliers mathématiques niveau collège/lycée. 15 ans d\'expérience. Méthode personnalisée, suivi régulier. Disponible soirées et week-ends.', 25, []],
-                ['Service ménage domicile', 'Dame de confiance propose service ménage à domicile sur Paris et proche banlieue. Expérience 10 ans, références sérieuses. Repassage, ménage complet. Cesu accepté.', 18, []],
-                ['Garde d\'enfants', 'Étudiante en école d\'infirmière propose garde d\'enfants le soir et week-ends. Expérience 5 ans, BAFA + PSC1. Aide aux devoirs possible. Secteur 15ème/16ème.', 12, []],
-                ['Réparation informatique', 'Technicien informatique propose réparation PC/Mac à domicile. Diagnostic gratuit, devis transparent. Spécialisé virus, récupération données, installation. Intervention rapide.', 45, []]
+                ['Cours particuliers maths', 'Professeur agrégé propose cours particuliers mathématiques niveau collège/lycée. 15 ans d\'expérience. Méthode personnalisée, suivi régulier. Disponible soirées et week-ends.', 25, ['cours-maths-1.jpg', 'cours-maths-2.jpg']],
+                ['Service ménage domicile', 'Dame de confiance propose service ménage à domicile sur Paris et proche banlieue. Expérience 10 ans, références sérieuses. Repassage, ménage complet. Cesu accepté.', 18, ['menage-1.jpg', 'menage-2.jpg']],
+                ['Garde d\'enfants', 'Étudiante en école d\'infirmière propose garde d\'enfants le soir et week-ends. Expérience 5 ans, BAFA + PSC1. Aide aux devoirs possible. Secteur 15ème/16ème.', 12, ['garde-enfants-1.jpg', 'garde-enfants-2.jpg']],
+                ['Réparation informatique', 'Technicien informatique propose réparation PC/Mac à domicile. Diagnostic gratuit, devis transparent. Spécialisé virus, récupération données, installation. Intervention rapide.', 45, ['reparation-pc-1.jpg', 'reparation-pc-2.jpg']]
             ],
             'Sports & Loisirs' => [
                 ['Guitare acoustique Martin', 'Guitare Martin D-28 Standard, épicéa/palissandre. Son exceptionnel, lutherie américaine. Achetée neuve 2800€, très peu jouée. Étui rigide inclus. Parfaite pour enregistrement ou concert.', 1890, ['martin-d28-1.jpg', 'martin-d28-2.jpg', 'martin-case.jpg']],
@@ -182,23 +182,13 @@ class AnnonceFixtures extends Fixture implements DependentFixtureInterface
 
                     // Ajouter des photos si disponibles
                     if (isset($annonceInfo[3]) && !empty($annonceInfo[3])) {
-                        // Utiliser des images placeholder réalistes
-                        $images = [];
-                        foreach ($annonceInfo[3] as $index => $imageName) {
-                            // Générer des URLs d'images placeholder basées sur la catégorie
-                            $width = 800;
-                            $height = 600;
-                            $categorySlug = strtolower(str_replace(['&', ' '], ['', '-'], $categorie->getNom()));
-                            $seed = abs(crc32($titre . $index));
-                            $images[] = "https://picsum.photos/seed/{$seed}/{$width}/{$height}";
-                        }
-                        $annonce->setImages($images);
+                        // Utiliser directement les noms de fichiers
+                        $annonce->setImages($annonceInfo[3]);
                     } else {
-                        // Si pas d'images définies, ajouter au moins une image placeholder
-                        $width = 800;
-                        $height = 600;
+                        // Si pas d'images définies, ajouter une image placeholder avec nom de fichier
                         $seed = abs(crc32($titre));
-                        $annonce->setImages(["https://picsum.photos/seed/{$seed}/{$width}/{$height}"]);
+                        $placeholderName = "placeholder-{$seed}.jpg";
+                        $annonce->setImages([$placeholderName]);
                     }
 
                     $manager->persist($annonce);
@@ -279,22 +269,13 @@ class AnnonceFixtures extends Fixture implements DependentFixtureInterface
 
                 // Ajouter des photos si disponibles
                 if (isset($annonceInfo[3]) && !empty($annonceInfo[3])) {
-                    // Utiliser des images placeholder réalistes
-                    $images = [];
-                    foreach ($annonceInfo[3] as $index => $imageName) {
-                        // Générer des URLs d'images placeholder basées sur la catégorie
-                        $width = 800;
-                        $height = 600;
-                        $seed = abs(crc32($titre . $index));
-                        $images[] = "https://picsum.photos/seed/{$seed}/{$width}/{$height}";
-                    }
-                    $annonce->setImages($images);
+                    // Utiliser directement les noms de fichiers
+                    $annonce->setImages($annonceInfo[3]);
                 } else {
-                    // Si pas d'images définies, ajouter au moins une image placeholder
-                    $width = 800;
-                    $height = 600;
+                    // Si pas d'images définies, ajouter une image placeholder avec nom de fichier
                     $seed = abs(crc32($titre));
-                    $annonce->setImages(["https://picsum.photos/seed/{$seed}/{$width}/{$height}"]);
+                    $placeholderName = "placeholder-{$seed}.jpg";
+                    $annonce->setImages([$placeholderName]);
                 }
 
                 $manager->persist($annonce);

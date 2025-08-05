@@ -10,4 +10,4 @@ import './styles/app.scss';
 // Import Bootstrap JavaScript
 import 'bootstrap';
 
-console.log('VideTonGrenier est prêt! 🏠');
+// VideTonGrenier est prêt

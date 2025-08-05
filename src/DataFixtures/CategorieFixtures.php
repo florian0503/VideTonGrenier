@@ -38,6 +38,6 @@ class CategorieFixtures extends Fixture
         }
 
         $manager->flush();
-        echo "Catégories créées avec succès !\n";
+        // Catégories créées avec succès
     }
 }

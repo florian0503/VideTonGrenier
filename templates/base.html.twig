@@ -567,8 +567,9 @@
         </div>
     </nav>
 
-    <!-- Barre de recherche avancée (affichée sur toutes les pages sauf accueil) -->
-    {% if app.request.attributes.get('_route') != 'app_home' %}
+    <!-- Barre de recherche avancée (affichée uniquement sur les pages d'annonces) -->
+    {% set annonceRoutes = ['app_annonce_index', 'app_annonce_show'] %}
+    {% if app.request.attributes.get('_route') in annonceRoutes %}
         <div class="search-bar-fixed">
             <div class="container">
                 {% include 'components/search-bar.html.twig' %}

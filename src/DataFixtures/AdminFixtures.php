@@ -18,30 +18,30 @@ class AdminFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        // Vérifier si l'admin existe déjà
-        $existingAdmin = $manager->getRepository(User::class)->findOneBy(['email' => 'admin@gmail.com']);
+        // PRODUCTION: Ne pas créer d'administrateur par défaut
+        // Les comptes administrateurs doivent être créés manuellement en production
+        // pour des raisons de sécurité
+        
+        // Décommentez le code ci-dessous uniquement en développement:
+        /*
+        $existingAdmin = $manager->getRepository(User::class)->findOneBy(['email' => 'admin@example.com']);
         
         if (!$existingAdmin) {
             $admin = new User();
-            $admin->setEmail('admin@gmail.com');
+            $admin->setEmail('admin@example.com');
             $admin->setFirstName('Admin');
             $admin->setLastName('VideTonGrenier');
             $admin->setRoles(['ROLE_ADMIN']);
             $admin->setIsVerified(true);
             $admin->setIsBanned(false);
             
-            // Hash du mot de passe Prince0503!
-            $hashedPassword = $this->passwordHasher->hashPassword($admin, 'Prince0503!');
+            // Utilisez un mot de passe sécurisé et changez-le immédiatement
+            $hashedPassword = $this->passwordHasher->hashPassword($admin, 'ChangeMe123!');
             $admin->setPassword($hashedPassword);
             
             $manager->persist($admin);
             $manager->flush();
-            
-            echo "Admin créé avec succès !\n";
-            echo "Email: admin@gmail.com\n";
-            echo "Mot de passe: Prince0503!\n";
-        } else {
-            echo "L'administrateur existe déjà.\n";
         }
+        */
     }
 }

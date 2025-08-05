@@ -27,7 +27,7 @@ class AnnonceFixtures extends Fixture implements DependentFixtureInterface
         $categories = $manager->getRepository(Categorie::class)->findAll();
 
         if (empty($categories)) {
-            echo "Aucune catégorie trouvée. Veuillez d'abord charger les fixtures de catégories.\n";
+            // Aucune catégorie trouvée. Veuillez d'abord charger les fixtures de catégories.
             return;
         }
 
@@ -66,33 +66,56 @@ class AnnonceFixtures extends Fixture implements DependentFixtureInterface
                 ['Trottinette électrique Xiaomi', 'Trottinette Xiaomi Mi Electric Scooter Pro 2. Autonomie 45km, vitesse max 25km/h. Achetée il y a 8 mois, très bon état. Quelques éraflures sur le plateau. Chargeur et manuel inclus.', 320, ['xiaomi-scooter-1.jpg', 'xiaomi-scooter-2.jpg']],
                 ['Peugeot 208 GTI 2020', 'Peugeot 208 GTI 1.6L THP 200ch, 35 000km. Première main, entretien Peugeot. Couleur Rouge Rubis. Intérieur cuir/alcantara. Jantes 17", climatisation auto. Contrôle technique OK.', 18900, ['peugeot-208-gti-1.jpg', 'peugeot-208-gti-2.jpg', 'peugeot-208-gti-3.jpg']]
             ],
-            'Loisirs' => [
-                ['Guitare acoustique Martin', 'Guitare Martin D-28 Standard, épicéa/palissandre. Son exceptionnel, lutherie américaine. Achetée neuve 2800€, très peu jouée. Étui rigide inclus. Parfaite pour enregistrement ou concert.', 1890, ['martin-d28-1.jpg', 'martin-d28-2.jpg', 'martin-case.jpg']],
-                ['Raquette tennis Babolat', 'Raquette Babolat Pure Drive 2021, grip 3, cordée avec Luxilon Big Banger. Utilisée une saison en club. Très bon état, quelques traces normales d\'usage. Housse et surgrip neufs inclus.', 89, ['babolat-pure-1.jpg', 'babolat-pure-2.jpg']],
-                ['Objectif Canon 24-70mm', 'Objectif Canon EF 24-70mm f/2.8L USM. Optique professionnelle, très polyvalent. Utilisé avec précaution, aucun impact. Lentilles parfaites, mise au point silencieuse. Pare-soleil et étui inclus.', 899, ['canon-24-70-1.jpg', 'canon-24-70-2.jpg']],
-                ['Planche surf 6\'2"', 'Planche de surf 6\'2" x 19"1/4 x 2"7/16, 28L. Shape custom par un shaper local. Mousse EPS, résine époxy. Quelques coups normaux réparés proprement. Grip neuf, dérives FCS incluses.', 380, ['surf-board-1.jpg', 'surf-board-2.jpg', 'surf-board-3.jpg']],
-                ['Console retro Raspberry Pi', 'Console retrogaming basée sur Raspberry Pi 4. Plus de 10 000 jeux (Nintendo, Sega, PlayStation...). Boîtier custom imprimé 3D. 2 manettes sans fil incluses. Plug & play sur TV.', 149, ['retro-console-1.jpg', 'retro-console-2.jpg']],
-                ['Saxophone alto Yamaha', 'Saxophone alto Yamaha YAS-280, parfait pour débutant/intermédiaire. Très bon état, révisé par un luthier. Étui rigide, bec et anches inclus. Son chaud et équilibré.', 650, ['saxophone-yamaha-1.jpg', 'saxophone-yamaha-2.jpg']]
-            ],
             'Enfants' => [
                 ['Poussette Cybex Priam', 'Poussette Cybex Priam châssis noir, nacelle et siège auto inclus. Système 3-en-1 complet. Très bon état, utilisée pour notre premier enfant. Roues toutes terrains, suspension excellente.', 450, ['cybex-priam-1.jpg', 'cybex-priam-2.jpg', 'cybex-priam-3.jpg']],
                 ['Lot vêtements bébé 0-6 mois', 'Gros lot de vêtements bébé garçon 0-6 mois. Marques : H&M, Zara, Vertbaudet. Plus de 50 pièces : bodies, pyjamas, pulls, pantalons. Très bon état, lavage en lessive bébé uniquement.', 89, ['vetements-bebe-1.jpg', 'vetements-bebe-2.jpg']],
                 ['Tricycle évolutif Puky', 'Tricycle évolutif Puky CAT 1 SP rouge. De 2 à 4 ans, hauteur de selle réglable. Roues silencieuses, freins à rétropédalage. Utilisé par notre fille, très bon état. Notice de montage incluse.', 75, ['puky-tricycle-1.jpg', 'puky-tricycle-2.jpg']],
                 ['Parc bébé Chicco', 'Parc Chicco Open Sea Dreams, très pratique et sécurisé. Utilisé 6 mois, excellent état. Facile à monter/démonter. Matelas et jouets d\'éveil inclus. Lavable en machine.', 65, ['parc-chicco-1.jpg', 'parc-chicco-2.jpg']]
             ],
-            'Emploi & Services' => [
-                ['Cours particuliers maths', 'Professeur agrégé propose cours particuliers mathématiques niveau collège/lycée. 15 ans d\'expérience. Méthode personnalisée, suivi régulier. Disponible soirées et week-ends. Tarif dégressif.', 25, []],
-                ['Service ménage à domicile', 'Dame de confiance propose service ménage à domicile sur Paris et proche banlieue. Expérience 10 ans, références sérieuses. Repassage, ménage complet, soins aux personnes âgées. Cesu accepté.', 18, []],
-                ['Garde d\'enfants expérimentée', 'Étudiante en école d\'infirmière propose garde d\'enfants le soir et week-ends. Expérience 5 ans, BAFA + PSC1. Aide aux devoirs possible. Disponible secteur 15ème/16ème arrondissement.', 12, []]
+            'Meubles' => [
+                ['Canapé cuir 3 places', 'Magnifique canapé en cuir véritable, 3 places, couleur marron cognac. Très confortable, structure en bois massif. Quelques traces d\'usage normal mais cuir en excellent état. Cause déménagement.', 450, ['canape-cuir-1.jpg', 'canape-cuir-2.jpg']],
+                ['Table basse design', 'Table basse style scandinave en chêne massif et métal noir. Dimensions : 120x60x45cm. Achetée chez Made.com, très peu utilisée. Parfaite pour salon moderne.', 180, ['table-basse-1.jpg', 'table-basse-2.jpg']],
+                ['Armoire 3 portes', 'Grande armoire 3 portes en pin massif, finition cirée. Hauteur 200cm, largeur 150cm. Parfaite pour chambre ou dressing. Démontable pour transport facilité.', 220, ['armoire-1.jpg', 'armoire-2.jpg']],
+                ['Commode vintage', 'Commode années 60 en teck, 4 tiroirs. Restaurée avec soin, poignées d\'origine. Pièce de collection pour amateur de mobilier vintage. Très bon état général.', 380, ['commode-vintage-1.jpg', 'commode-vintage-2.jpg']]
+            ],
+            'Immobilier' => [
+                ['Appartement T3 Lyon', 'Bel appartement T3 de 65m² dans le 3ème arrondissement de Lyon. 2 chambres, salon, cuisine équipée. Proche métro et commerces. Libre de suite. Visite virtuelle disponible.', 180000, ['appart-lyon-1.jpg', 'appart-lyon-2.jpg', 'appart-lyon-3.jpg']],
+                ['Maison avec jardin', 'Charmante maison de 120m² avec jardin de 400m². 4 pièces, garage, cave. Quartier calme proche écoles. Travaux de rénovation récents. Idéale famille.', 285000, ['maison-1.jpg', 'maison-2.jpg', 'maison-jardin.jpg']],
+                ['Studio centre-ville', 'Studio de 25m² en centre-ville, parfait pour investissement locatif ou pied-à-terre. Entièrement rénové, cuisine équipée, salle d\'eau moderne. Charges faibles.', 89000, ['studio-1.jpg', 'studio-2.jpg']],
+                ['Terrain constructible', 'Terrain de 800m² en zone constructible, viabilisé. Exposition sud, vue dégagée. Proche commodités et transports. Certificat d\'urbanisme favorable pour construction individuelle.', 65000, ['terrain-1.jpg', 'terrain-2.jpg']]
+            ],
+            'Livres & Musique' => [
+                ['Collection Harry Potter', 'Intégrale Harry Potter en français, édition originale Gallimard. 7 tomes en très bon état, jaquettes conservées. Parfait pour collectionneur ou cadeau.', 85, ['harry-potter-1.jpg', 'harry-potter-2.jpg']],
+                ['Vinyles années 70-80', 'Lot de 50 vinyles années 70-80 : Pink Floyd, Led Zeppelin, Queen, Beatles... Bon à très bon état général. Quelques pièces rares incluses. Idéal mélomane.', 250, ['vinyles-1.jpg', 'vinyles-2.jpg', 'vinyles-3.jpg']],
+                ['Piano numérique Yamaha', 'Piano numérique Yamaha P-125, 88 touches lestées. Excellent pour débutant comme confirmé. Très peu utilisé, avec pupitre et pédale sustain. Notice incluse.', 480, ['piano-yamaha-1.jpg', 'piano-yamaha-2.jpg']],
+                ['Encyclopédie Larousse', 'Encyclopédie Larousse 20 volumes, édition 2015. Parfait état, très peu consultée. Idéale pour études ou culture générale. Vendue cause déménagement.', 120, ['larousse-1.jpg', 'larousse-2.jpg']]
+            ],
+            'Emploi' => [
+                ['Développeur Web Junior', 'Startup recherche développeur web junior React/Node.js. Formation assurée, équipe jeune et dynamique. Télétravail possible 2j/semaine. Salaire 32-38K selon profil.', 35000, []],
+                ['Professeur mathématiques', 'Collège privé recherche professeur de mathématiques pour classes de 4ème/3ème. Temps plein, CDI. Expérience souhaitée mais débutant accepté. Poste à pourvoir rapidement.', 2200, []],
+                ['Commercial terrain H/F', 'Entreprise de matériel électrique recrute commercial(e) pour secteur Lyon/Rhône. Expérience vente BtoB exigée. Voiture de fonction, variable attractif.', 42000, []],
+                ['Aide soignante nuit', 'EHPAD recherche aide-soignante pour équipe de nuit. Diplôme exigé, expérience gériatrie appréciée. Planning aménageable, équipe bienveillante.', 1800, []]
+            ],
+            'Services' => [
+                ['Cours particuliers maths', 'Professeur agrégé propose cours particuliers mathématiques niveau collège/lycée. 15 ans d\'expérience. Méthode personnalisée, suivi régulier. Disponible soirées et week-ends.', 25, []],
+                ['Service ménage domicile', 'Dame de confiance propose service ménage à domicile sur Paris et proche banlieue. Expérience 10 ans, références sérieuses. Repassage, ménage complet. Cesu accepté.', 18, []],
+                ['Garde d\'enfants', 'Étudiante en école d\'infirmière propose garde d\'enfants le soir et week-ends. Expérience 5 ans, BAFA + PSC1. Aide aux devoirs possible. Secteur 15ème/16ème.', 12, []],
+                ['Réparation informatique', 'Technicien informatique propose réparation PC/Mac à domicile. Diagnostic gratuit, devis transparent. Spécialisé virus, récupération données, installation. Intervention rapide.', 45, []]
+            ],
+            'Sports & Loisirs' => [
+                ['Guitare acoustique Martin', 'Guitare Martin D-28 Standard, épicéa/palissandre. Son exceptionnel, lutherie américaine. Achetée neuve 2800€, très peu jouée. Étui rigide inclus. Parfaite pour enregistrement ou concert.', 1890, ['martin-d28-1.jpg', 'martin-d28-2.jpg', 'martin-case.jpg']],
+                ['Raquette tennis Babolat', 'Raquette Babolat Pure Drive 2021, grip 3, cordée avec Luxilon Big Banger. Utilisée une saison en club. Très bon état, quelques traces normales d\'usage. Housse et surgrip neufs inclus.', 89, ['babolat-pure-1.jpg', 'babolat-pure-2.jpg']],
+                ['Objectif Canon 24-70mm', 'Objectif Canon EF 24-70mm f/2.8L USM. Optique professionnelle, très polyvalent. Utilisé avec précaution, aucun impact. Lentilles parfaites, mise au point silencieuse. Pare-soleil et étui inclus.', 899, ['canon-24-70-1.jpg', 'canon-24-70-2.jpg']],
+                ['Planche surf 6\'2"', 'Planche de surf 6\'2" x 19"1/4 x 2"7/16, 28L. Shape custom par un shaper local. Mousse EPS, résine époxy. Quelques coups normaux réparés proprement. Grip neuf, dérives FCS incluses.', 380, ['surf-board-1.jpg', 'surf-board-2.jpg', 'surf-board-3.jpg']]
             ]
         ];
 
-        // NOUVELLE LOGIQUE : Garantir au minimum 3 annonces par catégorie
+        // NOUVELLE LOGIQUE : Garantir au minimum 4 annonces par catégorie
         $nombreAnnoncesCrees = 0;
-        $maxAnnonces = 50;
+        $maxAnnonces = 60;
         $annoncesParCategorie = [];
 
-        // Étape 1 : Créer au minimum 3 annonces pour chaque catégorie
+        // Étape 1 : Créer au minimum 4 annonces pour chaque catégorie
         foreach ($categories as $categorie) {
             $nomCategorie = $categorie->getNom();
             $annoncesParCategorie[$nomCategorie] = 0;
@@ -100,8 +123,8 @@ class AnnonceFixtures extends Fixture implements DependentFixtureInterface
             if (isset($annonceData[$nomCategorie])) {
                 $annoncesDisponibles = $annonceData[$nomCategorie];
 
-                // Créer 3 annonces minimum pour cette catégorie
-                for ($i = 0; $i < 3 && $nombreAnnoncesCrees < $maxAnnonces; $i++) {
+                // Créer 4 annonces minimum pour cette catégorie
+                for ($i = 0; $i < 4 && $nombreAnnoncesCrees < $maxAnnonces; $i++) {
                     $annonceInfo = $annoncesDisponibles[$i % count($annoncesDisponibles)];
 
                     $user = $this->getRandomUser($manager);
@@ -159,7 +182,23 @@ class AnnonceFixtures extends Fixture implements DependentFixtureInterface
 
                     // Ajouter des photos si disponibles
                     if (isset($annonceInfo[3]) && !empty($annonceInfo[3])) {
-                        $annonce->setImages($annonceInfo[3]);
+                        // Utiliser des images placeholder réalistes
+                        $images = [];
+                        foreach ($annonceInfo[3] as $index => $imageName) {
+                            // Générer des URLs d'images placeholder basées sur la catégorie
+                            $width = 800;
+                            $height = 600;
+                            $categorySlug = strtolower(str_replace(['&', ' '], ['', '-'], $categorie->getNom()));
+                            $seed = abs(crc32($titre . $index));
+                            $images[] = "https://picsum.photos/seed/{$seed}/{$width}/{$height}";
+                        }
+                        $annonce->setImages($images);
+                    } else {
+                        // Si pas d'images définies, ajouter au moins une image placeholder
+                        $width = 800;
+                        $height = 600;
+                        $seed = abs(crc32($titre));
+                        $annonce->setImages(["https://picsum.photos/seed/{$seed}/{$width}/{$height}"]);
                     }
 
                     $manager->persist($annonce);
@@ -185,7 +224,7 @@ class AnnonceFixtures extends Fixture implements DependentFixtureInterface
             // Mélanger toutes les annonces
             shuffle($toutesLesAnnonces);
 
-            // Compléter jusqu'à 50 annonces
+            // Compléter jusqu'à 60 annonces
             for ($i = 0; $i < count($toutesLesAnnonces) && $nombreAnnoncesCrees < $maxAnnonces; $i++) {
                 $annonceAvecCategorie = $toutesLesAnnonces[$i];
                 $annonceInfo = $annonceAvecCategorie[0];
@@ -240,7 +279,22 @@ class AnnonceFixtures extends Fixture implements DependentFixtureInterface
 
                 // Ajouter des photos si disponibles
                 if (isset($annonceInfo[3]) && !empty($annonceInfo[3])) {
-                    $annonce->setImages($annonceInfo[3]);
+                    // Utiliser des images placeholder réalistes
+                    $images = [];
+                    foreach ($annonceInfo[3] as $index => $imageName) {
+                        // Générer des URLs d'images placeholder basées sur la catégorie
+                        $width = 800;
+                        $height = 600;
+                        $seed = abs(crc32($titre . $index));
+                        $images[] = "https://picsum.photos/seed/{$seed}/{$width}/{$height}";
+                    }
+                    $annonce->setImages($images);
+                } else {
+                    // Si pas d'images définies, ajouter au moins une image placeholder
+                    $width = 800;
+                    $height = 600;
+                    $seed = abs(crc32($titre));
+                    $annonce->setImages(["https://picsum.photos/seed/{$seed}/{$width}/{$height}"]);
                 }
 
                 $manager->persist($annonce);
@@ -249,12 +303,9 @@ class AnnonceFixtures extends Fixture implements DependentFixtureInterface
             }
         }
 
-        // Afficher le résumé
-        echo "Création de {$nombreAnnoncesCrees} annonces terminée.\n";
-        echo "Répartition par catégorie :\n";
-        foreach ($annoncesParCategorie as $nomCategorie => $nombre) {
-            echo "- {$nomCategorie}: {$nombre} annonces\n";
-        }
+        // Résumé de création des annonces
+        // {$nombreAnnoncesCrees} annonces créées
+        // Répartition disponible dans $annoncesParCategorie
 
         $manager->flush();
     }
@@ -304,7 +355,7 @@ class AnnonceFixtures extends Fixture implements DependentFixtureInterface
         $user->setIsVerified(true);
         $user->setCreatedAt(new \DateTime('-' . rand(30, 365) . ' days'));
 
-        $hashedPassword = $this->passwordHasher->hashPassword($user, 'password123');
+        $hashedPassword = $this->passwordHasher->hashPassword($user, 'TempPass123!');
         $user->setPassword($hashedPassword);
 
         $manager->persist($user);
